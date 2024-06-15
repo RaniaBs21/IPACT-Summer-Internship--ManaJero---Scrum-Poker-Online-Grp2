@@ -5,7 +5,6 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-import {ScrumPokerGroup2DemoComponent} from './scrum-poker-group2/scrum-poker-group2-demo/scrum-poker-group2-demo.component';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 
 const routes: Routes = [{

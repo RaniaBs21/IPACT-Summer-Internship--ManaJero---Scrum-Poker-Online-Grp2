@@ -8,7 +8,6 @@ import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ScrumPokerGroup2Component } from './scrum-poker-group2/scrum-poker-group2.component';
-import { ScrumPokerGroup2DemoComponent } from './scrum-poker-group2/scrum-poker-group2-demo/scrum-poker-group2-demo.component';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 import {ScrumPokerG2DemodModule} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.module';
 
@@ -25,7 +24,6 @@ import {ScrumPokerG2DemodModule} from './scrum-poker-group2/scrum-poker-g2-demo/
   declarations: [
     PagesComponent,
     ScrumPokerGroup2Component,
-    ScrumPokerGroup2DemoComponent,
   ],
 })
 export class PagesModule {
