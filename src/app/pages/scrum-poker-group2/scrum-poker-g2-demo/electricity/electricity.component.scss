@@ -87,4 +87,17 @@
       display: none;
     }
   }
+
+  /* app.component.css */
+  .image-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-left:20px;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+    text-align:center;
+  }
 }

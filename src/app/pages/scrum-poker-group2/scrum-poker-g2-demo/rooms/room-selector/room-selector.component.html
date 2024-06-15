@@ -1,6 +1,6 @@
 <nb-card>
-  <nb-card-header>Room Management</nb-card-header>
-  <div class="room-selector">
+  <nb-card-header class="header">Summary Video</nb-card-header>
+  <!--<div class="room-selector">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
          [attr.viewBox]="viewBox" preserveAspectRatio="xMidYMid">
       <defs>
@@ -86,5 +86,15 @@
               [attr.x]="room.name.x" [attr.y]="room.name.y">{{room.name.text}}</text>
       </g>
     </svg>
+  </div>-->
+ <!-- <div class="video-container">
+    <iframe width="928" height="522" src="https://www.youtube.com/embed/TxSzo3lwwWQ" title="Planning Poker | Story Point Estimation in Agile | Agile Estimation Techniques" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>-->
+
+  <div class="video-container">
+    <video width="1150" height="660" controls>
+      <source src="assets/videos/poker.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
 </nb-card>

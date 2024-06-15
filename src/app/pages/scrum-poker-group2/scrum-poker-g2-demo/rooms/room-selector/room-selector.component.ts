@@ -23,7 +23,7 @@ export class RoomSelectorComponent implements OnInit, OnDestroy {
             || navigator.userAgent.match(/MSIE/)
             || navigator.userAgent.match(/Edge/));
   isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') >= 0;
-  roomSvg = {
+ /* roomSvg = {
     borders: [{
       d: 'M186.21,130.05H216.37V160H186.21Z',
     }],
@@ -64,7 +64,7 @@ export class RoomSelectorComponent implements OnInit, OnDestroy {
           '6.09,0,0,1,-6.09,6.09H272.71V356' },
       },
     ],
-  };
+  };*/
 
   @HostBinding('style.background')
   get background(): 'none' | null {
@@ -76,7 +76,7 @@ export class RoomSelectorComponent implements OnInit, OnDestroy {
     private locationStrategy: LocationStrategy,
     private themeService: NbThemeService,
   ) {
-    this.selectRoom('2');
+   // this.selectRoom('2');
   }
 
   ngOnInit() {
@@ -95,7 +95,7 @@ export class RoomSelectorComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private sortRooms() {
+ /* private sortRooms() {
     this.sortedRooms = this.roomSvg.rooms.slice(0).sort((a, b) => {
       if (a.id === this.selectedRoom) {
         return 1;
@@ -105,13 +105,13 @@ export class RoomSelectorComponent implements OnInit, OnDestroy {
       }
       return 0;
     });
-  }
+  }*/
 
-  selectRoom(roomNumber) {
+ /* selectRoom(roomNumber) {
     this.selectEvent.emit(roomNumber);
     this.selectedRoom = roomNumber;
     this.sortRooms();
-  }
+  }*/
 
   getUrlPath(id: string) {
     const baseHref = this.locationStrategy.getBaseHref().replace(/\/$/, '');

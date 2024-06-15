@@ -7,20 +7,20 @@ export class SecurityCamerasService extends SecurityCamerasData {
 
   private cameras: Camera[] = [
     {
-      title: 'Camera #1',
-      source: 'assets/images/camera1.jpg',
+      title: 'Fibonacci',
+      source: 'assets/images/poker20.PNG',
     },
     {
-      title: 'Camera #2',
-      source: 'assets/images/camera2.jpg',
+      title: 'Modified Fibonacci',
+      source: 'assets/images/poker23.PNG',
     },
     {
-      title: 'Camera #3',
-      source: 'assets/images/camera3.jpg',
+      title: 'Power Of 2',
+      source: 'assets/images/poker24.PNG',
     },
     {
-      title: 'Camera #4',
-      source: 'assets/images/camera4.jpg',
+      title: 'T-Shirt',
+      source: 'assets/images/poker211.PNG',
     },
   ];
 

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {ScrumPokerGroup2DemoComponent} from './scrum-poker-group2-demo/scrum-poker-group2-demo.component';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 
 

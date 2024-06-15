@@ -20,22 +20,22 @@ export class ScrumPokerG2DemoComponent implements OnDestroy {
 
   solarValue: number;
   lightCard: CardSettings = {
-    title: 'Light',
+    title: 'Ensure Team Collaboration',
     iconClass: 'nb-lightbulb',
     type: 'primary',
   };
   rollerShadesCard: CardSettings = {
-    title: 'Roller Shades',
+    title: 'Ensure Shared Understanding',
     iconClass: 'nb-roller-shades',
     type: 'success',
   };
   wirelessAudioCard: CardSettings = {
-    title: 'Wireless Audio',
+    title: 'Ensure Improved Estimates ',
     iconClass: 'nb-audio',
     type: 'info',
   };
   coffeeMakerCard: CardSettings = {
-    title: 'Coffee Maker',
+    title: 'Fun and Engaging',
     iconClass: 'nb-coffee-maker',
     type: 'warning',
   };
