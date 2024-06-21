@@ -12,5 +12,44 @@
     ngx-traffic {
       display: none;
     }
+    .nb-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%; /* Adjust the width as needed */
+      max-width: 1000px; /* Set a max-width to control the size */
+      margin: 0 auto; /* Center the card horizontally */
+      border: 1px solid #ccc; /* Add solid border */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      overflow: hidden;
+    }
+
+    .nb-card-header {
+      background-color: #f4f4f4;
+      padding: 16px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+    }
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+    .container{
+      align-items: center;
+    }
+
+
+    .image img{
+      border: 1px #ccc; /* Add solid border */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      overflow: hidden;
+    }
   }
 }

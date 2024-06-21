@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import {
-  NbActionsModule,
-  NbButtonModule,
-  NbCardModule,
-  NbTabsetModule,
-  NbUserModule,
-  NbRadioModule,
-  NbSelectModule,
-  NbListModule,
-  NbIconModule,
+    NbActionsModule,
+    NbButtonModule,
+    NbCardModule,
+    NbTabsetModule,
+    NbUserModule,
+    NbRadioModule,
+    NbSelectModule,
+    NbListModule,
+    NbIconModule, NbStepperModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -28,25 +28,28 @@ import { SolarComponent } from './solar/solar.component';
 import { PlayerComponent } from './rooms/player/player.component';
 import { TrafficComponent } from './traffic/traffic.component';
 import { TrafficChartComponent } from './traffic/traffic-chart.component';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo.component';
+import {StepperComponent} from './stepper/stepper.component';
 
 @NgModule({
-  imports: [
-    FormsModule,
-    ThemeModule,
-    NbCardModule,
-    NbUserModule,
-    NbButtonModule,
-    NbTabsetModule,
-    NbActionsModule,
-    NbRadioModule,
-    NbSelectModule,
-    NbListModule,
-    NbIconModule,
-    NbButtonModule,
-    NgxEchartsModule,
-  ],
+    imports: [
+        FormsModule,
+        ThemeModule,
+        NbCardModule,
+        NbUserModule,
+        NbButtonModule,
+        NbTabsetModule,
+        NbActionsModule,
+        NbRadioModule,
+        NbSelectModule,
+        NbListModule,
+        NbIconModule,
+        NbButtonModule,
+        NgxEchartsModule,
+        NbStepperModule,
+        ReactiveFormsModule,
+    ],
   declarations: [
     ScrumPokerG2DemoComponent,
     StatusCardComponent,
@@ -64,6 +67,7 @@ import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo.component';
     SolarComponent,
     TrafficComponent,
     TrafficChartComponent,
+    StepperComponent,
   ],
   exports: [
     StatusCardComponent,
