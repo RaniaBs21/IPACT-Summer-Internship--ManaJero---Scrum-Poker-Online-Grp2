@@ -10,6 +10,8 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ScrumPokerGroup2Component } from './scrum-poker-group2/scrum-poker-group2.component';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 import {ScrumPokerG2DemodModule} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.module';
+import {FormDemoComponent} from './scrum-poker-group2/form-demo/form-demo.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -20,10 +22,12 @@ import {ScrumPokerG2DemodModule} from './scrum-poker-group2/scrum-poker-g2-demo/
     ECommerceModule,
     MiscellaneousModule,
     ScrumPokerG2DemodModule,
+    FormsModule,
   ],
   declarations: [
     PagesComponent,
     ScrumPokerGroup2Component,
+      FormDemoComponent,
   ],
 })
 export class PagesModule {
