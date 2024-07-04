@@ -22,6 +22,11 @@ export class DemoFormComponent implements OnInit {
       this.tests = tests ;
     });
   }
+
+
+  starRate = 2;
+  heartRate = 4;
+  radioGroupValue = 'This is value 2';
 }
 
 

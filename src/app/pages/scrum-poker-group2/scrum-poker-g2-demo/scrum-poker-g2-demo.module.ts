@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import {
-    NbActionsModule,
-    NbButtonModule,
-    NbCardModule,
-    NbTabsetModule,
-    NbUserModule,
-    NbRadioModule,
-    NbSelectModule,
-    NbListModule,
-    NbIconModule, NbStepperModule,
+  NbActionsModule,
+  NbButtonModule,
+  NbCardModule,
+  NbTabsetModule,
+  NbUserModule,
+  NbRadioModule,
+  NbSelectModule,
+  NbListModule,
+  NbIconModule, NbStepperModule, NbDialogService, NbInputModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 import { ThemeModule } from '../../../@theme/theme.module';
 import { StatusCardComponent } from './status-card/status-card.component';
-import { ContactsComponent } from './contacts/contacts.component';
 import { RoomsComponent } from './rooms/rooms.component';
 import { RoomSelectorComponent } from './rooms/room-selector/room-selector.component';
 import { TemperatureComponent } from './temperature/temperature.component';
@@ -31,30 +30,33 @@ import { TrafficChartComponent } from './traffic/traffic-chart.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo.component';
 import {StepperComponent} from './stepper/stepper.component';
+import {RouterLink} from '@angular/router';
+import { DemoUpdateComponent } from './demo-update/demo-update.component';
 
 @NgModule({
-    imports: [
-        FormsModule,
-        ThemeModule,
-        NbCardModule,
-        NbUserModule,
-        NbButtonModule,
-        NbTabsetModule,
-        NbActionsModule,
-        NbRadioModule,
-        NbSelectModule,
-        NbListModule,
-        NbIconModule,
-        NbButtonModule,
-        NgxEchartsModule,
-        NbStepperModule,
-        ReactiveFormsModule,
-    ],
+  imports: [
+    FormsModule,
+    ThemeModule,
+    NbCardModule,
+    NbUserModule,
+    NbButtonModule,
+    NbTabsetModule,
+    NbActionsModule,
+    NbRadioModule,
+    NbSelectModule,
+    NbListModule,
+    NbIconModule,
+    NbButtonModule,
+    NgxEchartsModule,
+    NbStepperModule,
+    ReactiveFormsModule,
+    RouterLink,
+    NbInputModule,
+  ],
   declarations: [
     ScrumPokerG2DemoComponent,
     StatusCardComponent,
     TemperatureDraggerComponent,
-    ContactsComponent,
     RoomSelectorComponent,
     TemperatureComponent,
     RoomsComponent,
@@ -68,6 +70,7 @@ import {StepperComponent} from './stepper/stepper.component';
     TrafficComponent,
     TrafficChartComponent,
     StepperComponent,
+    DemoUpdateComponent,
   ],
   exports: [
     StatusCardComponent,

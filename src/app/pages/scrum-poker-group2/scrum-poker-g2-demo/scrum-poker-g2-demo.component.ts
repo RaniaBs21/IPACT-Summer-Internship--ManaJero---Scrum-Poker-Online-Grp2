@@ -1,12 +1,22 @@
-import {Component, OnDestroy} from '@angular/core';
-import { NbThemeService } from '@nebular/theme';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {NbDialogService, NbThemeService} from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators' ;
 import { SolarData } from '../../../@core/data/solar';
+import {TestModel} from '../Models/Test.model';
+import {ApiService} from '../services/api-service.service';
+import {DemoModel} from '../Models/DemoModel';
+import {BenefitsModel} from '../Models/BenefitsModel';
+import {id} from '@swimlane/ngx-charts';
+import {LimitsModel} from '../Models/LimitsModel';
+import {ShowcaseDialogComponent} from '../../modal-overlays/dialog/showcase-dialog/showcase-dialog.component';
+import {ActivatedRoute} from '@angular/router';
+import {DemoUpdateComponent} from './demo-update/demo-update.component';
 
 interface CardSettings {
   title: string;
   iconClass: string;
   type: string;
+
 }
 
 @Component({
@@ -14,86 +24,35 @@ interface CardSettings {
   templateUrl: './scrum-poker-g2-demo.component.html',
   styleUrls: ['./scrum-poker-g2-demo.component.scss'],
 })
-export class ScrumPokerG2DemoComponent implements OnDestroy {
+export class ScrumPokerG2DemoComponent implements OnInit {
 
   private alive = true;
+  demos: DemoModel[] = [];
+  benefits: BenefitsModel[] = [];
+  limits: LimitsModel[] = [];
+  demo: DemoModel;
+  constructor(private apiService: ApiService, private dialogService: NbDialogService, private route: ActivatedRoute) {}
 
-  solarValue: number;
-  lightCard: CardSettings = {
-    title: 'Ensure Team Collaboration',
-    iconClass: 'nb-lightbulb',
-    type: 'primary',
-  };
-  rollerShadesCard: CardSettings = {
-    title: 'Ensure Shared Understanding',
-    iconClass: 'nb-roller-shades',
-    type: 'success',
-  };
-  wirelessAudioCard: CardSettings = {
-    title: 'Ensure Improved Estimates ',
-    iconClass: 'nb-audio',
-    type: 'info',
-  };
-  coffeeMakerCard: CardSettings = {
-    title: 'Fun and Engaging',
-    iconClass: 'nb-coffee-maker',
-    type: 'warning',
-  };
-
-  statusCards: string;
-
-  commonStatusCardsSet: CardSettings[] = [
-    this.lightCard,
-    this.rollerShadesCard,
-    this.wirelessAudioCard,
-    this.coffeeMakerCard,
-  ];
-
-  statusCardsByThemes: {
-    default: CardSettings[];
-    cosmic: CardSettings[];
-    corporate: CardSettings[];
-    dark: CardSettings[];
-  } = {
-    default: this.commonStatusCardsSet,
-    cosmic: this.commonStatusCardsSet,
-    corporate: [
-      {
-        ...this.lightCard,
-        type: 'warning',
+  open() {
+    this.dialogService.open(DemoUpdateComponent, {
+      context: {
+        title: 'This is a title passed to the dialog component',
       },
-      {
-        ...this.rollerShadesCard,
-        type: 'primary',
-      },
-      {
-        ...this.wirelessAudioCard,
-        type: 'danger',
-      },
-      {
-        ...this.coffeeMakerCard,
-        type: 'info',
-      },
-    ],
-    dark: this.commonStatusCardsSet,
-  };
-
-  constructor(private themeService: NbThemeService,
-              private solarService: SolarData) {
-    this.themeService.getJsTheme()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(theme => {
-        this.statusCards = this.statusCardsByThemes[theme.name];
     });
+  }
+  ngOnInit() {
+    this.apiService.getDemo().subscribe((demos: DemoModel[]) => {
+      this.demos = demos ;
 
-    this.solarService.getSolarData()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((data) => {
-        this.solarValue = data;
+    this.apiService.getBenefits().subscribe((benefits: BenefitsModel[]) => {
+        this.benefits = benefits ;
+
+      this.apiService.getLimits().subscribe((limits: LimitsModel[]) => {
+        this.limits = limits ;
       });
+      });
+    });
   }
 
-  ngOnDestroy() {
-    this.alive = false;
-  }
+
 }

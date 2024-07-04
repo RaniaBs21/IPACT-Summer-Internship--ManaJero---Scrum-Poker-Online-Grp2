@@ -22,9 +22,9 @@
 <br>
 -->
 
-<div style="text-align:center">
+<div style="text-align:center" *ngFor="let d of demos">
 
-  <h2 >Planning Poker Agile</h2>
+  <h2 >{{d.title}}</h2>
 </div>
 
 <!--******************************Slogan***************-->
@@ -32,6 +32,14 @@
   <h1 style="color:green;" >Estimate Smarter, Deliver Faster</h1>
 </div>
 
+
+
+<!--<div class="col-sm-auto btn btn-outline-success btn-rounded" [routerLink]="['/pages/agile/scrum-poker-group2/demoform']">
+<nb-action>
+  <nb-icon  class="action-icon" icon="settings-2-outline" style="color:darkblue;"></nb-icon>
+  <span > <i class="mdi mdi-plus me-1" ></i> Update demo</span>
+</nb-action>
+</div>-->
 <!--******************************image***************-->
 
 <!--<div style="text-align:center">
@@ -56,15 +64,14 @@
 
   <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
     <div class="h6" style="color:darkblue;" >What is Planning Poker Agile?</div>
+
+
+
     <br>
-    <p>
-      Planning Poker is one of the <b style="color:yellowgreen;">Scrum meetings</b> that helps teams estimate their upcoming work.
-      <br>The team will estimate upcoming work items with a set of Fibonnaci-like values called story points.
-      Each person selects their estimate privately, and  <b style="color:yellowgreen;">everyone displays their estimate at the same time</b>, reducing bias in choosing the estimate.
-      <br>
-      Once everyone's estimates are shown, the team will review the range of estimates and discuss any variance.
-      <br>The team either then agrees the story point value for the item, or runs an estimation round again.
-    </p>
+    <div  *ngFor="let d of demos">
+
+      <p >{{d.description}} <i class="far fa-edit" style="color:dimgrey;" (click)="open()" ></i></p>
+    </div>
     <!--    <a href="#" class="stretched-link">Go somewhere</a>-->
   </div>
 
@@ -77,64 +84,21 @@
 
 
 
-
 <!--***************************What are the benefits of the Planning Poker template?*******************-->
-<div class="h6 col-lg-6" style="color:darkblue;">What are the benefits of the Planning Poker template?</div>
-<br>
-<div class="container overflow-hidden text-center">
-  <div class="row gy-5">
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="me-3">
-              <i class="fas fa-tasks fa-2x" style="color:blue;"></i> <!-- Example icon -->
-            </div>
-            <div>
-              <p class="card-text">Estimate tasks relative to each other through the voting option and build a series of assignments that act as a reference for the upcoming Sprint.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="me-3">
-              <i class="fas fa-handshake fa-2x" style="color:yellowgreen;"></i> <!-- Example icon -->
-            </div>
-            <div>
-              <p class="card-text">Lend an equal voice for every person on your team by allowing them to speak up by playing the game and explaining their logic.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="me-3">
-              <i class="fas fa-users fa-2x" style="color:lightgreen;"></i> <!-- Example icon -->
-            </div>
-            <div>
-              <p class="card-text">Allow equal contribution for all team members to feel more committed to the plan and have actual input on it.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="me-3">
 
-              <i class="fas fa-comments fa-2x" style="color:orange;"></i><!-- Example icon -->
-            </div>
-            <div>
-              <p class="card-text">Initiate discussions about how team members estimate tasks and reach a consensus.</p>
+<div class="h6 col-lg-6" style="color:darkblue;">What are the benefits of the Planning Poker ? </div>
+<br>
+<div class="container overflow-hidden text-center"  *ngFor="let b of benefits">
+  <div class="row gy-5">
+    <div class="col mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="me-3">
+              <i class="fas fa-handshake fa-2x" style="color:mediumseagreen;"></i> <!-- Example icon -->
+            </div>&nbsp;
+            <div >
+              <p>{{b.benefDescription}}  <i class="far fa-edit" style="color:dimgrey;"></i></p>
             </div>
           </div>
         </div>
@@ -143,6 +107,28 @@
   </div>
 </div>
 
+<!--***************************What are the limits of the Planning Poker template?*******************-->
+
+<div class="h6 col-lg-6" style="color:darkblue;">What are the limits of the Planning Poker ? </div>
+<br>
+<div class="container overflow-hidden text-center"  *ngFor="let l of limits">
+  <div class="row gy-5">
+    <div class="col mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="me-3">
+              <i class="fas fa-exclamation-triangle fa-2x" style="color:orangered; "></i> <!-- Example icon -->
+            </div>
+            <div >
+              <p>{{l.limitDescription}} <i class="far fa-edit" style="color:dimgrey;"></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <br>
 <!--*************** What are the Planning Poker steps ? *************************-->
