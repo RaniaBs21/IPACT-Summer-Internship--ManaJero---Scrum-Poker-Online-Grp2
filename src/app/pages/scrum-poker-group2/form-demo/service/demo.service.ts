@@ -12,8 +12,5 @@ export class DemoService {
   readonly ENDPOINT_CARS = '/api/users';
   constructor(private http: HttpClient) { }
 
-  getUsers(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.API_URL}${this.ENDPOINT_CARS}`);
-  }
 
 }
