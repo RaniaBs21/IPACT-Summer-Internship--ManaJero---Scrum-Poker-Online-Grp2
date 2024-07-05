@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
-import {FormDemoComponent} from './scrum-poker-group2/form-demo/form-demo.component';
+import {DemoFormComponent} from './scrum-poker-group2/scrum-poker-g2-demo/demo-form/demo-form.component';
 
 const routes: Routes = [{
   path: '',
@@ -18,7 +18,7 @@ const routes: Routes = [{
     },
     {
       path: 'agile/scrum-poker-group2/demoform',
-      component: FormDemoComponent,
+      component: DemoFormComponent,
     },
     {
       path: 'dashboard',

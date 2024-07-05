@@ -8,13 +8,12 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbListModule,
-  NbIconModule,
+  NbIconModule, NbStepperModule, NbDialogService, NbInputModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 import { ThemeModule } from '../../../@theme/theme.module';
 import { StatusCardComponent } from './status-card/status-card.component';
-import { ContactsComponent } from './contacts/contacts.component';
 import { RoomsComponent } from './rooms/rooms.component';
 import { RoomSelectorComponent } from './rooms/room-selector/room-selector.component';
 import { TemperatureComponent } from './temperature/temperature.component';
@@ -28,8 +27,11 @@ import { SolarComponent } from './solar/solar.component';
 import { PlayerComponent } from './rooms/player/player.component';
 import { TrafficComponent } from './traffic/traffic.component';
 import { TrafficChartComponent } from './traffic/traffic-chart.component';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo.component';
+import {StepperComponent} from './stepper/stepper.component';
+import {RouterLink} from '@angular/router';
+import { DemoUpdateComponent } from './demo-update/demo-update.component';
 
 @NgModule({
   imports: [
@@ -46,12 +48,15 @@ import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo.component';
     NbIconModule,
     NbButtonModule,
     NgxEchartsModule,
+    NbStepperModule,
+    ReactiveFormsModule,
+    RouterLink,
+    NbInputModule,
   ],
   declarations: [
     ScrumPokerG2DemoComponent,
     StatusCardComponent,
     TemperatureDraggerComponent,
-    ContactsComponent,
     RoomSelectorComponent,
     TemperatureComponent,
     RoomsComponent,
@@ -64,6 +69,8 @@ import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo.component';
     SolarComponent,
     TrafficComponent,
     TrafficChartComponent,
+    StepperComponent,
+    DemoUpdateComponent,
   ],
   exports: [
     StatusCardComponent,
