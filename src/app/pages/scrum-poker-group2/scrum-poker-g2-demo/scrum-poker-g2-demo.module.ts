@@ -32,6 +32,8 @@ import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo.component';
 import {StepperComponent} from './stepper/stepper.component';
 import {RouterLink} from '@angular/router';
 import { DemoUpdateComponent } from './demo-update/demo-update.component';
+import { BenifitsUpdateComponent } from './benifits-update/benifits-update.component';
+import { LimitsUpdateComponent } from './limits-update/limits-update.component';
 
 @NgModule({
   imports: [
@@ -71,6 +73,8 @@ import { DemoUpdateComponent } from './demo-update/demo-update.component';
     TrafficChartComponent,
     StepperComponent,
     DemoUpdateComponent,
+    BenifitsUpdateComponent,
+    LimitsUpdateComponent,
   ],
   exports: [
     StatusCardComponent,

@@ -16,7 +16,6 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ScrumPokerGroup2Component } from './scrum-poker-group2/scrum-poker-group2.component';
 import {ScrumPokerG2DemodModule} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.module';
 import {DemoFormComponent} from './scrum-poker-group2/scrum-poker-g2-demo/demo-form/demo-form.component';
-
 @NgModule({
   imports: [
     PagesRoutingModule,

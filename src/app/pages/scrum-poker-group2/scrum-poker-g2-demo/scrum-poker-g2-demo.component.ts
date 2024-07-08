@@ -11,6 +11,9 @@ import {LimitsModel} from '../Models/LimitsModel';
 import {ShowcaseDialogComponent} from '../../modal-overlays/dialog/showcase-dialog/showcase-dialog.component';
 import {ActivatedRoute} from '@angular/router';
 import {DemoUpdateComponent} from './demo-update/demo-update.component';
+import {LimitsUpdateComponent} from './limits-update/limits-update.component';
+import {BenifitsUpdateComponent} from './benifits-update/benifits-update.component';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 
 interface CardSettings {
   title: string;
@@ -31,7 +34,11 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   benefits: BenefitsModel[] = [];
   limits: LimitsModel[] = [];
   demo: DemoModel;
-  constructor(private apiService: ApiService, private dialogService: NbDialogService, private route: ActivatedRoute) {}
+  firstForm: UntypedFormGroup;
+  secondForm: UntypedFormGroup;
+  thirdForm: UntypedFormGroup;
+  constructor(private apiService: ApiService, private dialogService: NbDialogService,
+              private route: ActivatedRoute, private fb: UntypedFormBuilder) {}
 
   open() {
     this.dialogService.open(DemoUpdateComponent, {
@@ -40,7 +47,36 @@ export class ScrumPokerG2DemoComponent implements OnInit {
       },
     });
   }
+  openLimits() {
+    this.dialogService.open(LimitsUpdateComponent, {
+      context: {
+        title: 'This is a title passed to the dialog component',
+      },
+    });
+  }
+  openBenifits() {
+    this.dialogService.open(BenifitsUpdateComponent, {
+      context: {
+        title: 'This is a title passed to the dialog component',
+      },
+    });
+  }
+
+
+
+
   ngOnInit() {
+    this.firstForm = this.fb.group({
+      firstCtrl: ['', Validators.required],
+    });
+
+    this.secondForm = this.fb.group({
+      secondCtrl: ['', Validators.required],
+    });
+
+    this.thirdForm = this.fb.group({
+      thirdCtrl: ['', Validators.required],
+    });
     this.apiService.getDemo().subscribe((demos: DemoModel[]) => {
       this.demos = demos ;
 
@@ -52,6 +88,17 @@ export class ScrumPokerG2DemoComponent implements OnInit {
       });
       });
     });
+  }
+  onFirstSubmit() {
+    this.firstForm.markAsDirty();
+  }
+
+  onSecondSubmit() {
+    this.secondForm.markAsDirty();
+  }
+
+  onThirdSubmit() {
+    this.thirdForm.markAsDirty();
   }
 
 
