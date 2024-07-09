@@ -15,7 +15,9 @@ export class ApiService {
   readonly ENDPOINT_Benefits = '/getBenefits' ;
   readonly ENDPOINT_Limits = '/getLimits' ;
   readonly ENDPOINT_Demo_update = '/updateDemo/' ;
-
+  readonly ENDPOINT_Benefits_update = '/updateBenefits/' ;
+  readonly ENDPOINT_Limits_update = '/updateLimits/' ;
+  readonly ENDPOINT_Demo_Create = '/adddemo' ;
   constructor(private httpClient: HttpClient) { }
   getTest(): Observable<TestModel[]> {
     return this.httpClient.get<TestModel[]>(this.API_URL + this.ENDPOINT_CARS);
@@ -34,5 +36,18 @@ export class ApiService {
     const url = `${this.API_URL}${this.ENDPOINT_Demo_update}${id}`;
     return this.httpClient.put<DemoModel>( url, demo );
   }
+  updateBenifits ( idB: number, benefits: BenefitsModel): Observable<BenefitsModel> {
+    const url = `${this.API_URL}${this.ENDPOINT_Benefits_update}${idB}`;
+    return this.httpClient.put<BenefitsModel>( url, benefits );
+  }
+  updateLimits ( idL: number, limits: LimitsModel): Observable<LimitsModel> {
+    const url = `${this.API_URL}${this.ENDPOINT_Limits_update}${idL}`;
+    return this.httpClient.put<LimitsModel>( url, limits );
+  }
+
+  addDemo(demo: DemoModel): Observable<DemoModel[]> {
+    return this.httpClient.post<DemoModel[]>(this.API_URL + this.ENDPOINT_Demo_Create, demo);
+  }
+
 
 }

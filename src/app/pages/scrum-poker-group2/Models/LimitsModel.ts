@@ -1,4 +1,4 @@
 export class LimitsModel {
-  idDemo: number;
+  id: number;
   limitDescription: string;
 }

@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TestModel} from '../../Models/Test.model';
 import {ApiService} from '../../services/api-service.service';
+import {DemoModel} from '../../Models/DemoModel';
+import {Router} from '@angular/router';
+import {FormGroup} from '@angular/forms';
 
 
 
@@ -11,11 +14,11 @@ import {ApiService} from '../../services/api-service.service';
 
 export class DemoFormComponent implements OnInit {
 
-
+  demoForm: FormGroup;
   title = 'my-angular-app';
   tests: TestModel[] = [];
-
-  constructor(private apiService: ApiService) {}
+  demo: DemoModel;
+  constructor(private apiService: ApiService, private route: Router) {}
 
   ngOnInit() {
     this.apiService.getTest().subscribe((tests: TestModel[]) => {
@@ -23,10 +26,13 @@ export class DemoFormComponent implements OnInit {
     });
   }
 
-
-  starRate = 2;
-  heartRate = 4;
-  radioGroupValue = 'This is value 2';
+  addDemo(): void {
+    this.apiService.addDemo(this.demo).subscribe(response => {
+       this.route.navigateByUrl('/agile/scrum-poker-group2');
+    }, error => {
+      console.error('Error adding demo');
+    });
+  }
 }
 
 
