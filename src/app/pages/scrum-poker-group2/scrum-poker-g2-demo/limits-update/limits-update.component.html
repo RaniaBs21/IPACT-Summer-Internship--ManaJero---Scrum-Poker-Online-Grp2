@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header>Update your benefit</nb-card-header>
+  <nb-card-body>
+    <input nbInput fullWidth placeholder="Title" [(ngModel)]="limit.title" />
+    <textarea rows="5" nbInput fullWidth shape="round" [(ngModel)]="limit.limitDescription"></textarea>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton hero status="primary" (click)="confirmUpdate()">Update Benefit</button>
+    <button nbButton status="danger" class="cancel-button" (click)="cancel()">Cancel</button>
+  </nb-card-footer>
+</nb-card>

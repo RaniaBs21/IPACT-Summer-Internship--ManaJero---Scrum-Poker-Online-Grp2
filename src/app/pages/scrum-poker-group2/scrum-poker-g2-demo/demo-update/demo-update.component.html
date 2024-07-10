@@ -1,0 +1,10 @@
+<nb-card>
+    <nb-card-header>Update your description</nb-card-header>
+    <nb-card-body class="nb-card-body" *ngFor="let d of demos">
+        <textarea rows="5" nbInput fullWidth shape="round" [(ngModel)]="d.description" (ngModelChange)="onDescriptionChange(d)"></textarea>
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton hero status="primary" (click)="confirmUpdate()">Update Description</button>
+        <button nbButton status="danger" class="cancel-button" (click)="cancel()">Cancel</button>
+    </nb-card-footer>
+</nb-card>
