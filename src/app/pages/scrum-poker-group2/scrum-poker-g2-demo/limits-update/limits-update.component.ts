@@ -7,7 +7,7 @@ import {LimitsModel} from '../../models/Limit.model';
 @Component({
   selector: 'ngx-limits-update',
   templateUrl: './limits-update.component.html',
-  styleUrls: ['./limits-update.component.scss']
+  styleUrls: ['./limits-update.component.scss'],
 })
 export class LimitsUpdateComponent {
   @Input() title: string;
@@ -19,7 +19,6 @@ export class LimitsUpdateComponent {
     private toastrService: NbToastrService,
   ) {}
 
-  ngOnInit(): void {}
 
   confirmUpdate() {
     if (confirm('Êtes-vous sûr de vouloir mettre à jour ce limit ?')) {
