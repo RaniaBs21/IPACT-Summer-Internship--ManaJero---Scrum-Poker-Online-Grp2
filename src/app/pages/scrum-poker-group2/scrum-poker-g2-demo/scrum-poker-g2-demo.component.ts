@@ -1,99 +1,156 @@
-import {Component, OnDestroy} from '@angular/core';
-import { NbThemeService } from '@nebular/theme';
-import { takeWhile } from 'rxjs/operators' ;
-import { SolarData } from '../../../@core/data/solar';
-
-interface CardSettings {
-  title: string;
-  iconClass: string;
-  type: string;
-}
+import { Component, OnInit } from '@angular/core';
+import { NbDialogService } from '@nebular/theme';
+import { ActivatedRoute } from '@angular/router';
+import { DemoUpdateComponent } from './demo-update/demo-update.component';
+import { LimitsUpdateComponent } from './limits-update/limits-update.component';
+import { BenefitsUpdateComponent } from './benefits-update/benefits-update.component';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { DemoModel } from '../models/Demo.model';
+import { BenefitsModel } from '../models/Benefit.model';
+import { LimitsModel } from '../models/Limit.model';
+import { PokerService } from '../services/poker.service';
+import {BenefitsAddComponent} from './benefits-add/benefits-add.component';
 
 @Component({
   selector: 'ngx-dashboard',
   templateUrl: './scrum-poker-g2-demo.component.html',
   styleUrls: ['./scrum-poker-g2-demo.component.scss'],
 })
-export class ScrumPokerG2DemoComponent implements OnDestroy {
+export class ScrumPokerG2DemoComponent implements OnInit {
+  demos: DemoModel[] = [];
+  benefits: BenefitsModel[] = [];
+  limits: LimitsModel[] = [];
+  firstForm: UntypedFormGroup;
+  secondForm: UntypedFormGroup;
+  thirdForm: UntypedFormGroup;
 
-  private alive = true;
+  constructor(
+    private apiService: PokerService,
+    private dialogService: NbDialogService,
+    private route: ActivatedRoute,
+    private fb: UntypedFormBuilder,
+  ) {}
 
-  solarValue: number;
-  lightCard: CardSettings = {
-    title: 'Ensure Team Collaboration',
-    iconClass: 'nb-lightbulb',
-    type: 'primary',
-  };
-  rollerShadesCard: CardSettings = {
-    title: 'Ensure Shared Understanding',
-    iconClass: 'nb-roller-shades',
-    type: 'success',
-  };
-  wirelessAudioCard: CardSettings = {
-    title: 'Ensure Improved Estimates ',
-    iconClass: 'nb-audio',
-    type: 'info',
-  };
-  coffeeMakerCard: CardSettings = {
-    title: 'Fun and Engaging',
-    iconClass: 'nb-coffee-maker',
-    type: 'warning',
-  };
-
-  statusCards: string;
-
-  commonStatusCardsSet: CardSettings[] = [
-    this.lightCard,
-    this.rollerShadesCard,
-    this.wirelessAudioCard,
-    this.coffeeMakerCard,
-  ];
-
-  statusCardsByThemes: {
-    default: CardSettings[];
-    cosmic: CardSettings[];
-    corporate: CardSettings[];
-    dark: CardSettings[];
-  } = {
-    default: this.commonStatusCardsSet,
-    cosmic: this.commonStatusCardsSet,
-    corporate: [
-      {
-        ...this.lightCard,
-        type: 'warning',
-      },
-      {
-        ...this.rollerShadesCard,
-        type: 'primary',
-      },
-      {
-        ...this.wirelessAudioCard,
-        type: 'danger',
-      },
-      {
-        ...this.coffeeMakerCard,
-        type: 'info',
-      },
-    ],
-    dark: this.commonStatusCardsSet,
-  };
-
-  constructor(private themeService: NbThemeService,
-              private solarService: SolarData) {
-    this.themeService.getJsTheme()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(theme => {
-        this.statusCards = this.statusCardsByThemes[theme.name];
+  ngOnInit() {
+    this.firstForm = this.fb.group({
+      firstCtrl: ['', Validators.required],
     });
 
-    this.solarService.getSolarData()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((data) => {
-        this.solarValue = data;
-      });
+    this.secondForm = this.fb.group({
+      secondCtrl: ['', Validators.required],
+    });
+
+    this.thirdForm = this.fb.group({
+      thirdCtrl: ['', Validators.required],
+    });
+
+    this.loadData();
   }
 
-  ngOnDestroy() {
-    this.alive = false;
+  loadData() {
+    this.apiService.getDemo().subscribe((demos: DemoModel[]) => {
+      this.demos = demos;
+    });
+
+    this.apiService.getBenefits().subscribe((benefits: BenefitsModel[]) => {
+      this.benefits = benefits;
+    });
+
+    this.apiService.getLimits().subscribe((limits: LimitsModel[]) => {
+      this.limits = limits;
+    });
+  }
+
+  openDemoUpdate() {
+    this.dialogService.open(DemoUpdateComponent, {
+      context: {
+        title: 'Update Demo',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  openBenefitsUpdate(benefit: BenefitsModel) {
+    this.dialogService.open(BenefitsUpdateComponent, {
+      context: {
+        title: 'Update Benefit',
+        benefit: { ...benefit },
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+  openBenefitsAdd() {
+    this.dialogService.open(BenefitsAddComponent, {
+      context: {
+        title: 'Ajouter Bénéfice',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  openLimitsUpdate(limit: LimitsModel) {
+    this.dialogService.open(LimitsUpdateComponent, {
+      context: {
+        title: 'Update Limits',
+        limit: { ...limit },
+
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  open() {
+    this.dialogService.open(DemoUpdateComponent, {
+      context: {
+        title: 'This is a title passed to the dialog component',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  onFirstSubmit() {
+    this.firstForm.markAsDirty();
+  }
+
+  onSecondSubmit() {
+    this.secondForm.markAsDirty();
+  }
+
+  onThirdSubmit() {
+    this.thirdForm.markAsDirty();
+  }
+
+  deleteDemo(id: string) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette démo ?')) {
+      this.apiService.deleteDemo(id).subscribe(
+        () => {
+          this.demos = this.demos.filter((d) => d.id !== id);
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression de la démo :', error);
+        },
+      );
+    }
+  }
+
+  deleteBenefit(id: string) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce bénéfice ?')) {
+      this.apiService.deleteBenefit(id).subscribe(
+        () => {
+          this.benefits = this.benefits.filter((b) => b.id !== id);
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression du bénéfice :', error);
+        },
+      );
+    }
+  }
+
+  deleteLimit(id: string) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce limit ?')) {
+      this.apiService.deleteLimit(id).subscribe(
+        () => {
+          this.limits = this.limits.filter((b) => b.id !== id);
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression du limit :', error);
+        },
+      );
+    }
   }
 }
