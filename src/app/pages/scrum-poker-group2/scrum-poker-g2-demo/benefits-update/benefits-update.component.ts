@@ -8,7 +8,7 @@ import { BenefitsModel } from '../../models/Benefit.model';
   templateUrl: './benefits-update.component.html',
   styleUrls: ['./benefits-update.component.scss'],
 })
-export class BenefitsUpdateComponent implements OnInit {
+export class BenefitsUpdateComponent {
   @Input() title: string;
   @Input() benefit: BenefitsModel;
 
