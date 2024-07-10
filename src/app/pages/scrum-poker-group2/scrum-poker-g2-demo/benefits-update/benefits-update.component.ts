@@ -18,7 +18,6 @@ export class BenefitsUpdateComponent implements OnInit {
     private toastrService: NbToastrService,
   ) {}
 
-  ngOnInit(): void {}
 
   confirmUpdate() {
     if (confirm('Êtes-vous sûr de vouloir mettre à jour ce bénéfice ?')) {
@@ -28,7 +27,7 @@ export class BenefitsUpdateComponent implements OnInit {
 
   updateBenefit() {
     this.apiService.updateBenifits(this.benefit.id, this.benefit).subscribe(
-      (updatedBenefit) => {
+      () => {
         this.toastrService.success('Bénéfice mis à jour avec succès', 'Succès');
         this.ref.close();
       },

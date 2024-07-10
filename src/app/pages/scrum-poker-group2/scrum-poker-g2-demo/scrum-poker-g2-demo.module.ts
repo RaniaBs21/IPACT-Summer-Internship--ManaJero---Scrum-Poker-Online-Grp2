@@ -8,7 +8,7 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbListModule,
-  NbIconModule, NbStepperModule, NbDialogService, NbInputModule,
+  NbIconModule, NbStepperModule, NbInputModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -36,6 +36,7 @@ import { BenefitsUpdateComponent } from './benefits-update/benefits-update.compo
 import { LimitsUpdateComponent } from './limits-update/limits-update.component';
 import { BenefitsAddComponent } from './benefits-add/benefits-add.component';
 import { LimitssAddComponent } from './limitss-add/limitss-add.component';
+import {DemoFormComponent} from './demo-form/demo-form.component';
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import { LimitssAddComponent } from './limitss-add/limitss-add.component';
   ],
   declarations: [
     ScrumPokerG2DemoComponent,
+    DemoFormComponent,
     StatusCardComponent,
     TemperatureDraggerComponent,
     RoomSelectorComponent,

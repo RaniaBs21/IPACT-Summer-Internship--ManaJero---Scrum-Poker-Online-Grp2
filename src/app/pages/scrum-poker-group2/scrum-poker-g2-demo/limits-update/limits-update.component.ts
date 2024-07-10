@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {BenefitsModel} from '../../models/Benefit.model';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {PokerService} from '../../services/poker.service';
 import {LimitsModel} from '../../models/Limit.model';
@@ -28,7 +27,7 @@ export class LimitsUpdateComponent {
 
   updateLimit() {
     this.apiService.updateLimits(this.limit.id, this.limit).subscribe(
-      (updatedBenefit) => {
+      () => {
         this.toastrService.success('Limit mis à jour avec succès', 'Succès');
         this.ref.close();
       },
