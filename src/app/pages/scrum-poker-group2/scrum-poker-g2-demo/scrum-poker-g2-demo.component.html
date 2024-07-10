@@ -137,7 +137,7 @@
           </ng-template>
           <div class="h6" style="color:darkblue;">Why Scrum Planning Poker?⚡🚀</div>
           <div class="container">
-            <button nbButton status="success" (click)="openBenefitsAdd()">Ajouter un Bénéfice</button>
+            <button nbButton status="success" (click)="openBenefitsAdd()">Add Benefit</button>
 
             <div class="row">
               <div class="col-md-4 col-sm-6 mb-4" *ngFor="let benefit of benefits">
@@ -161,7 +161,10 @@
           </div>
 
           <div class="h6" style="color:darkblue;">Limits of Planning Poker?⚡🚀</div>
+          <button nbButton status="success" (click)="openLimitsAdd()">Add Limit</button>
+
           <div class="row">
+
             <div class="col-md-4 col-sm-6 mb-4" *ngFor="let limit of limits">
               <div class="feature-card">
                 <div class="flip-card">

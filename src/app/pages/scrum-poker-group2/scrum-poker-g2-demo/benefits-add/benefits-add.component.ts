@@ -11,7 +11,7 @@ import { BenefitsModel } from '../../models/Benefit.model';
 })
 export class BenefitsAddComponent implements OnInit {
   addBenefitForm: FormGroup;
-  title: string; // Ajoutez cette ligne
+  title: string;
 
   constructor(
     private fb: FormBuilder,

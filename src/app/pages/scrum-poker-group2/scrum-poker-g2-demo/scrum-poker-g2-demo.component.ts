@@ -10,6 +10,7 @@ import { BenefitsModel } from '../models/Benefit.model';
 import { LimitsModel } from '../models/Limit.model';
 import { PokerService } from '../services/poker.service';
 import {BenefitsAddComponent} from './benefits-add/benefits-add.component';
+import {LimitssAddComponent} from './limitss-add/limitss-add.component';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -80,11 +81,19 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   openBenefitsAdd() {
     this.dialogService.open(BenefitsAddComponent, {
       context: {
-        title: 'Ajouter Bénéfice',
+        title: 'Add Benefit',
       },
     }).onClose.subscribe(() => this.loadData());
   }
 
+
+  openLimitsAdd() {
+    this.dialogService.open(LimitssAddComponent, {
+      context: {
+        title: 'Add Limit ',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
   openLimitsUpdate(limit: LimitsModel) {
     this.dialogService.open(LimitsUpdateComponent, {
       context: {

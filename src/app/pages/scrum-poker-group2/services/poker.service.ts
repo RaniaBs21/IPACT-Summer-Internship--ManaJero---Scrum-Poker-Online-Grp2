@@ -47,6 +47,11 @@ export class PokerService {
   deleteBenefit(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.API_URL}/deletebenefit/${id}`);
   }
+
+  addLimit(limit: LimitsModel): Observable<LimitsModel> {
+    return this.httpClient.post<LimitsModel>(`${this.API_URL}/addLimits`, limit);
+  }
+
   updateLimits ( id: string, limits: LimitsModel): Observable<LimitsModel> {
     const url = `${this.API_URL}${this.ENDPOINT_Limits_update}${id}`;
     return this.httpClient.put<LimitsModel>( url, limits );
