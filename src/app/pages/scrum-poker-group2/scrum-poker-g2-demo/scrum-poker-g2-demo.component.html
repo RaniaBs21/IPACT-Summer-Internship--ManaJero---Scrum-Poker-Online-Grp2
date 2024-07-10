@@ -9,19 +9,41 @@
     <span class="lightning">⚡</span>
 
   </div>
+
 <br>
-  <div class="col-sm-auto btn btn-outline-success btn-rounded" [routerLink]="['/pages/agile/scrum-poker-group2/demoform']">
+  <div class="col-sm-auto btn btn-outline-primary btn-rounded" [routerLink]="['/pages/agile/scrum-poker-group2/demoform']" style="float: right;">
 <nb-action>
-  <nb-icon  class="action-icon" icon="settings-2-outline" style="color:darkblue;"></nb-icon>
-  <span > <i class="mdi mdi-plus me-1" ></i> Add Information</span>
+  <span  style="color:darkblue;"> Add Information</span>
 </nb-action>
 </div>
-
-
-
-
 </div>
+<br>
+<br>
+<br>
 
+
+<!--introduction-->
+<nb-card >
+  <br>
+<div class="h6 p-md-4 " style="color:darkblue">Discover Planning Poker Agile ?⚡🃏🚀</div>
+<div >
+  <div class="row g-0  p-md-4 ">
+    <div class="col-md-6  ">
+      <br>
+      <div *ngFor="let d of demos" >
+        <p style="font-size:16px; ">{{d.intro}}
+          <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i>
+      </div>
+    </div>
+    <div class="col-md-6  ">
+      <img src="assets/images/scrum.jpg" alt="Description de l'image" class="responsive-image">
+    </div>
+  </div>
+</div>
+</nb-card>
+
+
+<!--stepper-->
 <div style="text-align:center"  >
   <nb-card class="col-md-20 col-lg-20 col-xxxl-20">
     <nb-card-body>
@@ -46,25 +68,7 @@
                 </div>
               </div>
             </div>
-          <div class="h6" style="color:dimgrey">Planning Poker in Scrum Process⚡🃏🚀</div>
-          <div >
-            <div class="row g-0  position-relative">
-              <div class="col-md-6 mb-md-0 p-md-4 ">
-                <img src="assets/images/scrum.jpg" alt="Description de l'image" class="responsive-image">
-              </div>
 
-              <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
-                <br>
-                <div  >
-                  <p style="font-size:16px; ">In the Scrum process, Planning Poker plays a crucial role in the sprint planning
-                    phase by providing a structured and collaborative approach to estimating the effort required for user stories.
-                    This technique involves the entire Scrum team, including developers,
-                    testers, and the product owner, ensuring that everyone’s perspective is considered</p>
-                    <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i>
-                </div>
-              </div>
-            </div>
-          </div>
           <br>
           <button nbButton nbStepperPrevious>prev</button>
           <button nbButton nbStepperNext>next</button>
@@ -80,107 +84,33 @@
           <div class="h6" style="color:dimgrey">Why Scrum Planning Poker?⚡🚀</div>
 
 
+
           <nb-accordion>
             <nb-accordion-item #item>
               <nb-accordion-item-header>
                 <div class="h6" style="color:darkblue;">Benefits of Planning Poker?🚀</div>
               </nb-accordion-item-header>
-              <nb-accordion-item-body>
-                <div class="container">
+              <nb-accordion-item-body >
+                <i class="far fa-edit" style="color:dimgrey; float: right; " (click)=" openBenifits()"></i>
+               <div class="container">
                   <div class="row">
-                    <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="col-md-4 col-sm-6 mb-4"  *ngFor="let b of benefits">
                       <div class="feature-card">
                         <div class="flip-card">
                           <div class="flip-card-inner">
                             <div class="flip-card-front text-center">
-                              <h5 class="discover-title">Feedback Driven</h5>
-                              <img src="assets/images/satisfaction.png" class="img-fluid" width="80" height="80">
+                              <h5 class="discover-title">{{b.title}}</h5>
+                              <img src="assets/images/benef.PNG" class="img-fluid" width="80" height="80">
                             </div>
                             <div class="flip-card-back text-center">
-                              <p class="quote">Feedback-driven development, with regular updates and new features based on user
-                                suggestions and requests, ensuring a platform that meets the needs of Agile teams.</p>
+                              <p class="quote">{{b.benefDescription}}</p>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                      <div class="feature-card">
-                        <div class="flip-card">
-                          <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                              <h5 class="discover-title">Real-time Collaboration</h5>
-                              <img src="assets/images/collaboration.png" class="img-fluid" width="80" height="80">
-                            </div>
-                            <div class="flip-card-back text-center">
-                              <p class="quote">Scrum Jam enables real-time collaboration among team members, allowing them to estimate tasks together simultaneously, fostering better communication and collective decision-making.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                      <div class="feature-card">
-                        <div class="flip-card">
-                          <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                              <h5 class="discover-title"> Simple Approach</h5>
-                              <img src="assets/images/simple.png" class="img-fluid" width="80" height="80">
-                            </div>
-                            <div class="flip-card-back text-center">
-                              <p class="quote">Fast and straightforward estimation process, allowing Agile teams to quickly and efficiently estimate tasks without unnecessary complexities.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                      <div class="feature-card">
-                        <div class="flip-card">
-                          <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                              <h5 class="discover-title">Open Discussion</h5>
-                              <img src="assets/images/discussion.png" class="img-fluid" width="80" height="80">
-                            </div>
-                            <div class="flip-card-back text-center">
-                              <p class="quote">Encourages open discussion and debate among team members, leading to a better understanding of the task at hand.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                      <div class="feature-card">
-                        <div class="flip-card">
-                          <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                              <h5 class="discover-title">Transparent Estimation </h5>
-                              <img src="assets/images/vote.png" class="img-fluid" width="80" height="80">
-                            </div>
-                            <div class="flip-card-back text-center">
-                              <p class="quote">The estimation process is transparent, with everyone’s estimates visible and discussed.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                      <div class="feature-card">
-                        <div class="flip-card">
-                          <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                              <h5 class="discover-title">Adaptability Flexibility</h5>
-                              <img src="assets/images/scalable.png" class="img-fluid" width="80" height="80">
-                            </div>
-                            <div class="flip-card-back text-center">
-                              <p class="quote">It accommodates changes in project requirements and allows teams to adjust estimates based on new information or evolving project conditions.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
-                </div>
               </nb-accordion-item-body>
             </nb-accordion-item>
 
@@ -189,97 +119,25 @@
                 <div class="h6" style="color:darkblue;">Limits of Planning Poker?⚡</div>
               </nb-accordion-item-header>
               <nb-accordion-item-body>
-                <div class="row">
-                  <div class="col-md-4 col-sm-6 mb-4">
+                <i class="far fa-edit" style="color:dimgrey; float: right; " (click)=" openLimits()"></i>
+                <div class="container">
+                 <div class="row">
+                  <div class="col-md-4 col-sm-6 mb-4" *ngFor="let l of limits">
                     <div class="feature-card">
                       <div class="flip-card">
                         <div class="flip-card-inner">
                           <div class="flip-card-front1 text-center">
-                            <h5 class="discover-title">Complex Projects</h5>
-                            <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
+                            <h5 class="discover-title">{{l.title}}</h5>
+                            <img src="assets/images/limits.png" class="img-fluid" width="90" height="90">
                           </div>
                           <div class="flip-card-back1 text-center">
-                            <p class="quote">In highly complex projects, breaking down stories into small enough units for effective estimation can be difficult.</p>
+                            <p class="quote">{{l.limitDescription}}</p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="feature-card">
-                      <div class="flip-card">
-                        <div class="flip-card-inner">
-                          <div class="flip-card-front1 text-center">
-                            <h5 class="discover-title">False Precision</h5>
-                            <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                          </div>
-                          <div class="flip-card-back1 text-center">
-                            <p class="quote">Teams might place too much trust in the estimates, forgetting that they are still just educated guesses.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="feature-card">
-                      <div class="flip-card">
-                        <div class="flip-card-inner">
-                          <div class="flip-card-front1 text-center">
-                            <h5 class="discover-title">Groupthink</h5>
-                            <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                          </div>
-                          <div class="flip-card-back1 text-center">
-                            <p class="quote">There is a risk of groupthink, where the desire for harmony or conformity results in irrational decision-making.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="feature-card">
-                      <div class="flip-card">
-                        <div class="flip-card-inner">
-                          <div class="flip-card-front1 text-center">
-                            <h5 class="discover-title">Routine Tasks</h5>
-                            <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                          </div>
-                          <div class="flip-card-back1 text-center">
-                            <p class="quote">For highly repetitive or routine tasks, the overhead of Planning Poker might not be justified.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="feature-card">
-                      <div class="flip-card">
-                        <div class="flip-card-inner">
-                          <div class="flip-card-front1 text-center">
-                            <h5 class="discover-title">Facilitator Role</h5>
-                            <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                          </div>
-                          <div class="flip-card-back1 text-center">
-                            <p class="quote">A skilled facilitator is often needed to keep the session on track and ensure productive discussions.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="feature-card">
-                      <div class="flip-card">
-                        <div class="flip-card-inner">
-                          <div class="flip-card-front1 text-center">
-                            <h5 class="discover-title">Inefficiency</h5>
-                            <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                          </div>
-                          <div class="flip-card-back1 text-center">
-                            <p class="quote">In cases where team members are not familiar with the stories or tasks, the estimation process can take even longer.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+               </div>
                 </div>
               </nb-accordion-item-body>
             </nb-accordion-item>
@@ -308,100 +166,31 @@
             <div class="col-md-6">
               <div class="interface-container">
 
-                <ul class="instructions">
-                  <li class="flex items-center gap-3 pb-7"><img src="assets/images/languette.png" alt="Create Icon" style="color: orangered"><span class="quote"> Create an instant room </span></li>
-                  <li class="flex items-center gap-3 pb-7"><img src="assets/images/languette.png" alt="Create Icon" style="color: orangered"><span class="quote"> Add/Import UserStories </span></li>
-                  <li class="flex items-center gap-4 pb-7"><img src="assets/images/invite.png" alt="Invite Icon"><span class="quote"> Invite your team members </span></li>
-                  <li class="flex items-center gap-4 pb-7"><img src="assets/images/vote-en-ligne.png" alt="Vote Icon"><span class="quote"> Vote on task complexity </span></li>
-                  <li class="flex items-center gap-4 pb-7"><img src="assets/images/vendeur.png" alt="Negotiate Icon"><span class="quote"> Discussion </span></li>
-                </ul>
+                <ul class="instructions"  *ngFor="let s of steps">
+                  <li class="flex items-center gap-3 pb-7"><img src="assets/images/how.png" alt="Create Icon" style="color: orangered"><div class="quote"> {{s.title}}</div></li>
+                  </ul>
                 <button class="start-button">Join Game</button>
               </div>
             </div>
             <br>
             <br>
-
           </div>
           <br>
             <div >
-              <nb-card size="medium">
-                <nb-card-body>
-                  <nb-stepper orientation="vertical">
-                    <nb-step label="First step">
-                      <h3>Create an instant room</h3>
-                      <p class="lorem">
-                        Creating an instant room in Planning Poker is a streamlined process designed
-                        to facilitate quick and efficient agile estimation sessions for remote or distributed teams.
-                        This process involves setting up a virtual space where team members can
-                        collaborate in real-time to estimate user stories.
-                      </p>
-                      <div style="align-items: center">
-                        <img src="assets/images/algo.PNG" alt="Description de l'image" class="responsive-image">
-                      </div>
-                      <br>
-                      <button nbButton disabled nbStepperNext>prev</button>
-                      <button nbButton nbStepperNext>next</button>
-                    </nb-step>
-                    <nb-step label="Second step">
-                      <h3>Add/Import UserStories</h3>
-                      <p class="lorem">
-                        Ensure that the user stories or tasks to be estimated are well-defined and understood by the team.
-                        This might involve discussing the acceptance criteria and any dependencies or constraints.
-                      </p>
-                      <div style="align-items: center">
-                        <img src="assets/images/jira.PNG" alt="Description de l'image" class="responsive-image">
-                      </div>
-                      <br>
-                      <button nbButton nbStepperPrevious>prev</button>
-                      <button nbButton nbStepperNext>next</button>
-                    </nb-step>
-                    <nb-step label="Third step">
-                      <h3>Invite your team members</h3>
-                      <p class="lorem">
-                        Include all relevant team members such as developers, testers, product owners,
-                        and other stakeholders who have a good understanding of the work to be estimated.
-                      </p>
-                      <div style="align-items: center">
-                        <img src="assets/images/chat.PNG" alt="Description de l'image" class="responsive-image">
-                      </div>
-                      <br>
-                      <button nbButton nbStepperPrevious>prev</button>
-                      <button nbButton nbStepperNext>next</button>
-                    </nb-step>
-                    <nb-step label="Fourth step">
-                      <h3>Vote on task complexity</h3>
-                      <p class="lorem">
-                        Once everyone has selected their card, all team members reveal their chosen cards simultaneously.
-                        This step is crucial to prevent any bias or influence during the estimation process.
-                        It ensures that each estimate is based on the individual's understanding of the user story.
-                      </p>
-                      <div style="align-items: center">
-                        <img src="assets/images/room.PNG" alt="Description de l'image" class="responsive-image">
-                      </div>
-                      <br>
-                      <button nbButton nbStepperPrevious>prev</button>
-                      <button nbButton  nbStepperNext>next</button>
-                    </nb-step>
-
-                    <nb-step label="Fifth step">
-                      <h3>Discussion</h3>
-                      <p class="lorem">
-                        Communicate with your team in real-time. We have a built-in chat feature
-                        that allows you to communicate with your team members.
-                        The comments feature allows you to leave comments on the current ticket,
-                        ensuring you only see the comments that are relevant to the current planning poker topic.
-                      </p>
-                      <div style="align-items: center">
-                        <img src="assets/images/comm.PNG" alt="Description de l'image" class="responsive-image">
-                      </div>
-                      <br>
-
-                    </nb-step>
-                  </nb-stepper>
-                </nb-card-body>
+              <nb-card >
+                <br>
+                 <div  *ngFor="let step of steps">
+                   <i class="far fa-edit" style="color:dimgrey;" (click)=" openStep(step)"></i>
+                   <h6 style="position:relative">
+                     ⚡🚀{{step.title}}⚡🚀
+                   </h6>
+                   <p class="lorem">
+                      {{step.stepDescription}}
+                   </p>
+                 </div>
               </nb-card>
+              <br>
             </div>
-
           <button nbButton nbStepperPrevious>prev</button>
           <button nbButton nbStepperNext>next</button>
         </nb-step>

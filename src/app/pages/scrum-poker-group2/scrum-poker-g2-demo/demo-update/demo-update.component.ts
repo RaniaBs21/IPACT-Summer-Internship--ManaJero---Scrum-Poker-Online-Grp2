@@ -2,8 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DemoModel} from '../../Models/DemoModel';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NbDialogRef, NbDialogService} from '@nebular/theme';
-import {ShowcaseDialogComponent} from '../../../modal-overlays/dialog/showcase-dialog/showcase-dialog.component';
-import {TestModel} from '../../Models/Test.model';
 import {ApiService} from '../../services/api-service.service';
 @Component({
   selector: 'ngx-demo-update',
@@ -37,6 +35,9 @@ export class DemoUpdateComponent implements OnInit {
 }
 
   onDescriptionChange(demo: DemoModel): void {
+    this.demo = demo;
+  }
+  onIntroChange(demo: DemoModel): void {
     this.demo = demo;
   }
   dismiss() {

@@ -1,5 +1,6 @@
 export class DemoModel {
-   id: number;
+   id: string;
    title: string;
+   intro: string;
    description: string;
 }

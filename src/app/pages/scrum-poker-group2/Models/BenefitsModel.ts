@@ -1,5 +1,5 @@
 export class BenefitsModel {
-  id: number;
+  id: string;
   title: string;
   benefDescription: string;
 }

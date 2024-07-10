@@ -106,6 +106,7 @@ import {RouterLink} from '@angular/router';
 import { DemoUpdateComponent } from './demo-update/demo-update.component';
 import { BenifitsUpdateComponent } from './benifits-update/benifits-update.component';
 import { LimitsUpdateComponent } from './limits-update/limits-update.component';
+import { StepsUpdateComponent } from './steps-update/steps-update.component';
 
 @NgModule({
   imports: [
@@ -133,6 +134,7 @@ import { LimitsUpdateComponent } from './limits-update/limits-update.component';
     DemoUpdateComponent,
     BenifitsUpdateComponent,
     LimitsUpdateComponent,
+    StepsUpdateComponent,
   ],
   exports: [
   ],
