@@ -1,14 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DemoModel} from '../../Models/DemoModel';
+import {DemoModel} from '../../../Models/DemoModel';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
-import {ApiService} from '../../services/api-service.service';
-import {StepsModel} from '../../Models/stepsModel';
+import {ApiService} from '../../../services/api-service.service';
+import {StepsModel} from '../../../Models/stepsModel';
 @Component({
   selector: 'ngx-steps-update',
   templateUrl: './steps-update.component.html',
   styleUrls: ['./steps-update.component.scss']})
-export class StepsUpdateComponent implements OnInit {
+export class StepsUpdateComponent  {
   @Input() title: string;
   @Input() step: StepsModel;
 
@@ -18,15 +18,15 @@ export class StepsUpdateComponent implements OnInit {
     private toastrService: NbToastrService,
   ) {}
 
-  ngOnInit(): void {}
+
 
   confirmUpdate() {
     if (confirm('Êtes-vous sûr de vouloir mettre à jour ce step ?')) {
-      this.updateBenefit();
+      this.updateSteps();
     }
   }
 
-  updateBenefit() {
+  updateSteps() {
     this.apiService.updateStep(this.step.id, this.step).subscribe(
       (updateStep) => {
         this.toastrService.success('step mis à jour avec succès', 'Succès');

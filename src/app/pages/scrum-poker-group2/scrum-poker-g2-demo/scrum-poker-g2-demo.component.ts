@@ -14,7 +14,11 @@ import {LimitsUpdateComponent} from './limits-update/limits-update.component';
 import {BenifitsUpdateComponent} from './benifits-update/benifits-update.component';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {StepsModel} from '../Models/stepsModel';
-import {StepsUpdateComponent} from './steps-update/steps-update.component';
+import {StepsUpdateComponent} from './steps/steps-update/steps-update.component';
+import {StepCreateComponent} from './steps/step-create/step-create.component';
+import {DemoFormComponent} from './demo-form/demo-form.component';
+import {InfoModel} from '../Models/InfoModel';
+import {NewsUpdateComponent} from './news-update/news-update.component';
 
 interface CardSettings {
   title: string;
@@ -35,6 +39,8 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   benefits: BenefitsModel[] = [];
   limits: LimitsModel[] = [];
   demo: DemoModel;
+  infos: InfoModel[] = [];
+  info: InfoModel;
   steps: StepsModel[] = [];
   step: StepsModel;
   constructor(private apiService: ApiService, private dialogService: NbDialogService,
@@ -64,17 +70,51 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   openStep(step: StepsModel) {
     this.dialogService.open(StepsUpdateComponent, {
       context: {
+        title: 'Update Step',
+        step: { ...step },
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+  openInfoUpdate(info: InfoModel) {
+    this.dialogService.open(NewsUpdateComponent, {
+      context: {
         title: 'Update Benefit',
+        info: { ...info },
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+  createStep(step: StepsModel) {
+    this.dialogService.open(StepCreateComponent, {
+      context: {
+        title: 'Create Step',
         step: { ...step },
       },
     }).onClose.subscribe(() => this.loadData());
   }
 
+  createNews(infos: InfoModel) {
+    this.dialogService.open(DemoFormComponent, {
+      context: {
+        title: 'Create info',
+        infos: { ...infos },
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+
+
+  deleteStep() {
+    this.apiService.deleteStep(this.step.id).subscribe(() => {
+      this.ngOnInit();
+    });
+  }
   loadData() {
     this.apiService.getSteps().subscribe((steps: StepsModel[]) => {
       this.steps = steps;
     });
   }
+
+
   ngOnInit() {
     this.apiService.getDemo().subscribe((demos: DemoModel[]) => {
       this.demos = demos ;
@@ -87,6 +127,10 @@ export class ScrumPokerG2DemoComponent implements OnInit {
 
     this.apiService.getSteps().subscribe((steps: StepsModel[]) => {
             this.steps = steps ;
+
+    this.apiService.getNews().subscribe((infos: InfoModel[]) => {
+        this.infos = infos ;
+            });
           });
         });
       });

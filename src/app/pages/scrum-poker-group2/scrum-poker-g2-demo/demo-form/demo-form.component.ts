@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ApiService} from '../../services/api-service.service';
-import {DemoModel} from '../../Models/DemoModel';
 import {Router} from '@angular/router';
 import {FormGroup} from '@angular/forms';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
+import {InfoModel} from '../../Models/InfoModel';
 
 
 
@@ -14,16 +15,29 @@ import {FormGroup} from '@angular/forms';
 export class DemoFormComponent  {
 
   demoForm: FormGroup;
-  title = 'my-angular-app';
-  demo: DemoModel;
-  constructor(private apiService: ApiService, private route: Router) {}
+  @Input() title: string;
+  @Input() infos: InfoModel;
 
-  addDemo(): void {
-    this.apiService.addDemo(this.demo).subscribe(response => {
-       this.route.navigateByUrl('/agile/scrum-poker-group2');
-    }, error => {
-      console.error('Error adding demo');
-    });
+  constructor(protected ref: NbDialogRef<DemoFormComponent>,
+              private apiService: ApiService,
+              private toastrService: NbToastrService) {}
+
+
+  addNews(infos: InfoModel) {
+    this.apiService.addNews(infos).subscribe(
+      (addNews) => {
+        this.toastrService.success('Demo added succesfuly', 'Succès');
+        this.ref.close();
+      },
+      (error) => {
+        console.error('Error :', error);
+        this.toastrService.danger('Error', 'Erreur');
+      },
+    );
+  }
+
+  cancel() {
+    this.ref.close();
   }
 }
 

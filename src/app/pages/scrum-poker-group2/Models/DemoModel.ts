@@ -3,4 +3,5 @@ export class DemoModel {
    title: string;
    intro: string;
    description: string;
+   news: string;
 }

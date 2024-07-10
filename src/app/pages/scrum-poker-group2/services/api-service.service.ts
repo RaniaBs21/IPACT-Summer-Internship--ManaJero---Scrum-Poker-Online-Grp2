@@ -5,6 +5,7 @@ import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
 import {LimitsModel} from '../Models/LimitsModel';
 import {StepsModel} from '../Models/stepsModel';
+import {InfoModel} from '../Models/InfoModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -19,8 +20,14 @@ export class ApiService {
   readonly ENDPOINT_Demo_Create = '/adddemo' ;
   readonly ENDPOINT_Steps = '/getSteps' ;
   readonly ENDPOINT_Steps_by_Id = '/getSteps:' ;
-
+  readonly ENDPOINT_delete_step = '/deleteStep:' ;
   readonly ENDPOINT_Steps_update = '/updateStep/' ;
+  readonly ENDPOINT_Step_Create = '/addSteps' ;
+  readonly ENDPOINT_News_Create = '/addNews' ;
+  readonly ENDPOINT_News = '/getNews' ;
+  readonly ENDPOINT_News_update = '/updateNew/' ;
+
+
 
   constructor(private httpClient: HttpClient) { }
   // Demo services
@@ -48,12 +55,14 @@ export class ApiService {
     return this.httpClient.get<LimitsModel[]>(this.API_URL + this.ENDPOINT_Limits);
   }
 
-  updateLimits ( idL: string, limits: LimitsModel): Observable<LimitsModel> {
-    const url = `${this.API_URL}${this.ENDPOINT_Limits_update}${idL}`;
+  updateLimits ( id: string, limits: LimitsModel): Observable<LimitsModel> {
+    const url = `${this.API_URL}${this.ENDPOINT_Limits_update}${id}`;
     return this.httpClient.put<LimitsModel>( url, limits );
   }
 // steps services
-
+  addStep(step: StepsModel): Observable<StepsModel[]> {
+    return this.httpClient.post<StepsModel[]>(this.API_URL + this.ENDPOINT_Step_Create, step);
+  }
   getSteps(): Observable<StepsModel[]> {
     return this.httpClient.get<StepsModel[]>(this.API_URL + this.ENDPOINT_Steps);
   }
@@ -61,9 +70,20 @@ export class ApiService {
     const url = `${this.API_URL}${this.ENDPOINT_Steps_update}${id}`;
     return this.httpClient.put<StepsModel>( url, step );
   }
+  deleteStep(id: string): Observable<void> {
+    const url = `${this.API_URL}${this.ENDPOINT_delete_step}${id}`;
+    return this.httpClient.delete<void>(url);
+  }
 
-  getStepById(id: number): Observable<StepsModel[]> {
-    const url = `${this.API_URL}${this.ENDPOINT_Steps_by_Id}${id}`;
-    return this.httpClient.get<StepsModel[]>(url);
+  // News services
+  addNews(infos: InfoModel): Observable<InfoModel[]> {
+    return this.httpClient.post<InfoModel[]>(this.API_URL + this.ENDPOINT_News_Create, infos);
+  }
+  getNews(): Observable<InfoModel[]> {
+    return this.httpClient.get<InfoModel[]>(this.API_URL + this.ENDPOINT_News);
+  }
+  updateNews ( id: string, info: InfoModel): Observable<InfoModel> {
+    const url = `${this.API_URL}${this.ENDPOINT_News_update}${id}`;
+    return this.httpClient.put<InfoModel>( url, info );
   }
 }

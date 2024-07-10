@@ -11,7 +11,7 @@
   </div>
 
 <br>
-  <div class="col-sm-auto btn btn-outline-primary btn-rounded" [routerLink]="['/pages/agile/scrum-poker-group2/demoform']" style="float: right;">
+  <div class="col-sm-auto btn btn-outline-primary btn-rounded" (click)=" createNews(info) " style="float: right;">
 <nb-action>
   <span  style="color:darkblue;"> Add Information</span>
 </nb-action>
@@ -165,9 +165,16 @@
             </div>
             <div class="col-md-6">
               <div class="interface-container">
-
+                <i class="bi bi-plus-square-fill" (click)=" createStep(step)" style="float: right;"></i>
+                <div class="col-sm-auto btn btn-outline-primary btn-rounded" (click)=" createStep(step)" style="float: right;">
+                  <i class="bi bi-bookmark-plus-fill">+</i>
+                </div>
                 <ul class="instructions"  *ngFor="let s of steps">
-                  <li class="flex items-center gap-3 pb-7"><img src="assets/images/how.png" alt="Create Icon" style="color: orangered"><div class="quote"> {{s.title}}</div></li>
+                  <li class="flex items-center gap-3 pb-7"><img src="assets/images/how.png" alt="Create Icon" style="color: orangered">
+                    <div class="quote">
+                       {{s.title}}
+                    </div>
+                  </li>
                   </ul>
                 <button class="start-button">Join Game</button>
               </div>
@@ -181,6 +188,7 @@
                 <br>
                  <div  *ngFor="let step of steps">
                    <i class="far fa-edit" style="color:dimgrey;" (click)=" openStep(step)"></i>
+
                    <h6 style="position:relative">
                      ⚡🚀{{step.title}}⚡🚀
                    </h6>
@@ -206,9 +214,28 @@
 
 
   </nb-card>
-
-
 </div>
+
+<!--news -->
+<nb-card class="container"  *ngFor="let n of infos">
+  <br>
+  <div class="h6 p-md-4 " style="color:darkblue">{{n.title}}⚡🃏🚀</div>
+
+  <div >
+    <div class="row g-0  p-md-4 ">
+      <div >
+        <br>
+        <div>
+          <p style="font-size:16px; ">{{n.newsDescription}}
+            <i class="far fa-edit fa-lg mt-2" style="color: black; cursor: pointer;" (click)="openInfoUpdate(info)"></i>
+        </div>
+      </div>
+      <!--<div class="col-md-6  ">
+        <img src="assets/images/scrum.jpg" alt="Description de l'image" class="responsive-image">
+      </div>-->
+    </div>
+  </div>
+</nb-card>
 
 
 

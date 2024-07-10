@@ -106,7 +106,9 @@ import {RouterLink} from '@angular/router';
 import { DemoUpdateComponent } from './demo-update/demo-update.component';
 import { BenifitsUpdateComponent } from './benifits-update/benifits-update.component';
 import { LimitsUpdateComponent } from './limits-update/limits-update.component';
-import { StepsUpdateComponent } from './steps-update/steps-update.component';
+import { StepsUpdateComponent } from './steps/steps-update/steps-update.component';
+import { StepCreateComponent } from './steps/step-create/step-create.component';
+import { NewsUpdateComponent } from './news-update/news-update.component';
 
 @NgModule({
   imports: [
@@ -135,6 +137,8 @@ import { StepsUpdateComponent } from './steps-update/steps-update.component';
     BenifitsUpdateComponent,
     LimitsUpdateComponent,
     StepsUpdateComponent,
+    StepCreateComponent,
+    NewsUpdateComponent,
   ],
   exports: [
   ],

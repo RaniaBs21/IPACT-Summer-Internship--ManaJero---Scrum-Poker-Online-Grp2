@@ -1,28 +1,11 @@
-
-
-
-<div >
-  <div class="col-lg">
-    <nb-card>
-      <nb-card-header>Add New Information</nb-card-header>
-
-      <nb-card-body>
-        <h5>Title</h5>
-        <input type="text" nbInput fullWidth placeholder="Title" name="title" required>
-        <h5>Description</h5>
-        <textarea rows="5" nbInput fullWidth shape="round"  placeholder="Description"></textarea>
-      </nb-card-body>
-
-      <nb-card-footer>
-        <button nbButton hero status="primary" (click)="addDemo() " [routerLink]="['/pages/agile/scrum-poker-group2']">Create </button>
-      </nb-card-footer>
-
-    </nb-card>
-
-  </div>
-
-</div>
-
-
-
-
+<nb-card>
+  <nb-card-header>Update your step</nb-card-header>
+  <nb-card-body>
+    <input nbInput fullWidth placeholder="Title" [(ngModel)]="infos.title" />
+    <textarea rows="5" nbInput fullWidth shape="round" [(ngModel)]="infos.newsDescription"></textarea>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton hero status="primary" (click)="addNews(infos)">Add</button>
+    <button nbButton status="danger" class="cancel-button" (click)="cancel()">Cancel</button>
+  </nb-card-footer>
+</nb-card>
