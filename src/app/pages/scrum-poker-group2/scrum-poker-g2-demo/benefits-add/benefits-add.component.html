@@ -1,13 +1,13 @@
 <nb-card>
-  <nb-card-header>Ajouter un bénéfice</nb-card-header>
+  <nb-card-header style="font-weight: bold">Add benefit</nb-card-header>
   <nb-card-body>
     <form [formGroup]="addBenefitForm">
-      <input nbInput fullWidth placeholder="Title" formControlName="title" />
+      <input nbInput shape="round" fullWidth placeholder="Title" formControlName="title" style="margin-bottom: 8px" />
       <textarea rows="5" nbInput fullWidth shape="round" placeholder="Description" formControlName="benefDescription"></textarea>
     </form>
   </nb-card-body>
-  <nb-card-footer>
-    <button nbButton hero status="primary" (click)="confirmAdd()">Ajouter Bénéfice</button>
-    <button nbButton status="danger" class="cancel-button" (click)="cancel()">Annuler</button>
+  <nb-card-footer class="footer-buttons">
+    <button nbButton hero status="primary" (click)="confirmAdd()">Add Benefit</button>
+    <button nbButton status="danger" class="cancel-button" (click)="cancel()">Cancel</button>
   </nb-card-footer>
 </nb-card>
