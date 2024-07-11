@@ -9,8 +9,11 @@ import { DemoModel } from '../models/Demo.model';
 import { BenefitsModel } from '../models/Benefit.model';
 import { LimitsModel } from '../models/Limit.model';
 import { PokerService } from '../services/poker.service';
-import {BenefitsAddComponent} from './benefits-add/benefits-add.component';
-import {LimitssAddComponent} from './limitss-add/limitss-add.component';
+import { BenefitsAddComponent } from './benefits-add/benefits-add.component';
+import { LimitssAddComponent } from './limitss-add/limitss-add.component';
+import { DemoFormComponent } from './demo-form/demo-form.component';
+import { NewModel } from '../models/New.model';
+import { NewsUpdateComponent } from './news-update/news-update.component';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -21,6 +24,7 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   demos: DemoModel[] = [];
   benefits: BenefitsModel[] = [];
   limits: LimitsModel[] = [];
+  news: NewModel[] = [];
   firstForm: UntypedFormGroup;
   secondForm: UntypedFormGroup;
   thirdForm: UntypedFormGroup;
@@ -60,14 +64,10 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     this.apiService.getLimits().subscribe((limits: LimitsModel[]) => {
       this.limits = limits;
     });
-  }
 
-  openDemoUpdate() {
-    this.dialogService.open(DemoUpdateComponent, {
-      context: {
-        title: 'Update Demo',
-      },
-    }).onClose.subscribe(() => this.loadData());
+    this.apiService.getNews().subscribe((news: NewModel[]) => {
+      this.news = news;
+    });
   }
 
   openBenefitsUpdate(benefit: BenefitsModel) {
@@ -78,6 +78,7 @@ export class ScrumPokerG2DemoComponent implements OnInit {
       },
     }).onClose.subscribe(() => this.loadData());
   }
+
   openBenefitsAdd() {
     this.dialogService.open(BenefitsAddComponent, {
       context: {
@@ -86,20 +87,19 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     }).onClose.subscribe(() => this.loadData());
   }
 
-
   openLimitsAdd() {
     this.dialogService.open(LimitssAddComponent, {
       context: {
-        title: 'Add Limit ',
+        title: 'Add Limit',
       },
     }).onClose.subscribe(() => this.loadData());
   }
+
   openLimitsUpdate(limit: LimitsModel) {
     this.dialogService.open(LimitsUpdateComponent, {
       context: {
         title: 'Update Limits',
         limit: { ...limit },
-
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -112,52 +112,70 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     }).onClose.subscribe(() => this.loadData());
   }
 
-  onFirstSubmit() {
-    this.firstForm.markAsDirty();
-  }
-
-  onSecondSubmit() {
-    this.secondForm.markAsDirty();
-  }
-
-  onThirdSubmit() {
-    this.thirdForm.markAsDirty();
-  }
-
   deleteDemo(id: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette démo ?')) {
+    if (confirm('Are you sure you want to delete this demo?')) {
       this.apiService.deleteDemo(id).subscribe(
         () => {
           this.demos = this.demos.filter((d) => d.id !== id);
         },
         (error) => {
-          console.error('Erreur lors de la suppression de la démo :', error);
+          console.error('Error deleting the demo:', error);
         },
       );
     }
   }
 
   deleteBenefit(id: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce bénéfice ?')) {
+    if (confirm('Are you sure you want to delete this benefit?')) {
       this.apiService.deleteBenefit(id).subscribe(
         () => {
           this.benefits = this.benefits.filter((b) => b.id !== id);
         },
         (error) => {
-          console.error('Erreur lors de la suppression du bénéfice :', error);
+          console.error('Error deleting the benefit:', error);
         },
       );
     }
   }
 
   deleteLimit(id: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce limit ?')) {
+    if (confirm('Are you sure you want to delete this limit?')) {
       this.apiService.deleteLimit(id).subscribe(
         () => {
           this.limits = this.limits.filter((b) => b.id !== id);
         },
         (error) => {
-          console.error('Erreur lors de la suppression du limit :', error);
+          console.error('Error deleting the limit:', error);
+        },
+      );
+    }
+  }
+
+  openNewsAdd() {
+    this.dialogService.open(DemoFormComponent, {
+      context: {
+        title: 'Add Information',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  openNewsUpdate(news: NewModel) {
+    this.dialogService.open(NewsUpdateComponent, {
+      context: {
+        title: 'Update Information',
+        news: { ...news },
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  deleteNew(id: string) {
+    if (confirm('Are you sure you want to delete this information?')) {
+      this.apiService.deleteNew(id).subscribe(
+        () => {
+          this.news = this.news.filter((b) => b.id !== id);
+        },
+        (error) => {
+          console.error('Error deleting the information:', error);
         },
       );
     }

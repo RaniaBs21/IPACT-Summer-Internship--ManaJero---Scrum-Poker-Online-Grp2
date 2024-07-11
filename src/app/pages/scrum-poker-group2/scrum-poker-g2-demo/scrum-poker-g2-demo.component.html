@@ -102,7 +102,7 @@
   <div>
     <div class="h2" style="color:#e75413;">Welcome to Poker Planning Scrum !⚡🃏🚀</div>
   </div>
-
+<button class="join-button" (click)="openNewsAdd()">Add Information</button>
   <br>
   <br>
   <br>
@@ -273,6 +273,28 @@
 <div class="col-md-12 mb-md-0 p-md-4 ">
   <ngx-security-cameras></ngx-security-cameras>
 </div>
-
 </body>
+<br>
+<br>
+<!--news -->
+<nb-card class="container" *ngFor="let n of news">
+  <div class="card-header">
+    <div class="title">
+      {{n.title}}⚡🃏🚀
+    </div>
+    <div class="icons">
+      <i class="far fa-edit fa-lg" style="color: black; cursor: pointer;" (click)="openNewsUpdate(n)"></i>
+      <i class="fas fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteNew(n.id)"></i>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="row g-0 p-md-4">
+      <div>
+        <p style="font-size: 16px;">{{n.newsDescription}}</p>
+      </div>
+    </div>
+  </div>
+</nb-card>
+
+
 </html>

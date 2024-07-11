@@ -20,7 +20,7 @@ export class BenefitsUpdateComponent {
 
 
   confirmUpdate() {
-    if (confirm('Êtes-vous sûr de vouloir mettre à jour ce bénéfice ?')) {
+    if (confirm('Are you sure you want to update this benefit?')) {
       this.updateBenefit();
     }
   }
@@ -28,12 +28,12 @@ export class BenefitsUpdateComponent {
   updateBenefit() {
     this.apiService.updateBenifits(this.benefit.id, this.benefit).subscribe(
       () => {
-        this.toastrService.success('Bénéfice mis à jour avec succès', 'Succès');
+        this.toastrService.success('Benefit updated successfully', 'Success');
         this.ref.close();
       },
       (error) => {
-        console.error('Erreur lors de la mise à jour du bénéfice :', error);
-        this.toastrService.danger('Échec de la mise à jour du bénéfice', 'Erreur');
+        console.error('Error updating the benefit:', error);
+        this.toastrService.danger('Failed to update the benefit', 'Error');
       },
     );
   }

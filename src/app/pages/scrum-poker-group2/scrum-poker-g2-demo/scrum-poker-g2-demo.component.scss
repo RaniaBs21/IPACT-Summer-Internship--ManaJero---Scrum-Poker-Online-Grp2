@@ -236,5 +236,22 @@
     color: #444;
     font-family: 'Courier New', Courier, monospace;
   }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem; /* Adjust the padding as needed */
+  }
+
+  .title {
+    color: darkblue;
+    font-size: 1.25rem; /* Adjust the font size as needed */
+    font-weight: bold;
+  }
+
+  .icons {
+    display: flex;
+    gap: 1rem;
+  }
 
 }

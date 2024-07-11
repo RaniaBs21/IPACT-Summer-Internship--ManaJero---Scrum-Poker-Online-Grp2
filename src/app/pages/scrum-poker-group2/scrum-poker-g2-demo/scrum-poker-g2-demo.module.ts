@@ -37,6 +37,7 @@ import { LimitsUpdateComponent } from './limits-update/limits-update.component';
 import { BenefitsAddComponent } from './benefits-add/benefits-add.component';
 import { LimitssAddComponent } from './limitss-add/limitss-add.component';
 import {DemoFormComponent} from './demo-form/demo-form.component';
+import { NewsUpdateComponent } from './news-update/news-update.component';
 
 @NgModule({
   imports: [
@@ -81,6 +82,7 @@ import {DemoFormComponent} from './demo-form/demo-form.component';
     LimitsUpdateComponent,
     BenefitsAddComponent,
     LimitssAddComponent,
+    NewsUpdateComponent,
   ],
   exports: [
     StatusCardComponent,

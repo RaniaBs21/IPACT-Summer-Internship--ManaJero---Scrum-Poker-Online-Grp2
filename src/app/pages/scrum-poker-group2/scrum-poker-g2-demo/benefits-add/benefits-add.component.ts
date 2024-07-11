@@ -29,11 +29,11 @@ export class BenefitsAddComponent implements OnInit {
 
   confirmAdd() {
     if (this.addBenefitForm.valid) {
-      if (confirm('Êtes-vous sûr de vouloir ajouter ce bénéfice ?')) {
+      if (confirm('Are you sure you want to add this benefit?')) {
         this.addBenefit();
       }
     } else {
-      this.toastrService.danger('Veuillez remplir tous les champs', 'Erreur');
+      this.toastrService.danger('Please fill in all fields', 'Error');
     }
   }
 
@@ -41,12 +41,12 @@ export class BenefitsAddComponent implements OnInit {
     const newBenefit: BenefitsModel = this.addBenefitForm.value;
     this.apiService.addBenefit(newBenefit).subscribe(
       (benefit) => {
-        this.toastrService.success('Bénéfice ajouté avec succès', 'Succès');
+        this.toastrService.success('Benefit added successfully', 'Success');
         this.ref.close(benefit);
       },
       (error) => {
-        console.error('Erreur lors de l\'ajout du bénéfice :', error);
-        this.toastrService.danger('Échec de l\'ajout du bénéfice', 'Erreur');
+        console.error('Error adding the benefit:', error);
+        this.toastrService.danger('Failed to add the benefit', 'Error');
       },
     );
   }

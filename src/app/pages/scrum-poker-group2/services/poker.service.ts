@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {DemoModel} from '../models/Demo.model';
 import {BenefitsModel} from '../models/Benefit.model';
 import {LimitsModel} from '../models/Limit.model';
+import {NewModel} from '../models/New.model';
 
 @Injectable({
   providedIn: 'root'})
@@ -13,9 +14,12 @@ export class PokerService {
   readonly ENDPOINT_DEMO = '/getDemo' ;
   readonly ENDPOINT_Benefits = '/getBenefits' ;
   readonly ENDPOINT_Limits = '/getLimits' ;
+  readonly ENDPOINT_News = '/getNews' ;
   readonly ENDPOINT_Demo_update = '/updateDemo/' ;
   readonly ENDPOINT_Benefits_update = '/updateBenefit/' ;
   readonly ENDPOINT_Limits_update = '/updateLimit/' ;
+  readonly ENDPOINT_News_update = '/updateNew/' ;
+
 
   constructor(private httpClient: HttpClient) { }
 
@@ -59,4 +63,18 @@ export class PokerService {
   deleteLimit(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.API_URL}/deletelimit/${id}`);
   }
+  getNews(): Observable<NewModel[]> {
+    return this.httpClient.get<NewModel[]>(this.API_URL + this.ENDPOINT_News);
+  }
+  addNew(news: NewModel): Observable<NewModel> {
+    return this.httpClient.post<NewModel>(`${this.API_URL}/addNews`, news);
+  }
+  updateNews ( id: string, news: NewModel): Observable<NewModel> {
+    const url = `${this.API_URL}${this.ENDPOINT_News_update}${id}`;
+    return this.httpClient.put<NewModel>( url, news );
+  }
+  deleteNew(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.API_URL}/deleteNews/${id}`);
+  }
+
 }

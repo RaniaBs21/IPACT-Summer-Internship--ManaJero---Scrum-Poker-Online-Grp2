@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NbDialogRef, NbToastrService} from '@nebular/theme';
-import {PokerService} from '../../services/poker.service';
-import {BenefitsModel} from '../../models/Benefit.model';
-import {LimitsModel} from '../../models/Limit.model';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NbDialogRef, NbToastrService } from '@nebular/theme';
+import { PokerService } from '../../services/poker.service';
+import { LimitsModel } from '../../models/Limit.model';
 
 @Component({
   selector: 'ngx-limitss-add',
@@ -30,24 +29,24 @@ export class LimitssAddComponent implements OnInit {
 
   confirmAdd() {
     if (this.addLimitForm.valid) {
-      if (confirm('Êtes-vous sûr de vouloir ajouter ce bénéfice ?')) {
+      if (confirm('Are you sure you want to add this limit?')) {
         this.addLimit();
       }
     } else {
-      this.toastrService.danger('Veuillez remplir tous les champs', 'Erreur');
+      this.toastrService.danger('Please fill in all fields', 'Error');
     }
   }
 
   addLimit() {
     const newLimit: LimitsModel = this.addLimitForm.value;
     this.apiService.addLimit(newLimit).subscribe(
-      (benefit) => {
-        this.toastrService.success('Bénéfice ajouté avec succès', 'Succès');
-        this.ref.close(benefit);
+      (limit) => {
+        this.toastrService.success('Limit added successfully', 'Success');
+        this.ref.close(limit);
       },
       (error) => {
-        console.error('Erreur lors de l\'ajout du bénéfice :', error);
-        this.toastrService.danger('Échec de l\'ajout du bénéfice', 'Erreur');
+        console.error('Error adding the limit:', error);
+        this.toastrService.danger('Failed to add the limit', 'Error');
       },
     );
   }

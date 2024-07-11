@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {NbDialogRef, NbToastrService} from '@nebular/theme';
-import {PokerService} from '../../services/poker.service';
-import {LimitsModel} from '../../models/Limit.model';
+import { Component, Input } from '@angular/core';
+import { NbDialogRef, NbToastrService } from '@nebular/theme';
+import { PokerService } from '../../services/poker.service';
+import { LimitsModel } from '../../models/Limit.model';
 
 @Component({
   selector: 'ngx-limits-update',
@@ -18,9 +18,8 @@ export class LimitsUpdateComponent {
     private toastrService: NbToastrService,
   ) {}
 
-
   confirmUpdate() {
-    if (confirm('Êtes-vous sûr de vouloir mettre à jour ce limit ?')) {
+    if (confirm('Are you sure you want to update this limit?')) {
       this.updateLimit();
     }
   }
@@ -28,12 +27,12 @@ export class LimitsUpdateComponent {
   updateLimit() {
     this.apiService.updateLimits(this.limit.id, this.limit).subscribe(
       () => {
-        this.toastrService.success('Limit mis à jour avec succès', 'Succès');
+        this.toastrService.success('Limit updated successfully', 'Success');
         this.ref.close();
       },
       (error) => {
-        console.error('Erreur lors de la mise à jour du bénéfice :', error);
-        this.toastrService.danger('Échec de la mise à jour du bénéfice', 'Erreur');
+        console.error('Error updating the limit:', error);
+        this.toastrService.danger('Failed to update the limit', 'Error');
       },
     );
   }
