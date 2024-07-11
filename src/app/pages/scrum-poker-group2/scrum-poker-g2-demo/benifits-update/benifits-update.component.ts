@@ -19,13 +19,14 @@ export class BenifitsUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.apiService.getBenefits().subscribe((benefits: BenefitsModel[]) => {
-      this.benefits = benefits ;
+      this.benefits = benefits;
     });
   }
 
   @Input() title: string;
+
   updateBenefits() {
-    this.apiService.updateBenifits(this.benefit.idB, this.benefit).subscribe(updatebenefit => {
+    this.apiService.updateBenifits(this.benefit.id, this.benefit).subscribe(updatebenefit => {
       this.router.navigate(['/pages/agile/scrum-poker-group2']);
     }, error => {
       console.error('Error updating project:', error);
@@ -35,8 +36,8 @@ export class BenifitsUpdateComponent implements OnInit {
   onDescriptionChange(benefit: BenefitsModel): void {
     this.benefit = benefit;
   }
+
   dismiss() {
     this.ref.close();
   }
-
 }

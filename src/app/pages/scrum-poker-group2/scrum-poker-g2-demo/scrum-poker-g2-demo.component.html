@@ -1,410 +1,253 @@
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
+<div >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        .flip-card {
-            background-color: transparent;
-            width: 200px;
-            height: 200px;
-            perspective: 1000px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
+  <!--  Level UP Your Agile Game with-->
+  <div class="header" style="text-align:center">
+    <span class="lightning">⚡</span>
+    <span class="title">Level <span class="highlight">UP</span> Your Agile Game with &nbsp;</span>
+    <span class="title"> Scrum Poker Planning</span>
+    <span class="lightning">⚡</span>
 
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        }
+  </div>
 
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flip-card-front,
-        .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-        .flip-card-front1,
-        .flip-card-back1 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-
-        .flip-card-front {
-            background-color: #edede9;
-            color: black;
-        }
-
-        .flip-card-back {
-            background-color: #cecece;
-            color: white;
-            transform: rotateY(180deg);
-        }
-        .flip-card-front1 {
-            background-color: rgba(185, 165, 206, 0.75);
-            color: black;
-        }
-
-        .flip-card-back1 {
-            background-color: #cbcbcb;
-            color: white;
-            transform: rotateY(180deg);
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <div class="header">
-        <span class="lightning">⚡</span>
-        <span class="title">Level <span class="highlight">UP</span> Your Agile Game with</span>
-        <span class="lightning">⚡</span>
-    </div>
-    <h1>Scrum Poker Planning</h1>
-    <div class="quote">
-        <p>"Fantastically Intuitive way to estimate Sprint tasks"</p>
-    </div>
-    <button class="start-button">Start New Game <span class="arrow">→</span></button>
-
-    <div class="separator">- OR -</div>
-    <div>
-        <div class="join-game">
-            <input type="text" placeholder="Room name" class="room-input">
-        </div>
-    </div>
-    <div>
-        <button class="join-button">Join Game</button>
-    </div>
+  <br>
+  <div class="col-sm-auto btn btn-outline-primary btn-rounded" (click)=" createNews(info) " style="float: right;">
+    <nb-action>
+      <span  style="color:darkblue;"> Add Information</span>
+    </nb-action>
+  </div>
 </div>
-<div class="container">
-    <div>
-        <p class="separator">------------------------------------------------------</p>
-    </div>
-    <div>
-        <div class="h2" style="color:#e75413;">Welcome to Poker Planning Scrum !⚡🃏🚀</div>
-    </div>
+<br>
+<br>
+<br>
 
-    <br>
-    <br>
-    <br>
-    <div class="row g-0 bg-light position-relative">
-        <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
-            <br>
-            <!-- <div  *ngFor="let d of demos">-->
-            <div>
-            <p style="font-size:16px; color:#555;">Jazz up your project planning with our free online Planning Poker tool! No fuss, just straightforward team estimation. Add some fun to your process – try it now! 😃😉
-                  <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i>
-                </div>
 
+<!--introduction-->
+<nb-card >
+  <br>
+  <div class="h6 p-md-4 " style="color:darkblue">Discover Planning Poker Agile ?⚡🃏🚀</div>
+  <div >
+    <div class="row g-0  p-md-4 ">
+      <div class="col-md-6  ">
+        <br>
+        <div *ngFor="let d of demos" >
+          <p style="font-size:16px; ">{{d.intro}}
+            <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i>
         </div>
-
-        <div class="col-md-6 mb-md-0 p-md-4 ">
-            <img src="assets/images/new.jpg" alt="Description de l'image"
-                 class="responsive-image">
-        </div>
-
+      </div>
+      <div class="col-md-6  ">
+        <img src="assets/images/scrum.jpg" alt="Description de l'image" class="responsive-image">
+      </div>
     </div>
-
-</div>
-
-<div class="container">
-<nb-card class="col-md-20 col-lg-20 col-xxxl-20">
-    <nb-card-body>
-        <nb-stepper orientation="horizontal">
-            <nb-step [label]="labelOne">
-                <ng-template #labelOne>
-                   Why?⚡
-                </ng-template>
-                <div class="h6" style="color:darkblue;">Why Scrum Planning Poker?⚡🚀</div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-6 mb-4">
-                            <div class="feature-card">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <div class="flip-card-front text-center">
-                                            <h5 class="discover-title">Feedback Driven</h5>
-                                            <img src="assets/images/satisfaction.png" class="img-fluid" width="80" height="80">
-                                        </div>
-                                        <div class="flip-card-back text-center">
-                                            <p class="quote">Feedback-driven development, with regular updates and new features based on user suggestions and requests, ensuring a platform that meets the needs of Agile teams.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 mb-4">
-                            <div class="feature-card">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <div class="flip-card-front text-center">
-                                            <h5 class="discover-title">Real-time Collaboration</h5>
-                                            <img src="assets/images/collaboration.png" class="img-fluid" width="80" height="80">
-                                        </div>
-                                        <div class="flip-card-back text-center">
-                                            <p class="quote">Scrum Jam enables real-time collaboration among team members, allowing them to estimate tasks together simultaneously, fostering better communication and collective decision-making.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 mb-4">
-                            <div class="feature-card">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <div class="flip-card-front text-center">
-                                            <h5 class="discover-title"> Simple Approach</h5>
-                                            <img src="assets/images/simple.png" class="img-fluid" width="80" height="80">
-                                        </div>
-                                        <div class="flip-card-back text-center">
-                                            <p class="quote">Fast and straightforward estimation process, allowing Agile teams to quickly and efficiently estimate tasks without unnecessary complexities.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 mb-4">
-                            <div class="feature-card">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <div class="flip-card-front text-center">
-                                            <h5 class="discover-title">Open Discussion</h5>
-                                            <img src="assets/images/discussion.png" class="img-fluid" width="80" height="80">
-                                        </div>
-                                        <div class="flip-card-back text-center">
-                                            <p class="quote">Encourages open discussion and debate among team members, leading to a better understanding of the task at hand.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 mb-4">
-                            <div class="feature-card">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <div class="flip-card-front text-center">
-                                            <h5 class="discover-title">Transparent Estimation </h5>
-                                            <img src="assets/images/vote.png" class="img-fluid" width="80" height="80">
-                                        </div>
-                                        <div class="flip-card-back text-center">
-                                            <p class="quote">The estimation process is transparent, with everyone’s estimates visible and discussed.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 mb-4">
-                            <div class="feature-card">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <div class="flip-card-front text-center">
-                                            <h5 class="discover-title">Adaptability Flexibility</h5>
-                                            <img src="assets/images/scalable.png" class="img-fluid" width="80" height="80">
-                                        </div>
-                                        <div class="flip-card-back text-center">
-                                            <p class="quote">It accommodates changes in project requirements and allows teams to adjust estimates based on new information or evolving project conditions.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="h6" style="color:darkblue;">Limits of Planning Poker?⚡🚀</div>
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 mb-4">
-                        <div class="feature-card">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <div class="flip-card-front1 text-center">
-                                        <h5 class="discover-title">Complex Projects</h5>
-                                        <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                                    </div>
-                                    <div class="flip-card-back1 text-center">
-                                        <p class="quote">In highly complex projects, breaking down stories into small enough units for effective estimation can be difficult.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                        <div class="feature-card">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <div class="flip-card-front1 text-center">
-                                        <h5 class="discover-title">False Precision</h5>
-                                        <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                                    </div>
-                                    <div class="flip-card-back1 text-center">
-                                        <p class="quote">Teams might place too much trust in the estimates, forgetting that they are still just educated guesses.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                        <div class="feature-card">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <div class="flip-card-front1 text-center">
-                                        <h5 class="discover-title">Groupthink</h5>
-                                        <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                                    </div>
-                                    <div class="flip-card-back1 text-center">
-                                        <p class="quote">There is a risk of groupthink, where the desire for harmony or conformity results in irrational decision-making.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                        <div class="feature-card">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <div class="flip-card-front1 text-center">
-                                        <h5 class="discover-title">Routine Tasks</h5>
-                                        <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                                    </div>
-                                    <div class="flip-card-back1 text-center">
-                                        <p class="quote">For highly repetitive or routine tasks, the overhead of Planning Poker might not be justified.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                        <div class="feature-card">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <div class="flip-card-front1 text-center">
-                                        <h5 class="discover-title">Facilitator Role</h5>
-                                        <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                                    </div>
-                                    <div class="flip-card-back1 text-center">
-                                        <p class="quote">A skilled facilitator is often needed to keep the session on track and ensure productive discussions.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                        <div class="feature-card">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <div class="flip-card-front1 text-center">
-                                        <h5 class="discover-title">Inefficiency</h5>
-                                        <img src="assets/images/limited.png" class="img-fluid" width="90" height="90">
-                                    </div>
-                                    <div class="flip-card-back1 text-center">
-                                        <p class="quote">In cases where team members are not familiar with the stories or tasks, the estimation process can take even longer.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button nbButton disabled nbStepperNext>prev</button>
-                <button nbButton nbStepperNext>next</button>
-            </nb-step>
-            <nb-step [label]="labelTwo">
-                <ng-template #labelTwo>what?⚡</ng-template>
-                <div class="h6" style="color:darkblue;">Discover what is Planning Poker Agile ?⚡🃏🚀</div>
-                    <!-- <div  *ngFor="let d of demos">-->
-                    <div>
-                        <div class="quote">Planning Poker, also known as Scrum Poker, is a consensus-based technique used in
-                            Agile project management, particularly in Scrum, for estimating the effort or relative size of
-                            development goals.
-                            <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i></div>
-                    </div>
-<div>
-                    <img src="assets/images/3df7dcab115c9da253a920d6cc2f92b6.jpg" alt="Description de l'image"
-                         class="responsive-image">
-</div>
-                <button nbButton nbStepperPrevious>prev</button>
-                <button nbButton nbStepperNext>next</button>
-
-
-            </nb-step>
-
-            <nb-step [label]="labelThree">
-            <ng-template #labelThree>How?⚡</ng-template>
-
-
-                <br>
-                <div class="h6" style="color:darkblue;">Discover what are the steps of Planning Poker Agile?⚡🚀</div>
-                <div class="row g-0 bg-light position-relative">
-                    <div class="col-md-6">
-                        <video autoplay="" loop="" height="440" width="100%">
-                            <source src="/assets/videos/20240706-1104-39.2886108.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="interface-container">
-                            <h6>HOW IT WORKS</h6>
-                            <ul class="instructions">
-                                <li class="flex items-center gap-3 pb-7"><img src="assets/images/languette.png" alt="Create Icon"><span class="quote">⚡ Create an instant room ⚡</span></li>
-                                <li class="flex items-center gap-4 pb-7"><img src="assets/images/invite.png" alt="Invite Icon"><span class="quote">⚡ Invite your team members ⚡</span></li>
-                                <li class="flex items-center gap-4 pb-7"><img src="assets/images/vote-en-ligne.png" alt="Vote Icon"><span class="quote">⚡ Vote on task complexity ⚡</span></li>
-                                <li class="flex items-center gap-4 pb-7"><img src="assets/images/vendeur.png" alt="Negotiate Icon"><span class="quote">⚡ Discussion ⚡</span></li>
-                            </ul>
-                            <button class="start-button">Join Game</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-0 bg-light position-relative mt-3">
-                    <div class="col-md-12">
-                        <video autoplay="" loop="" width="100%" height="800">
-                            <source src="/assets/videos/roomvd.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                </div>
-
-                <button nbButton nbStepperPrevious>prev</button>
-                <button nbButton nbStepperNext>next</button>
-            </nb-step>
-
-            <nb-step [label]="labelFour">
-                <ng-template #labelFour>What If ?⚡</ng-template>
-                <h3>Step content #4</h3>
-                <button nbButton nbStepperPrevious>prev</button>
-                <button nbButton disabled nbStepperNext>next</button>
-            </nb-step>
-        </nb-stepper>
-    </nb-card-body>
+  </div>
 </nb-card>
+
+
+<!--stepper-->
+<div style="text-align:center"  >
+  <nb-card class="col-md-20 col-lg-20 col-xxxl-20">
+    <nb-card-body>
+      <nb-stepper orientation="horizontal" >
+        <!--        what  step-->
+        <nb-step [label]="labelOne">
+          <ng-template #labelOne>what?</ng-template>
+          <div class="h6" style="color:dimgrey">Discover what is Planning Poker Agile ?⚡🃏🚀</div>
+
+
+          <div >
+            <div class="row g-0  position-relative">
+              <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
+                <br>
+                <div *ngFor="let d of demos" >
+                  <p style="font-size:16px; ">{{d.description}}
+                    <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i>
+                </div>
+              </div>
+              <div class="col-md-6 mb-md-0 p-md-4 ">
+                <img src="assets/images/new.jpg" alt="Description de l'image" class="responsive-image">
+              </div>
+            </div>
+          </div>
+
+          <br>
+          <button nbButton nbStepperPrevious>prev</button>
+          <button nbButton nbStepperNext>next</button>
+
+
+        </nb-step>
+
+
+        <!--        HHHHHOOOOOOOOOOOOOOOOOOOOOOOWWWWWWWWW step-->
+        <nb-step [label]="labelThree">
+          <ng-template #labelThree>How?</ng-template>
+
+
+
+          <div class="h6" style="color:dimgrey;">How it works ?⚡🚀</div>
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <div class="row g-0 bg-light position-relative">
+            <div class="container">
+              <button class="join-button"(click)="openDiagramAdd()" >Add somthing new</button>
+            </div>
+              <!-- Image Container -->
+              <div class="container">
+            <div class="col-md-14 mx-auto">
+                <img src="assets/images/planning.PNG" alt="Description de l'image" class="responsive-image">
+              </div>
+              <br>
+              <br>
+              <br>
+              <br>
+              <div class="gif-container">
+                <img src="assets/images/try-me.gif" alt="Arrow GIF" class="arrow-gif"> <!-- GIF Arrow -->
+              </div>
+            <br>
+            <br>
+            </div>
+            <br>
+            <br>
+            <div class="container">
+              <div class="row">
+                <!-- First Step -->
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <img src="assets/images/image1.png" alt="Join the session">
+                      <h3>Join the session</h3>
+                      <p>The team members gather to participate in a planning poker session. This is typically done during a sprint planning meeting where all relevant team members are present.</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Second Step -->
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <img src="assets/images/image2.png" alt="Discussing the User Story">
+                      <h3>Discussing the User Story</h3>
+                      <p>The product owner or a team member explains the user story to ensure everyone understands the requirements and scope of the task. This helps in having a common understanding of what needs to be estimated.</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Third Step -->
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <img src="assets/images/image3.png" alt="Secret Selection of Cards">
+                      <h3>Secret Selection of Cards</h3>
+                      <p>Each team member privately selects a card that represents their estimate for the user story. The card values typically follow a Fibonacci sequence or similar scale to represent the effort or complexity.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <!-- Fourth Step -->
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <img src="assets/images/image4.png" alt="Displaying All the Cards at Once">
+                      <h3>Displaying All the Cards at Once</h3>
+                      <p>After everyone has made their selection, all cards are revealed simultaneously. This ensures that individual estimates are not influenced by others.</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fifth Step -->
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <img src="assets/images/image5.png" alt="Discuss Highest and Lowest Estimates">
+                      <h3>Discuss Highest and Lowest Estimates</h3>
+                      <p>The team discusses the highest and lowest estimates to understand the reasoning behind these selections. This step is crucial for uncovering different perspectives and potential misunderstandings.</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Sixth Step -->
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <img src="assets/images/image7.png" alt="Consensus?">
+                      <h3>Consensus?</h3>
+                      <p>The team evaluates whether there is a consensus on the estimate. If there is a consensus, the estimate is finalized. If not, further discussion is needed.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <!-- The End -->
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <img src="assets/images/image6.png" alt="Success">
+                      <h3>Success</h3>
+                      <p>If consensus is reached, the estimation process for the user story is completed successfully, and the team can move on to the next user story.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+          </div>
+          <br>
+          <div>
+            <nb-card >
+              <br>
+              <div *ngFor="let diagram of diagrams">
+                <i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDiagram(diagram.id)"></i>
+                <i class="far fa-edit" style="color:dimgrey;" (click)=" openDiagram(diagram)"></i>
+                <div class="card">
+                  <div class="card-body">
+                    <img src="assets/images/image6.png" alt="Success">
+                    <h3>{{diagram.stptitle}}</h3>
+                    <p>{{diagram.stpDescription}}</p>
+                  </div>
+                </div>
+              </div>
+            </nb-card>
+            <br>
+          </div>
+          <button nbButton nbStepperPrevious>prev</button>
+          <button nbButton nbStepperNext>next</button>
+        </nb-step>
+        <!--        what if step-->
+        <nb-step [label]="labelFour">
+          <ng-template #labelFour>What If ?</ng-template>
+          <h3>Step content #4</h3>
+          <button nbButton nbStepperPrevious>prev</button>
+          <button nbButton disabled nbStepperNext>next</button>
+        </nb-step>
+      </nb-stepper>
+    </nb-card-body>
+
+
+  </nb-card>
 </div>
-<div class="container">
-    <div class="h6" style="color:darkblue;">Voting cards sequences⚡🚀
+
+<!--news -->
+<nb-card class="container"  *ngFor="let n of infos">
+  <br>
+  <div class="h6 p-md-4 " style="color:darkblue">{{n.title}}⚡🃏🚀</div>
+
+  <div >
+    <div class="row g-0  p-md-4 ">
+      <div >
+        <br>
+        <div>
+          <p style="font-size:16px; ">{{n.newsDescription}}
+            <i class="far fa-edit fa-lg mt-2" style="color: black; cursor: pointer;" (click)="openInfoUpdate(info)"></i>
+        </div>
+      </div>
+      <!--<div class="col-md-6  ">
+        <img src="assets/images/scrum.jpg" alt="Description de l'image" class="responsive-image">
+      </div>-->
     </div>
-</div>
+  </div>
+</nb-card>
 
-<div class="col-md-12 mb-md-0 p-md-4 ">
-    <ngx-security-cameras></ngx-security-cameras>
-</div>
 
-</body>
-</html>
 

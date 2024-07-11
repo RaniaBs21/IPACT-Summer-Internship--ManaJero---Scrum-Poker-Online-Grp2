@@ -1,8 +1,7 @@
 export class DemoModel {
-   id: number;
+   id: string;
    title: string;
+   intro: string;
    description: string;
-   benefits: string;
-   limits: string;
-   image: string;
+   news: string;
 }

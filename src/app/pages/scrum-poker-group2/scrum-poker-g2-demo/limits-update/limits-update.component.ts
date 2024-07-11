@@ -27,7 +27,7 @@ export class LimitsUpdateComponent implements OnInit {
 
   @Input() title: string;
   updateLimits() {
-    this.apiService.updateLimits(this.limit.idL, this.limit).subscribe(updatelimit => {
+    this.apiService.updateLimits(this.limit.id, this.limit).subscribe(updatelimit => {
       this.router.navigate(['/pages/agile/scrum-poker-group2']);
     }, error => {
       console.error('Error updating project:', error);

@@ -1,6 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {TestModel} from '../../Models/Test.model';
+import {Component, Input} from '@angular/core';
 import {ApiService} from '../../services/api-service.service';
+import {Router} from '@angular/router';
+import {FormGroup} from '@angular/forms';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
+import {InfoModel} from '../../Models/InfoModel';
 
 
 
@@ -9,24 +12,33 @@ import {ApiService} from '../../services/api-service.service';
   templateUrl: './demo-form.component.html',
   styleUrls: ['./demo-form.component.scss']})
 
-export class DemoFormComponent implements OnInit {
+export class DemoFormComponent  {
+
+  demoForm: FormGroup;
+  @Input() title: string;
+  @Input() infos: InfoModel;
+
+  constructor(protected ref: NbDialogRef<DemoFormComponent>,
+              private apiService: ApiService,
+              private toastrService: NbToastrService) {}
 
 
-  title = 'my-angular-app';
-  tests: TestModel[] = [];
-
-  constructor(private apiService: ApiService) {}
-
-  ngOnInit() {
-    this.apiService.getTest().subscribe((tests: TestModel[]) => {
-      this.tests = tests ;
-    });
+  addNews(infos: InfoModel) {
+    this.apiService.addNews(infos).subscribe(
+      (addNews) => {
+        this.toastrService.success('Demo added succesfuly', 'Succès');
+        this.ref.close();
+      },
+      (error) => {
+        console.error('Error :', error);
+        this.toastrService.danger('Error', 'Erreur');
+      },
+    );
   }
 
-
-  starRate = 2;
-  heartRate = 4;
-  radioGroupValue = 'This is value 2';
+  cancel() {
+    this.ref.close();
+  }
 }
 
 

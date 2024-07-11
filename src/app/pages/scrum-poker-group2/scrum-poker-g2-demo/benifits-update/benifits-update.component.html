@@ -1,10 +1,9 @@
 <nb-card>
-    <nb-card-header>Update you description</nb-card-header>
-    <nb-card-body *ngFor="let test of benefits" >
-        <textarea rows="5" nbInput fullWidth shape="round"  [(ngModel)]="test.benefDescription" (ngModelChange)="onDescriptionChange(test)"></textarea>
-    </nb-card-body>
-    <nb-card-footer>
-        <button nbButton hero status="primary" (click)="updateBenefits()">update description</button>
-    </nb-card-footer>
+  <nb-card-header>Update you description</nb-card-header>
+  <nb-card-body *ngFor="let test of benefits" >
+    <textarea rows="5" nbInput fullWidth shape="round"  [(ngModel)]="test.benefDescription" (ngModelChange)="onDescriptionChange(test)"></textarea>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton hero status="primary" (click)="updateBenefits()">update description</button>
+  </nb-card-footer>
 </nb-card>
-
