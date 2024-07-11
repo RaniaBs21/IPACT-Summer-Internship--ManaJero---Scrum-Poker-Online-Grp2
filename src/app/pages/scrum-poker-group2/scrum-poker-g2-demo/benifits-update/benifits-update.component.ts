@@ -1,43 +1,44 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {BenefitsModel} from '../../Models/BenefitsModel';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NbDialogRef} from '@nebular/theme';
+import { Component, Input, OnInit } from '@angular/core';
+import { NbDialogRef, NbToastrService } from '@nebular/theme';
+import { BenefitsModel } from '../../models/BenefitsModel';
 import {ApiService} from '../../services/api-service.service';
+
 @Component({
-  selector: 'ngx-benifits-update',
+  selector: 'ngx-benefits-update',
   templateUrl: './benifits-update.component.html',
   styleUrls: ['./benifits-update.component.scss'],
 })
-export class BenifitsUpdateComponent implements OnInit {
-  benefit: BenefitsModel;
-  benefits: BenefitsModel[];
-
-  constructor(private route: ActivatedRoute,
-              protected ref: NbDialogRef<BenifitsUpdateComponent>,
-              private apiService: ApiService,
-              private router: Router) {}
-
-  ngOnInit() {
-    this.apiService.getBenefits().subscribe((benefits: BenefitsModel[]) => {
-      this.benefits = benefits;
-    });
-  }
-
+export class BenifitsUpdateComponent {
   @Input() title: string;
+  @Input() benefit: BenefitsModel;
 
-  updateBenefits() {
-    this.apiService.updateBenifits(this.benefit.id, this.benefit).subscribe(updatebenefit => {
-      this.router.navigate(['/pages/agile/scrum-poker-group2']);
-    }, error => {
-      console.error('Error updating project:', error);
-    });
+  constructor(
+    protected ref: NbDialogRef<BenifitsUpdateComponent>,
+    private apiService: ApiService,
+    private toastrService: NbToastrService,
+  ) {}
+
+
+  confirmUpdate() {
+    if (confirm('Are you sure you want to update this benefit?')) {
+      this.updateBenefit();
+    }
   }
 
-  onDescriptionChange(benefit: BenefitsModel): void {
-    this.benefit = benefit;
+  updateBenefit() {
+    this.apiService.updateBenifits(this.benefit.id, this.benefit).subscribe(
+      () => {
+        this.toastrService.success('Benefit updated successfully', 'Success');
+        this.ref.close();
+      },
+      (error) => {
+        console.error('Error updating the benefit:', error);
+        this.toastrService.danger('Failed to update the benefit', 'Error');
+      },
+    );
   }
 
-  dismiss() {
+  cancel() {
     this.ref.close();
   }
 }

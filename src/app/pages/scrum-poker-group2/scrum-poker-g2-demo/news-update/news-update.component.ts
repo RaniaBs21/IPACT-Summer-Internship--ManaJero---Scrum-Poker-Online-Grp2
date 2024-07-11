@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../services/api-service.service';
-import {InfoModel} from '../../Models/InfoModel';
+import {NewsModel} from '../../Models/NewsModel';
 
 @Component({
   selector: 'ngx-news-update',
@@ -9,7 +9,7 @@ import {InfoModel} from '../../Models/InfoModel';
   styleUrls: ['./news-update.component.scss']})
 export class NewsUpdateComponent {
   @Input() title: string;
-  @Input() info: InfoModel;
+  @Input() news: NewsModel;
 
   constructor(
     protected ref: NbDialogRef<NewsUpdateComponent>,
@@ -17,22 +17,21 @@ export class NewsUpdateComponent {
     private toastrService: NbToastrService,
   ) {}
 
-
   confirmUpdate() {
-    if (confirm('Êtes-vous sûr de vouloir mettre à jour ce bénéfice ?')) {
-      this.updateInfo();
+    if (confirm('Are you sure you want to update this information?')) {
+      this.updateNews();
     }
   }
 
-  updateInfo() {
-    this.apiService.updateNews(this.info.id, this.info).subscribe(
+  updateNews() {
+    this.apiService.updateNews(this.news.id, this.news).subscribe(
       () => {
-        this.toastrService.success('Bénéfice mis à jour avec succès', 'Succès');
+        this.toastrService.success('Information updated successfully', 'Success');
         this.ref.close();
       },
       (error) => {
-        console.error('Erreur lors de la mise à jour du bénéfice :', error);
-        this.toastrService.danger('Échec de la mise à jour du bénéfice', 'Erreur');
+        console.error('Error updating the information:', error);
+        this.toastrService.danger('Failed to update the information', 'Error');
       },
     );
   }

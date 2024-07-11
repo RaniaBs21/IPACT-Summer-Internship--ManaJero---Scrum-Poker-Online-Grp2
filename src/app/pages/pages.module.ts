@@ -41,7 +41,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   declarations: [
     PagesComponent,
     ScrumPokerGroup2Component,
-    DemoFormComponent,
   ],
 })
 export class PagesModule {

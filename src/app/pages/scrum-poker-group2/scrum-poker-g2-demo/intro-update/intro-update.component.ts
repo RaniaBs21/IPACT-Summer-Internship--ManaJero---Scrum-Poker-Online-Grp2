@@ -1,20 +1,20 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DemoModel} from '../../Models/DemoModel';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NbDialogRef, NbDialogService, NbToastrService} from '@nebular/theme';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../services/api-service.service';
-@Component({
-  selector: 'ngx-demo-update',
-  templateUrl: './demo-update.component.html',
-  styleUrls: ['./demo-update.component.scss']})
 
-export class DemoUpdateComponent implements OnInit {
+@Component({
+  selector: 'ngx-intro-update',
+  templateUrl: './intro-update.component.html',
+  styleUrls: ['./intro-update.component.scss']})
+export class IntroUpdateComponent  implements OnInit {
   demo: DemoModel;
   demos: DemoModel[];
 
   constructor(
     private route: ActivatedRoute,
-    protected ref: NbDialogRef<DemoUpdateComponent>,
+    protected ref: NbDialogRef<IntroUpdateComponent>,
     private apiService: ApiService,
     private router: Router,
     private toastrService: NbToastrService,
@@ -52,10 +52,12 @@ export class DemoUpdateComponent implements OnInit {
     });
   }
 
-  onDescriptionChange(demo: DemoModel): void {
+  onIntroChange(demo: DemoModel): void {
     this.demo = demo;
   }
-
+  onTitleChange(demo: DemoModel): void {
+    this.demo = demo;
+  }
   cancel() {
     this.ref.close();
   }

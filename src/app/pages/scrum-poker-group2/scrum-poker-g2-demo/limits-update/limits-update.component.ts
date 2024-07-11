@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DemoModel} from '../../Models/DemoModel';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NbDialogRef} from '@nebular/theme';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../services/api-service.service';
 import {LimitsModel} from '../../Models/LimitsModel';
 
@@ -10,35 +10,36 @@ import {LimitsModel} from '../../Models/LimitsModel';
   templateUrl: './limits-update.component.html',
   styleUrls: ['./limits-update.component.scss'],
 })
-export class LimitsUpdateComponent implements OnInit {
-  limit: LimitsModel;
-  limits: LimitsModel[];
-
-  constructor(private route: ActivatedRoute,
-              protected ref: NbDialogRef<LimitsUpdateComponent>,
-              private apiService: ApiService,
-              private router: Router) {}
-
-  ngOnInit() {
-    this.apiService.getLimits().subscribe((limits: LimitsModel[]) => {
-      this.limits = limits ;
-    });
-  }
-
+export class LimitsUpdateComponent  {
   @Input() title: string;
-  updateLimits() {
-    this.apiService.updateLimits(this.limit.id, this.limit).subscribe(updatelimit => {
-      this.router.navigate(['/pages/agile/scrum-poker-group2']);
-    }, error => {
-      console.error('Error updating project:', error);
-    });
+  @Input() limit: LimitsModel;
 
+  constructor(
+    protected ref: NbDialogRef<LimitsUpdateComponent>,
+    private apiService: ApiService,
+    private toastrService: NbToastrService,
+  ) {}
+
+  confirmUpdate() {
+    if (confirm('Are you sure you want to update this limit?')) {
+      this.updateLimit();
+    }
   }
 
-  onDescriptionChange(limit: LimitsModel): void {
-    this.limit = limit;
+  updateLimit() {
+    this.apiService.updateLimits(this.limit.id, this.limit).subscribe(
+      () => {
+        this.toastrService.success('Limit updated successfully', 'Success');
+        this.ref.close();
+      },
+      (error) => {
+        console.error('Error updating the limit:', error);
+        this.toastrService.danger('Failed to update the limit', 'Error');
+      },
+    );
   }
-  dismiss() {
+
+  cancel() {
     this.ref.close();
   }
 }
