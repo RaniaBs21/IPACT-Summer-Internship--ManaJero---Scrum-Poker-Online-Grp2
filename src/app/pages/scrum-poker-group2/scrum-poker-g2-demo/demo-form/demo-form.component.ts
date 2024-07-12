@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component,  OnInit} from '@angular/core';
 import {ApiService} from '../../services/api-service.service';
-import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {NewsModel} from '../../Models/NewsModel';

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DemoModel} from '../../Models/DemoModel';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NbDialogRef, NbDialogService, NbToastrService} from '@nebular/theme';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../services/api-service.service';
 @Component({
   selector: 'ngx-demo-update',

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NbDialogRef, NbToastrService } from '@nebular/theme';
 import { BenefitsModel } from '../../models/BenefitsModel';
 import {ApiService} from '../../services/api-service.service';

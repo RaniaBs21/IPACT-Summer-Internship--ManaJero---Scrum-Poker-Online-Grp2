@@ -1,6 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DemoModel} from '../../Models/DemoModel';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input} from '@angular/core';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../services/api-service.service';
 import {LimitsModel} from '../../Models/LimitsModel';

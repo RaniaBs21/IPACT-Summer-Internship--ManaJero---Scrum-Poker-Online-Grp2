@@ -1,6 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DemoModel} from '../../../Models/DemoModel';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input} from '@angular/core';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../../services/api-service.service';
 import {StepsModel} from '../../../Models/stepsModel';
@@ -27,17 +25,18 @@ export class StepsUpdateComponent  {
   }
 
   updateSteps() {
-    this.apiService.updateStep(this.step.id, this.step).subscribe(
-      (updateStep) => {
-        this.toastrService.success('step updated successfully ', 'Succès');
-        this.ref.close();
-      },
-      (error) => {
-        console.error('Failed to update this step :', error);
-        this.toastrService.danger('Failed to update this step ', 'Erreur');
-      },
-    );
-  }
+      this.apiService.updateStep(this.step.id, this.step).subscribe(
+        () => {
+          this.toastrService.success('step updated successfully', 'Success');
+          this.ref.close();
+        },
+        (error) => {
+          console.error('Error updating the step:', error);
+          this.toastrService.danger('Failed to update the step', 'Error');
+        },
+      );
+    }
+
 
   cancel() {
     this.ref.close();

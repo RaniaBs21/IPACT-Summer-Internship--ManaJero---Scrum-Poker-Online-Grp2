@@ -1,13 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NbDialogService, NbThemeService} from '@nebular/theme';
-import { takeWhile } from 'rxjs/operators' ;
-import { SolarData } from '../../../@core/data/solar';
+import {Component,  OnInit} from '@angular/core';
+import {NbDialogService} from '@nebular/theme';
 import {ApiService} from '../services/api-service.service';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
-import {id} from '@swimlane/ngx-charts';
 import {LimitsModel} from '../Models/LimitsModel';
-import {ShowcaseDialogComponent} from '../../modal-overlays/dialog/showcase-dialog/showcase-dialog.component';
 import {ActivatedRoute} from '@angular/router';
 import {DemoUpdateComponent} from './demo-update/demo-update.component';
 import {LimitsUpdateComponent} from './limits-update/limits-update.component';
@@ -26,12 +22,12 @@ import {DiagramModel} from '../Models/DiagramModel';
 import {DiagramAddComponent} from './diagram-add/diagram-add.component';
 import {DiagramUpdateComponent} from './diagram-update/diagram-update.component';
 
-interface CardSettings {
+/*interface CardSettings {
   title: string;
   iconClass: string;
   type: string;
 
-}
+}*/
 
 @Component({
   selector: 'ngx-dashboard',
