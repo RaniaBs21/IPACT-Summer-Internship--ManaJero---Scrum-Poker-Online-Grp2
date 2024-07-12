@@ -1,14 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DemoModel} from '../../Models/DemoModel';
-import {ActivatedRoute, Router} from '@angular/router';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../services/api-service.service';
+import {ActivatedRoute, Router} from '@angular/router';
 @Component({
   selector: 'ngx-demo-update',
   templateUrl: './demo-update.component.html',
   styleUrls: ['./demo-update.component.scss']})
 
-export class DemoUpdateComponent implements OnInit {
+export class DemoUpdateComponent  implements OnInit {
   demo: DemoModel;
   demos: DemoModel[];
 
@@ -30,7 +30,7 @@ export class DemoUpdateComponent implements OnInit {
   @Input() title: string;
 
   confirmUpdate() {
-    if (confirm('Are you sure ?')) {
+    if (confirm('Are You sure you want to update this definition ?')) {
       this.updateDemo();
     }
   }
@@ -40,7 +40,7 @@ export class DemoUpdateComponent implements OnInit {
       const index = this.demos.findIndex(d => d.id === updatedDemo.id);
       if (index !== -1) {
         this.demos[index] = updatedDemo;
-        this.toastrService.success('Information Updated sucessfuly!', 'Succès');
+        this.toastrService.success('definition updated ', 'Succès');
 
       }
 
@@ -48,7 +48,7 @@ export class DemoUpdateComponent implements OnInit {
 
       this.router.navigate(['/pages/agile/scrum-poker-group2']);
     }, error => {
-      console.error('Error updating information:', error);
+      console.error('Failed to add the definition', error);
     });
   }
 

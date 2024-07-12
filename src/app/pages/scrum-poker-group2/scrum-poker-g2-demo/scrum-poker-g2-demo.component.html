@@ -36,15 +36,15 @@
         <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
           <br>
           <div *ngFor="let d of demos">
-
+            <h6 style="position:relative; color: darkblue">{{d.title}}</h6>
             <div class="d-flex align-items-center mb-3">
               <p style="font-size: 16px; color: black; line-height: 1.75; margin-right: 10px;">{{ d.intro }}</p>
             </div>
           </div>
         </div>
-        <div class="col-md-6 mb-md-0 p-md-4 ">
+        <div class="col-md-6 mb-md-0 p-md-5 ">
           <img src="assets/images/scrumPok.png" alt="Description de l'image"
-               class="responsive-image">
+               class="responsive-image" >
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
                       <i class="far fa-edit fa-lg mt-2" style="color: black; cursor: pointer;" (click)="openBenefitsUpdate(benefit)"></i>
                       &nbsp;<i class="fas fa-trash-alt fa-lg mt-2" style="color: red; cursor: pointer;" (click)="deleteBenefit(benefit.id)"></i>
                       <div class="flip-card-back text-center">
-                        <p class="quote">{{ benefit.benefDescription }}</p>
+                        <p class="quote" >{{ benefit.benefDescription }}</p>
                       </div>
                     </div>
                   </div>

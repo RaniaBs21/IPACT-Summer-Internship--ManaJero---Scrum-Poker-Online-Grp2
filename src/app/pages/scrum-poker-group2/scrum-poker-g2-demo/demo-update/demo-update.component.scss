@@ -16,7 +16,7 @@ nb-card {
 
 textarea {
   width: 100%; /* Make textarea take full width */
-  min-width: 300px; /* Set a minimum width */
+  min-width: 500px; /* Set a minimum width */
 }
 .footer {
   display: flex;
@@ -33,6 +33,7 @@ textarea {
 .cancel-button:hover {
   color: #333;
 }
+
 .footer-buttons {
   display: flex;
   justify-content: center;
