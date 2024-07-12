@@ -21,7 +21,7 @@ export class StepsUpdateComponent  {
 
 
   confirmUpdate() {
-    if (confirm('Êtes-vous sûr de vouloir mettre à jour ce step ?')) {
+    if (confirm('Are you sure you want to update this step ?')) {
       this.updateSteps();
     }
   }
@@ -29,12 +29,12 @@ export class StepsUpdateComponent  {
   updateSteps() {
     this.apiService.updateStep(this.step.id, this.step).subscribe(
       (updateStep) => {
-        this.toastrService.success('step mis à jour avec succès', 'Succès');
+        this.toastrService.success('step updated successfully ', 'Succès');
         this.ref.close();
       },
       (error) => {
-        console.error('Erreur lors de la mise à jour du step :', error);
-        this.toastrService.danger('Échec de la mise à jour du step', 'Erreur');
+        console.error('Failed to update this step :', error);
+        this.toastrService.danger('Failed to update this step ', 'Erreur');
       },
     );
   }

@@ -31,6 +31,8 @@ import {BenifitsUpdateComponent} from './benifits-update/benifits-update.compone
 import { LimitssAddComponent } from './limitss-add/limitss-add.component';
 import { SecurityCamerasComponent } from './security-cameras/security-cameras.component';
 import { IntroUpdateComponent } from './intro-update/intro-update.component';
+import { DiagramAddComponent } from './diagram-add/diagram-add.component';
+import { DiagramUpdateComponent } from './diagram-update/diagram-update.component';
 
 @NgModule({
   imports: [
@@ -65,6 +67,8 @@ import { IntroUpdateComponent } from './intro-update/intro-update.component';
     LimitssAddComponent,
     SecurityCamerasComponent,
     IntroUpdateComponent,
+    DiagramAddComponent,
+    DiagramUpdateComponent,
   ],
   exports: [
   ],

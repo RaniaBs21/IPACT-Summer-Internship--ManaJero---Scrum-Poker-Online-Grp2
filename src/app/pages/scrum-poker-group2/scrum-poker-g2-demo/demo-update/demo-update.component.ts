@@ -30,7 +30,7 @@ export class DemoUpdateComponent implements OnInit {
   @Input() title: string;
 
   confirmUpdate() {
-    if (confirm('Êtes-vous sûr de vouloir mettre à jour ?')) {
+    if (confirm('Are you sure ?')) {
       this.updateDemo();
     }
   }
@@ -40,7 +40,7 @@ export class DemoUpdateComponent implements OnInit {
       const index = this.demos.findIndex(d => d.id === updatedDemo.id);
       if (index !== -1) {
         this.demos[index] = updatedDemo;
-        this.toastrService.success('Bénéfice mis à jour avec succès', 'Succès');
+        this.toastrService.success('Information Updated sucessfuly!', 'Succès');
 
       }
 
@@ -48,7 +48,7 @@ export class DemoUpdateComponent implements OnInit {
 
       this.router.navigate(['/pages/agile/scrum-poker-group2']);
     }, error => {
-      console.error('Error updating project:', error);
+      console.error('Error updating information:', error);
     });
   }
 

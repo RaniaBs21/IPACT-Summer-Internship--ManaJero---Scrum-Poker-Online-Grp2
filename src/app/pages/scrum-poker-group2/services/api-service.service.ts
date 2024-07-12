@@ -6,6 +6,7 @@ import {BenefitsModel} from '../Models/BenefitsModel';
 import {LimitsModel} from '../Models/LimitsModel';
 import {StepsModel} from '../Models/stepsModel';
 import {NewsModel} from '../Models/NewsModel';
+import {DiagramModel} from '../Models/DiagramModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -113,4 +114,21 @@ export class ApiService {
   deleteNew(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.API_URL}/deleteNews/${id}`);
   }
+
+  // ********************** Diagram services ***********************
+  addDiagram(diagram: DiagramModel): Observable<DiagramModel> {
+    return this.httpClient.post<DiagramModel>(`${this.API_URL}/addDiagram`, diagram);
+  }
+  getDiagrams(): Observable<DiagramModel[]> {
+    return this.httpClient.get<DiagramModel[]>(`${this.API_URL}/getDiagrams`);
+  }
+
+  updateDiagram ( id: string, diagrams: DiagramModel): Observable<DiagramModel> {
+    const url = `${this.API_URL}/updateDiagram/${id}`;
+    return this.httpClient.put<DiagramModel>( url, diagrams );
+  }
+  deleteDiagram(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.API_URL}/deleteDiagram/${id}`);
+  }
+
 }

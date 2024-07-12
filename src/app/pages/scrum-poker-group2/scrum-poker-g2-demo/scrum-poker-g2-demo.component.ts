@@ -22,6 +22,9 @@ import {NewsUpdateComponent} from './news-update/news-update.component';
 import {LimitssAddComponent} from './limitss-add/limitss-add.component';
 import {BenefitsAddComponent} from './benefits-add/benefits-add.component';
 import {IntroUpdateComponent} from './intro-update/intro-update.component';
+import {DiagramModel} from '../Models/DiagramModel';
+import {DiagramAddComponent} from './diagram-add/diagram-add.component';
+import {DiagramUpdateComponent} from './diagram-update/diagram-update.component';
 
 interface CardSettings {
   title: string;
@@ -42,6 +45,8 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   news: NewsModel[] = [];
   steps: StepsModel[] = [];
   step: StepsModel;
+  diagrams: DiagramModel[] = [];
+  diagram: DiagramModel;
   firstForm: UntypedFormGroup;
   secondForm: UntypedFormGroup;
   thirdForm: UntypedFormGroup;
@@ -51,7 +56,8 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     private dialogService: NbDialogService,
     private route: ActivatedRoute,
     private fb: UntypedFormBuilder,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.firstForm = this.fb.group({
@@ -88,13 +94,16 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     this.apiService.getSteps().subscribe((steps: StepsModel[]) => {
       this.steps = steps;
     });
+    this.apiService.getDiagrams().subscribe((diagrams: DiagramModel[]) => {
+      this.diagrams = diagrams;
+    });
   }
 
   openBenefitsUpdate(benefit: BenefitsModel) {
     this.dialogService.open(BenifitsUpdateComponent, {
       context: {
         title: 'Update Benefit',
-        benefit: { ...benefit },
+        benefit: {...benefit},
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -119,7 +128,7 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     this.dialogService.open(LimitsUpdateComponent, {
       context: {
         title: 'Update Limits',
-        limit: { ...limit },
+        limit: {...limit},
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -135,27 +144,30 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   openIntroUpdate() {
     this.dialogService.open(IntroUpdateComponent, {
       context: {
-        title: 'This is a title passed to the dialog component' ,
+        title: 'This is a title passed to the dialog component',
       },
     }).onClose.subscribe(() => this.loadData());
   }
+
   openStep(step: StepsModel) {
     this.dialogService.open(StepsUpdateComponent, {
       context: {
         title: 'Update Step',
-        step: { ...step },
+        step: {...step},
       },
     }).onClose.subscribe(() => this.loadData());
   }
+
   createStep(step: StepsModel) {
     this.dialogService.open(StepCreateComponent, {
       context: {
         title: 'Create Step',
-        step: { ...step },
+        step: {...step},
       },
     }).onClose.subscribe(() => this.loadData());
   }
-  deleteDemo( id: string) {
+
+  deleteDemo(id: string) {
     if (confirm('Are you sure you want to delete this demo?')) {
       this.apiService.deleteDemo(id).subscribe(
         () => {
@@ -219,7 +231,7 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     this.dialogService.open(NewsUpdateComponent, {
       context: {
         title: 'Update Information',
-        news: { ...news },
+        news: {...news},
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -236,182 +248,36 @@ export class ScrumPokerG2DemoComponent implements OnInit {
       );
     }
   }
-/*
-  private alive = true;
-  demos: DemoModel[] = [];
-  benefits: BenefitsModel[] = [];
-  limits: LimitsModel[] = [];
-  demo: DemoModel;
-  infos: NewsModel[] = [];
-  info: NewsModel;
-  steps: StepsModel[] = [];
-  step: StepsModel;
-  news: NewsModel[] = [];
-  constructor(private apiService: ApiService, private dialogService: NbDialogService,
-              private route: ActivatedRoute, private fb: UntypedFormBuilder) {}
-
-  open() {
-    this.dialogService.open(DemoUpdateComponent, {
-      context: {
-        title: 'This is a title passed to the dialog component',
-      },
-    });
-  }
-  openLimits() {
-    this.dialogService.open(LimitsUpdateComponent, {
-      context: {
-        title: 'This is a title passed to the dialog component',
-      },
-    });
-  }
-  openBenifits() {
-    this.dialogService.open(BenifitsUpdateComponent, {
-      context: {
-        title: 'This is a title passed to the dialog component',
-      },
-    });
-  }
-  openStep(step: StepsModel) {
-    this.dialogService.open(StepsUpdateComponent, {
-      context: {
-        title: 'Update Step',
-        step: { ...step },
-      },
-    }).onClose.subscribe(() => this.loadData());
-  }
-  openInfoUpdate(info: NewsModel) {
-    this.dialogService.open(NewsUpdateComponent, {
-      context: {
-        title: 'Update Benefit',
-        info: { ...info },
-      },
-    }).onClose.subscribe(() => this.loadDataInfo());
-  }
-  createStep(step: StepsModel) {
-    this.dialogService.open(StepCreateComponent, {
-      context: {
-        title: 'Create Step',
-        step: { ...step },
-      },
-    }).onClose.subscribe(() => this.loadData());
-  }
-
-/!*  createNews(infos: NewsModel) {
-    this.dialogService.open(DemoFormComponent, {
-      context: {
-        title: 'Create info',
-        news: { ...news },
-      },
-    }).onClose.subscribe(() => this.loadData());
-  }*!/
-  loadDataInfo() {
-    this.apiService.getNews().subscribe((infos: NewsModel[]) => {
-      this.infos = infos;
-    });
-  }
 
 
-  deleteStep() {
-    this.apiService.deleteStep(this.step.id).subscribe(() => {
-      this.ngOnInit();
-    });
-  }
-  loadData() {
-    this.apiService.getSteps().subscribe((steps: StepsModel[]) => {
-      this.steps = steps;
-    });
-  }
-
-
-  ngOnInit() {
-    this.apiService.getDemo().subscribe((demos: DemoModel[]) => {
-      this.demos = demos ;
-
-    this.apiService.getBenefits().subscribe((benefits: BenefitsModel[]) => {
-        this.benefits = benefits ;
-
-    this.apiService.getLimits().subscribe((limits: LimitsModel[]) => {
-          this.limits = limits ;
-
-    this.apiService.getSteps().subscribe((steps: StepsModel[]) => {
-            this.steps = steps ;
-
-    this.apiService.getNews().subscribe((infos: NewsModel[]) => {
-        this.infos = infos ;
-            });
-          });
-        });
-      });
-    });
-  }
-
-
-  deleteDemo(id: string) {
-    if (confirm('Are you sure you want to delete this demo?')) {
-      this.apiService.deleteDemo(id).subscribe(
-        () => {
-          this.demos = this.demos.filter((d) => d.id !== id);
-        },
-        (error) => {
-          console.error('Error deleting the demo:', error);
-        },
-      );
-    }
-  }
-
-  deleteBenefit(id: string) {
-    if (confirm('Are you sure you want to delete this benefit?')) {
-      this.apiService.deleteBenefit(id).subscribe(
-        () => {
-          this.benefits = this.benefits.filter((b) => b.id !== id);
-        },
-        (error) => {
-          console.error('Error deleting the benefit:', error);
-        },
-      );
-    }
-  }
-
-  deleteLimit(id: string) {
-    if (confirm('Are you sure you want to delete this limit?')) {
-      this.apiService.deleteLimit(id).subscribe(
-        () => {
-          this.limits = this.limits.filter((b) => b.id !== id);
-        },
-        (error) => {
-          console.error('Error deleting the limit:', error);
-        },
-      );
-    }
-  }
-
-  openNewsAdd() {
-    this.dialogService.open(DemoFormComponent, {
+  // diagraaam
+  openDiagramAdd() {
+    this.dialogService.open(DiagramAddComponent, {
       context: {
         title: 'Add Information',
       },
     }).onClose.subscribe(() => this.loadData());
   }
 
-  openNewsUpdate(news: NewsModel) {
-    this.dialogService.open(NewsUpdateComponent, {
+  openDiagram(diagram: DiagramModel) {
+    this.dialogService.open(DiagramUpdateComponent, {
       context: {
-        title: 'Update Information',
-        news: { ...news },
+        title: 'Update content',
+        diagram: {...diagram},
       },
     }).onClose.subscribe(() => this.loadData());
   }
 
-  deleteNew(id: string) {
-    if (confirm('Are you sure you want to delete this information?')) {
-      this.apiService.deleteNew(id).subscribe(
+  deleteDiagram(id: string) {
+    if (confirm('Are you sure you want to delete this diagram?')) {
+      this.apiService.deleteDiagram(id).subscribe(
         () => {
-          this.news = this.news.filter((b) => b.id !== id);
+          this.diagrams = this.diagrams.filter((s) => s.id !== id);
         },
         (error) => {
-          console.error('Error deleting the information:', error);
+          console.error('Error deleting the step:', error);
         },
       );
     }
-  }*/
+  }
 }

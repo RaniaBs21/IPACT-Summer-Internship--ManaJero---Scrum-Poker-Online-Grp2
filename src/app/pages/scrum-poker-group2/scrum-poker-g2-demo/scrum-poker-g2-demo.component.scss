@@ -361,6 +361,40 @@
     color: white;
     transform: rotateY(180deg);
   }
+  .card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+
+  .card-body {
+    text-align: center;
+  }
+
+  .card-body img {
+    max-width: 100px;
+    margin-bottom: 20px;
+  }
+
+  .card h3 {
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    margin-bottom: 0;
+  }
+  .gif-container {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .arrow-gif {
+    width: 80px; /* Adjust size as needed */
+    height: auto;
+  }
 
 
 

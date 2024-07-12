@@ -30,7 +30,7 @@ export class IntroUpdateComponent  implements OnInit {
   @Input() title: string;
 
   confirmUpdate() {
-    if (confirm('Êtes-vous sûr de vouloir mettre à jour ?')) {
+    if (confirm('Are You sure you want to update this introduction ?')) {
       this.updateDemo();
     }
   }
@@ -40,7 +40,7 @@ export class IntroUpdateComponent  implements OnInit {
       const index = this.demos.findIndex(d => d.id === updatedDemo.id);
       if (index !== -1) {
         this.demos[index] = updatedDemo;
-        this.toastrService.success('Bénéfice mis à jour avec succès', 'Succès');
+        this.toastrService.success('Introduction updated ', 'Succès');
 
       }
 
@@ -48,7 +48,7 @@ export class IntroUpdateComponent  implements OnInit {
 
       this.router.navigate(['/pages/agile/scrum-poker-group2']);
     }, error => {
-      console.error('Error updating project:', error);
+      console.error('Failed to add the information', error);
     });
   }
 
