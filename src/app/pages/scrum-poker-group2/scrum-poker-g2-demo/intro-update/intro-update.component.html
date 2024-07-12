@@ -2,7 +2,7 @@
   <nb-card-header style="font-weight: bold">Update your Introduction</nb-card-header>
   <nb-card-body class="nb-card-body" *ngFor="let d of demos">
 
-    <input nbInput fullWidth shape="round" placeholder="Title" [(ngModel)]="d.title" (ngModelChange)="onTitleChange(d)"style="margin-bottom: 8px" />
+    <input nbInput fullWidth shape="round" placeholder="Title" [(ngModel)]="d.title" (ngModelChange)="onTitleChange(d)" style="margin-bottom: 8px" />
 
     <textarea rows="5" nbInput fullWidth shape="round" [(ngModel)]="d.intro" (ngModelChange)="onIntroChange(d)"></textarea>
   </nb-card-body>
