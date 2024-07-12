@@ -59,6 +59,30 @@
   <nb-card class="col-md-20 col-lg-20 col-xxxl-20">
     <nb-card-body class="container">
       <nb-stepper orientation="horizontal">
+        <!-- ----------------------Partie Stepper 2 : what--------------------------->
+        <nb-step [label]="labelTwo">
+          <ng-template #labelTwo>what?</ng-template>
+          <div class="h6" style="color:darkblue;">Discover what is Planning Poker Agile ?⚡🃏🚀</div>
+          <!-- <div  *ngFor="let d of demos">-->
+          <div class="row g-0  ">
+            <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
+              <br>
+              <div *ngFor="let d of demos">
+                <div class="d-flex align-items-center mb-3">
+                  <p style="font-size: 16px; color: black; line-height: 1.75; margin-right: 10px;">{{ d.description }}</p>
+                  <i class="far fa-edit fa-lg" style="color: black; cursor: pointer; margin-right: 10px;" (click)="open()"></i>
+                  &nbsp;<i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDemo(d.id)"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-md-0 p-md-4 ">
+              <img src="assets/images/new.jpg" alt="Description de l'image"
+                   class="responsive-image">
+            </div>
+          </div>
+          <button nbButton nbStepperPrevious>prev</button>
+          <button nbButton nbStepperNext>next</button>
+        </nb-step>
         <!-- ----------------------Partie Stepper 1 :why --------------------------->
         <nb-step [label]="labelOne">
           <ng-template #labelOne>
@@ -94,30 +118,7 @@
           <button nbButton disabled nbStepperNext>prev</button>
           <button nbButton nbStepperNext>next</button>
         </nb-step>
-        <!-- ----------------------Partie Stepper 2 : what--------------------------->
-        <nb-step [label]="labelTwo">
-          <ng-template #labelTwo>what?</ng-template>
-          <div class="h6" style="color:darkblue;">Discover what is Planning Poker Agile ?⚡🃏🚀</div>
-          <!-- <div  *ngFor="let d of demos">-->
-          <div class="row g-0  ">
-            <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
-              <br>
-              <div *ngFor="let d of demos">
-                <div class="d-flex align-items-center mb-3">
-                  <p style="font-size: 16px; color: black; line-height: 1.75; margin-right: 10px;">{{ d.description }}</p>
-                  <i class="far fa-edit fa-lg" style="color: black; cursor: pointer; margin-right: 10px;" (click)="open()"></i>
-                  &nbsp;<i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDemo(d.id)"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 mb-md-0 p-md-4 ">
-              <img src="assets/images/new.jpg" alt="Description de l'image"
-                   class="responsive-image">
-            </div>
-          </div>
-          <button nbButton nbStepperPrevious>prev</button>
-          <button nbButton nbStepperNext>next</button>
-        </nb-step>
+
         <!-- ----------------------Partie Stepper 3 : how --------------------------->
           <nb-step [label]="labelThree">
             <ng-template #labelThree>How?</ng-template>
