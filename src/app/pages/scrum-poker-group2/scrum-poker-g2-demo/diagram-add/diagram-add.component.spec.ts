@@ -8,7 +8,7 @@ describe('DiagramAddComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DiagramAddComponent ]
+      declarations: [ DiagramAddComponent ],
     })
     .compileComponents();
 
