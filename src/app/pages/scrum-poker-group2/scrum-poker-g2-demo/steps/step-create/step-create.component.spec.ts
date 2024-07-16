@@ -8,7 +8,8 @@ describe('StepCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StepCreateComponent ]})
+      declarations: [ StepCreateComponent ]
+    })
     .compileComponents();
 
     fixture = TestBed.createComponent(StepCreateComponent);

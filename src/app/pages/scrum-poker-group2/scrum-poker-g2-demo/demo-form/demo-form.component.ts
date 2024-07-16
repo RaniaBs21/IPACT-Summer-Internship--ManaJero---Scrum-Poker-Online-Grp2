@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {TestModel} from '../../Models/Test.model';
+import {Component,  OnInit} from '@angular/core';
 import {ApiService} from '../../services/api-service.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
+import {NewsModel} from '../../Models/NewsModel';
 
 
 
@@ -9,24 +11,51 @@ import {ApiService} from '../../services/api-service.service';
   templateUrl: './demo-form.component.html',
   styleUrls: ['./demo-form.component.scss']})
 
-export class DemoFormComponent implements OnInit {
+export class DemoFormComponent implements OnInit  {
+  addNewForm: FormGroup;
+  title: string;
 
+  constructor(
+    private fb: FormBuilder,
+    protected ref: NbDialogRef<DemoFormComponent>,
+    private apiService: ApiService,
+    private toastrService: NbToastrService,
+  ) {}
 
-  title = 'my-angular-app';
-  tests: TestModel[] = [];
-
-  constructor(private apiService: ApiService) {}
-
-  ngOnInit() {
-    this.apiService.getTest().subscribe((tests: TestModel[]) => {
-      this.tests = tests ;
+  ngOnInit(): void {
+    this.addNewForm = this.fb.group({
+      title: ['', Validators.required],
+      newsDescription: ['', Validators.required],
     });
   }
 
+  confirmAdd() {
+    if (this.addNewForm.valid) {
+      if (confirm('Are you sure you want to add this information?')) {
+        this.addBenefit();
+      }
+    } else {
+      this.toastrService.danger('Please fill in all fields', 'Error');
+    }
+  }
 
-  starRate = 2;
-  heartRate = 4;
-  radioGroupValue = 'This is value 2';
+  addBenefit() {
+    const newInfo: NewsModel = this.addNewForm.value;
+    this.apiService.addNew(newInfo).subscribe(
+      (benefit) => {
+        this.toastrService.success('Information added successfully', 'Success');
+        this.ref.close(benefit);
+      },
+      (error) => {
+        console.error('Error adding the information:', error);
+        this.toastrService.danger('Failed to add the information', 'Error');
+      },
+    );
+  }
+
+  cancel() {
+    this.ref.close();
+  }
 }
 
 
