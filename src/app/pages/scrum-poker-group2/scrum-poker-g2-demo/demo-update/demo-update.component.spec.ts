@@ -8,8 +8,7 @@ describe('DemoUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DemoUpdateComponent ],
-    })
+      declarations: [ DemoUpdateComponent ]})
     .compileComponents();
 
     fixture = TestBed.createComponent(DemoUpdateComponent);

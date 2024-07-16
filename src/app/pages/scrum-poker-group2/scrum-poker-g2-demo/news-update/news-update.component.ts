@@ -1,20 +1,19 @@
-import { Component, Input } from '@angular/core';
-import { NewModel } from '../../models/New.model';
-import { NbDialogRef, NbToastrService } from '@nebular/theme';
-import { PokerService } from '../../services/poker.service';
+import {Component, Input} from '@angular/core';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
+import {ApiService} from '../../services/api-service.service';
+import {NewsModel} from '../../Models/NewsModel';
 
 @Component({
   selector: 'ngx-news-update',
   templateUrl: './news-update.component.html',
-  styleUrls: ['./news-update.component.scss'],
-})
+  styleUrls: ['./news-update.component.scss']})
 export class NewsUpdateComponent {
   @Input() title: string;
-  @Input() news: NewModel;
+  @Input() news: NewsModel;
 
   constructor(
     protected ref: NbDialogRef<NewsUpdateComponent>,
-    private apiService: PokerService,
+    private apiService: ApiService,
     private toastrService: NbToastrService,
   ) {}
 

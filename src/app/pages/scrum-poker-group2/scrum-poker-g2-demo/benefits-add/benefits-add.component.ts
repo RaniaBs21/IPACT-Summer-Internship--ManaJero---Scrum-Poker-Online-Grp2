@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef, NbToastrService } from '@nebular/theme';
-import { PokerService } from '../../services/poker.service';
-import { BenefitsModel } from '../../models/Benefit.model';
+import { BenefitsModel } from '../../models/BenefitsModel';
+import {ApiService} from '../../services/api-service.service';
 
 @Component({
   selector: 'ngx-benefits-add',
@@ -16,9 +16,10 @@ export class BenefitsAddComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     protected ref: NbDialogRef<BenefitsAddComponent>,
-    private apiService: PokerService,
+    private apiService: ApiService,
     private toastrService: NbToastrService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.addBenefitForm = this.fb.group({

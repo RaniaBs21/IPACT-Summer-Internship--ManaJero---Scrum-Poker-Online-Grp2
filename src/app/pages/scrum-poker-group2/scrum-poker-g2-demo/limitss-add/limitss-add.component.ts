@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NbDialogRef, NbToastrService } from '@nebular/theme';
-import { PokerService } from '../../services/poker.service';
-import { LimitsModel } from '../../models/Limit.model';
+import {Component, OnInit} from '@angular/core';
+import {LimitsModel} from '../../Models/LimitsModel';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
+import {ApiService} from '../../services/api-service.service';
 
 @Component({
   selector: 'ngx-limitss-add',
   templateUrl: './limitss-add.component.html',
-  styleUrls: ['./limitss-add.component.scss'],
-})
+  styleUrls: ['./limitss-add.component.scss']})
 export class LimitssAddComponent implements OnInit {
+
   addLimitForm: FormGroup;
   title: string;
 
   constructor(
     private fb: FormBuilder,
     protected ref: NbDialogRef<LimitssAddComponent>,
-    private apiService: PokerService,
+    private apiService: ApiService,
     private toastrService: NbToastrService,
   ) {}
 

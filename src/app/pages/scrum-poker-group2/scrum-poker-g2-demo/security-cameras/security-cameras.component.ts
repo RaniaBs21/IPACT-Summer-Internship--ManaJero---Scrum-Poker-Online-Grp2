@@ -1,15 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subject} from 'rxjs';
+import {Camera, SecurityCamerasData} from '../../../../@core/data/security-cameras';
+import {NbComponentSize, NbMediaBreakpointsService, NbThemeService} from '@nebular/theme';
 import { map, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { NbComponentSize, NbMediaBreakpointsService, NbThemeService } from '@nebular/theme';
-
-import { Camera, SecurityCamerasData } from '../../../../@core/data/security-cameras';
-
 @Component({
   selector: 'ngx-security-cameras',
-  styleUrls: ['./security-cameras.component.scss'],
   templateUrl: './security-cameras.component.html',
-})
+  styleUrls: ['./security-cameras.component.scss']})
 export class SecurityCamerasComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();

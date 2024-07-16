@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NbDialogRef, NbToastrService } from '@nebular/theme';
-import { PokerService } from '../../services/poker.service';
-import { NewModel } from '../../models/New.model';
+import {Component,  OnInit} from '@angular/core';
+import {ApiService} from '../../services/api-service.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
+import {NewsModel} from '../../Models/NewsModel';
+
+
 
 @Component({
   selector: 'ngx-demo-form',
   templateUrl: './demo-form.component.html',
-  styleUrls: ['./demo-form.component.scss'],
-})
-export class DemoFormComponent implements OnInit {
+  styleUrls: ['./demo-form.component.scss']})
 
+export class DemoFormComponent implements OnInit  {
   addNewForm: FormGroup;
   title: string;
 
   constructor(
     private fb: FormBuilder,
     protected ref: NbDialogRef<DemoFormComponent>,
-    private apiService: PokerService,
+    private apiService: ApiService,
     private toastrService: NbToastrService,
   ) {}
 
@@ -39,7 +40,7 @@ export class DemoFormComponent implements OnInit {
   }
 
   addBenefit() {
-    const newInfo: NewModel = this.addNewForm.value;
+    const newInfo: NewsModel = this.addNewForm.value;
     this.apiService.addNew(newInfo).subscribe(
       (benefit) => {
         this.toastrService.success('Information added successfully', 'Success');
@@ -55,5 +56,7 @@ export class DemoFormComponent implements OnInit {
   cancel() {
     this.ref.close();
   }
-
 }
+
+
+

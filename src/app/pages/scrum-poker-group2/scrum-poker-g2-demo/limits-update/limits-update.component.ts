@@ -1,20 +1,20 @@
-import { Component, Input } from '@angular/core';
-import { NbDialogRef, NbToastrService } from '@nebular/theme';
-import { PokerService } from '../../services/poker.service';
-import { LimitsModel } from '../../models/Limit.model';
+import {Component, Input} from '@angular/core';
+import {NbDialogRef, NbToastrService} from '@nebular/theme';
+import {ApiService} from '../../services/api-service.service';
+import {LimitsModel} from '../../Models/LimitsModel';
 
 @Component({
   selector: 'ngx-limits-update',
   templateUrl: './limits-update.component.html',
   styleUrls: ['./limits-update.component.scss'],
 })
-export class LimitsUpdateComponent {
+export class LimitsUpdateComponent  {
   @Input() title: string;
   @Input() limit: LimitsModel;
 
   constructor(
     protected ref: NbDialogRef<LimitsUpdateComponent>,
-    private apiService: PokerService,
+    private apiService: ApiService,
     private toastrService: NbToastrService,
   ) {}
 

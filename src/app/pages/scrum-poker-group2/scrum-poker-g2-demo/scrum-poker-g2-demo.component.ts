@@ -1,19 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { NbDialogService } from '@nebular/theme';
-import { ActivatedRoute } from '@angular/router';
-import { DemoUpdateComponent } from './demo-update/demo-update.component';
-import { LimitsUpdateComponent } from './limits-update/limits-update.component';
-import { BenefitsUpdateComponent } from './benefits-update/benefits-update.component';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { DemoModel } from '../models/Demo.model';
-import { BenefitsModel } from '../models/Benefit.model';
-import { LimitsModel } from '../models/Limit.model';
-import { PokerService } from '../services/poker.service';
-import { BenefitsAddComponent } from './benefits-add/benefits-add.component';
-import { LimitssAddComponent } from './limitss-add/limitss-add.component';
-import { DemoFormComponent } from './demo-form/demo-form.component';
-import { NewModel } from '../models/New.model';
-import { NewsUpdateComponent } from './news-update/news-update.component';
+import {Component,  OnInit} from '@angular/core';
+import {NbDialogService} from '@nebular/theme';
+import {ApiService} from '../services/api-service.service';
+import {DemoModel} from '../Models/DemoModel';
+import {BenefitsModel} from '../Models/BenefitsModel';
+import {LimitsModel} from '../Models/LimitsModel';
+import {ActivatedRoute} from '@angular/router';
+import {DemoUpdateComponent} from './demo-update/demo-update.component';
+import {LimitsUpdateComponent} from './limits-update/limits-update.component';
+import {BenifitsUpdateComponent} from './benifits-update/benifits-update.component';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {StepsModel} from '../Models/stepsModel';
+import {StepsUpdateComponent} from './steps/steps-update/steps-update.component';
+import {StepCreateComponent} from './steps/step-create/step-create.component';
+import {DemoFormComponent} from './demo-form/demo-form.component';
+import {NewsModel} from '../Models/NewsModel';
+import {NewsUpdateComponent} from './news-update/news-update.component';
+import {LimitssAddComponent} from './limitss-add/limitss-add.component';
+import {BenefitsAddComponent} from './benefits-add/benefits-add.component';
+import {IntroUpdateComponent} from './intro-update/intro-update.component';
+import {DiagramModel} from '../Models/DiagramModel';
+import {DiagramAddComponent} from './diagram-add/diagram-add.component';
+import {DiagramUpdateComponent} from './diagram-update/diagram-update.component';
+
+/*interface CardSettings {
+  title: string;
+  iconClass: string;
+  type: string;
+
+}*/
 
 @Component({
   selector: 'ngx-dashboard',
@@ -24,17 +38,22 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   demos: DemoModel[] = [];
   benefits: BenefitsModel[] = [];
   limits: LimitsModel[] = [];
-  news: NewModel[] = [];
+  news: NewsModel[] = [];
+  steps: StepsModel[] = [];
+  step: StepsModel;
+  diagrams: DiagramModel[] = [];
+  diagram: DiagramModel;
   firstForm: UntypedFormGroup;
   secondForm: UntypedFormGroup;
   thirdForm: UntypedFormGroup;
 
   constructor(
-    private apiService: PokerService,
+    private apiService: ApiService,
     private dialogService: NbDialogService,
     private route: ActivatedRoute,
     private fb: UntypedFormBuilder,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.firstForm = this.fb.group({
@@ -65,16 +84,22 @@ export class ScrumPokerG2DemoComponent implements OnInit {
       this.limits = limits;
     });
 
-    this.apiService.getNews().subscribe((news: NewModel[]) => {
+    this.apiService.getNews().subscribe((news: NewsModel[]) => {
       this.news = news;
+    });
+    this.apiService.getSteps().subscribe((steps: StepsModel[]) => {
+      this.steps = steps;
+    });
+    this.apiService.getDiagrams().subscribe((diagrams: DiagramModel[]) => {
+      this.diagrams = diagrams;
     });
   }
 
   openBenefitsUpdate(benefit: BenefitsModel) {
-    this.dialogService.open(BenefitsUpdateComponent, {
+    this.dialogService.open(BenifitsUpdateComponent, {
       context: {
         title: 'Update Benefit',
-        benefit: { ...benefit },
+        benefit: {...benefit},
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -99,7 +124,7 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     this.dialogService.open(LimitsUpdateComponent, {
       context: {
         title: 'Update Limits',
-        limit: { ...limit },
+        limit: {...limit},
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -108,6 +133,32 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     this.dialogService.open(DemoUpdateComponent, {
       context: {
         title: 'This is a title passed to the dialog component',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  openIntroUpdate() {
+    this.dialogService.open(IntroUpdateComponent, {
+      context: {
+        title: 'This is a title passed to the dialog component',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  openStep(step: StepsModel) {
+    this.dialogService.open(StepsUpdateComponent, {
+      context: {
+        title: 'Update Step',
+        step: {...step},
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  createStep(step: StepsModel) {
+    this.dialogService.open(StepCreateComponent, {
+      context: {
+        title: 'Create Step',
+        step: {...step},
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -151,6 +202,19 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     }
   }
 
+  deleteStep(id: string) {
+    if (confirm('Are you sure you want to delete this step?')) {
+      this.apiService.deleteStep(id).subscribe(
+        () => {
+          this.steps = this.steps.filter((s) => s.id !== id);
+        },
+        (error) => {
+          console.error('Error deleting the step:', error);
+        },
+      );
+    }
+  }
+
   openNewsAdd() {
     this.dialogService.open(DemoFormComponent, {
       context: {
@@ -159,11 +223,11 @@ export class ScrumPokerG2DemoComponent implements OnInit {
     }).onClose.subscribe(() => this.loadData());
   }
 
-  openNewsUpdate(news: NewModel) {
+  openNewsUpdate(news: NewsModel) {
     this.dialogService.open(NewsUpdateComponent, {
       context: {
         title: 'Update Information',
-        news: { ...news },
+        news: {...news},
       },
     }).onClose.subscribe(() => this.loadData());
   }
@@ -176,6 +240,38 @@ export class ScrumPokerG2DemoComponent implements OnInit {
         },
         (error) => {
           console.error('Error deleting the information:', error);
+        },
+      );
+    }
+  }
+
+
+  // diagraaam
+  openDiagramAdd() {
+    this.dialogService.open(DiagramAddComponent, {
+      context: {
+        title: 'Add Information',
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  openDiagram(diagram: DiagramModel) {
+    this.dialogService.open(DiagramUpdateComponent, {
+      context: {
+        title: 'Update content',
+        diagram: {...diagram},
+      },
+    }).onClose.subscribe(() => this.loadData());
+  }
+
+  deleteDiagram(id: string) {
+    if (confirm('Are you sure you want to delete this diagram?')) {
+      this.apiService.deleteDiagram(id).subscribe(
+        () => {
+          this.diagrams = this.diagrams.filter((s) => s.id !== id);
+        },
+        (error) => {
+          console.error('Error deleting the step:', error);
         },
       );
     }
