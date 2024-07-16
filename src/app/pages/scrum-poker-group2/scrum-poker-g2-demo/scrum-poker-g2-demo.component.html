@@ -1,253 +1,278 @@
-<div >
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="container">
+  <meta content="width=device-width, initial-scale=1">
+  <h1>Scrum Poker Planning</h1>
 
-  <!--  Level UP Your Agile Game with-->
-  <div class="header" style="text-align:center">
+  <div class="header">
     <span class="lightning">⚡</span>
-    <span class="title">Level <span class="highlight">UP</span> Your Agile Game with &nbsp;</span>
-    <span class="title"> Scrum Poker Planning</span>
+    <span class="title">Level <span class="highlight">UP</span> Your Agile Game with</span>
     <span class="lightning">⚡</span>
-
   </div>
+  <div class="quote">
+  </div>
+  <button class="start-button">Start New Game <span class="arrow">→</span></button>
+</div>
 
+<!-- ----------------------Partie Intro --------------------------->
+<div class="container">
+  <button class="join-button" (click)="openNewsAdd()">Add Information</button>
   <br>
-  <div class="col-sm-auto btn btn-outline-primary btn-rounded" (click)=" createNews(info) " style="float: right;">
-    <nb-action>
-      <span  style="color:darkblue;"> Add Information</span>
-    </nb-action>
-  </div>
+  <br>
+  <br>
+
+<!-- ---------------------------------------  intro --------------------------------->
+
+  <nb-card  *ngFor="let d of demos">
+    <div class="card-header">
+      <h6 class="title" style="color: darkblue">
+        Introduction ⚡🃏🚀
+      </h6>
+      <div class="icons">
+        <i class="far fa-edit fa-lg" style="color: black; cursor: pointer;" (click)="openIntroUpdate()"></i>
+        &nbsp;<i class="fas fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDemo(d.id)"></i>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="row g-0 p-md-4">
+        <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
+          <br>
+          <div *ngFor="let d of demos">
+            <h6 style="position:relative; color: darkblue">{{d.title}}</h6>
+            <div class="d-flex align-items-center mb-3">
+              <p style="font-size: 16px; color: black; line-height: 1.75; margin-right: 10px;">{{ d.intro }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-md-0 p-md-5 ">
+          <img src="assets/images/scrumPok.png" alt="Description de l'image"
+               class="responsive-image" >
+        </div>
+      </div>
+    </div>
+  </nb-card>
+
 </div>
 <br>
 <br>
-<br>
 
-
-<!--introduction-->
-<nb-card >
-  <br>
-  <div class="h6 p-md-4 " style="color:darkblue">Discover Planning Poker Agile ?⚡🃏🚀</div>
-  <div >
-    <div class="row g-0  p-md-4 ">
-      <div class="col-md-6  ">
-        <br>
-        <div *ngFor="let d of demos" >
-          <p style="font-size:16px; ">{{d.intro}}
-            <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i>
-        </div>
-      </div>
-      <div class="col-md-6  ">
-        <img src="assets/images/scrum.jpg" alt="Description de l'image" class="responsive-image">
-      </div>
-    </div>
-  </div>
-</nb-card>
-
-
-<!--stepper-->
-<div style="text-align:center"  >
+<!-- ----------------------Partie Stepper --------------------------->
+<div >
   <nb-card class="col-md-20 col-lg-20 col-xxxl-20">
-    <nb-card-body>
-      <nb-stepper orientation="horizontal" >
-        <!--        what  step-->
-        <nb-step [label]="labelOne">
-          <ng-template #labelOne>what?</ng-template>
-          <div class="h6" style="color:dimgrey">Discover what is Planning Poker Agile ?⚡🃏🚀</div>
-
-
-          <div >
-            <div class="row g-0  position-relative">
-              <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
-                <br>
-                <div *ngFor="let d of demos" >
-                  <p style="font-size:16px; ">{{d.description}}
-                    <i class="far fa-edit" style="color:dimgrey;" (click)="open()"></i>
+    <nb-card-body class="container">
+      <nb-stepper orientation="horizontal">
+        <!-- ----------------------Partie Stepper 2 : what--------------------------->
+        <nb-step [label]="labelTwo">
+          <ng-template #labelTwo>what?</ng-template>
+          <div class="h6" style="color:darkblue;">Discover what is Planning Poker Agile ?⚡🃏🚀</div>
+          <!-- <div  *ngFor="let d of demos">-->
+          <div class="row g-0  ">
+            <div class="col-md-6 p-4 ps-md-0 mt-lg-5">
+              <br>
+              <div *ngFor="let d of demos">
+                <div class="d-flex align-items-center mb-3">
+                  <p style="font-size: 16px; color: black; line-height: 1.75; margin-right: 10px;">{{ d.description }}</p>
+                  <i class="far fa-edit fa-lg" style="color: black; cursor: pointer; margin-right: 10px;" (click)="open()"></i>
+                  &nbsp;<i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDemo(d.id)"></i>
                 </div>
               </div>
-              <div class="col-md-6 mb-md-0 p-md-4 ">
-                <img src="assets/images/new.jpg" alt="Description de l'image" class="responsive-image">
-              </div>
+            </div>
+            <div class="col-md-6 mb-md-0 p-md-4 ">
+              <img src="assets/images/new.jpg" alt="Description de l'image"
+                   class="responsive-image">
             </div>
           </div>
-
-          <br>
           <button nbButton nbStepperPrevious>prev</button>
           <button nbButton nbStepperNext>next</button>
+        </nb-step>
+        <!-- ----------------------Partie Stepper 1 :why --------------------------->
+        <nb-step [label]="labelOne">
+          <ng-template #labelOne>
+            Why?
+          </ng-template>
+          <div class="h5" style="color:darkblue;">Why Scrum Planning Poker?⚡🚀</div>
+          <div class="container">
+
+            <button nbButton status="info" style="margin-bottom: 25px; " (click)="openBenefitsAdd()">Add Benefit</button>
+
+            <div class="row">
+              <div class="col-md-4 col-sm-6 mb-4" *ngFor="let benefit of benefits">
+                <div class="feature-card">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front text-center">
+                        <h5 class="discover-title">{{ benefit.title }}</h5>
+                        <img src="assets/images/benef.PNG" class="img-fluid" style="width: 80px; height: 80px;" alt="Description de l'image">
+                      </div>
+                      <i class="far fa-edit fa-lg mt-2" style="color: black; cursor: pointer;" (click)="openBenefitsUpdate(benefit)"></i>
+                      &nbsp;<i class="fas fa-trash-alt fa-lg mt-2" style="color: red; cursor: pointer;" (click)="deleteBenefit(benefit.id)"></i>
+                      <div class="flip-card-back text-center">
+                        <p class="quote" >{{ benefit.benefDescription }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
+          <button nbButton disabled nbStepperNext>prev</button>
+          <button nbButton nbStepperNext>next</button>
         </nb-step>
 
-
-        <!--        HHHHHOOOOOOOOOOOOOOOOOOOOOOOWWWWWWWWW step-->
-        <nb-step [label]="labelThree">
-          <ng-template #labelThree>How?</ng-template>
-
-
-
-          <div class="h6" style="color:dimgrey;">How it works ?⚡🚀</div>
-          <br>
-          <br>
-          <br>
-          <br>
-
-          <div class="row g-0 bg-light position-relative">
-            <div class="container">
-              <button class="join-button"(click)="openDiagramAdd()" >Add somthing new</button>
-            </div>
+        <!-- ----------------------Partie Stepper 3 : how --------------------------->
+          <nb-step [label]="labelThree">
+            <ng-template #labelThree>How?</ng-template>
+            <div class="h6" style="color:darkblue;">How it works ?⚡🚀</div>
+            <br>
+            <div class="row g-0  position-relative">
+              <div class="container">
+                <button class="join-button" (click)="openDiagramAdd()" >Add somthing new</button>
+              </div>
               <!-- Image Container -->
               <div class="container">
-            <div class="col-md-14 mx-auto">
-                <img src="assets/images/planning.PNG" alt="Description de l'image" class="responsive-image">
+                <div>
+                  <img src="assets/images/planning.PNG" class="img-fluid" alt="Responsive image">
+                </div>
+              </div>
+              <br>
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6 col-sm-8 mb-4"  *ngFor="let diagram of diagrams">
+                    <div class="col">
+                      <div class="card">
+                        <div>
+                          <i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDiagram(diagram.id)"></i>
+                          &nbsp; &nbsp;<i class="far fa-edit" style="color:dimgrey;" (click)=" openDiagram(diagram)"></i>
+                        </div>
+                        <div class="card-body">
+                          <img src="assets/images/how.jpg" alt="Join the session">
+                          <h4>{{diagram.stptitle}}</h4>
+                          <p>{{diagram.stpDescription}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <br>
               <br>
-              <br>
-              <br>
-              <div class="gif-container">
-                <img src="assets/images/try-me.gif" alt="Arrow GIF" class="arrow-gif"> <!-- GIF Arrow -->
-              </div>
-            <br>
-            <br>
             </div>
             <br>
-            <br>
-            <div class="container">
-              <div class="row">
-                <!-- First Step -->
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <img src="assets/images/image1.png" alt="Join the session">
-                      <h3>Join the session</h3>
-                      <p>The team members gather to participate in a planning poker session. This is typically done during a sprint planning meeting where all relevant team members are present.</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Second Step -->
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <img src="assets/images/image2.png" alt="Discussing the User Story">
-                      <h3>Discussing the User Story</h3>
-                      <p>The product owner or a team member explains the user story to ensure everyone understands the requirements and scope of the task. This helps in having a common understanding of what needs to be estimated.</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Third Step -->
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <img src="assets/images/image3.png" alt="Secret Selection of Cards">
-                      <h3>Secret Selection of Cards</h3>
-                      <p>Each team member privately selects a card that represents their estimate for the user story. The card values typically follow a Fibonacci sequence or similar scale to represent the effort or complexity.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <!-- Fourth Step -->
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <img src="assets/images/image4.png" alt="Displaying All the Cards at Once">
-                      <h3>Displaying All the Cards at Once</h3>
-                      <p>After everyone has made their selection, all cards are revealed simultaneously. This ensures that individual estimates are not influenced by others.</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Fifth Step -->
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <img src="assets/images/image5.png" alt="Discuss Highest and Lowest Estimates">
-                      <h3>Discuss Highest and Lowest Estimates</h3>
-                      <p>The team discusses the highest and lowest estimates to understand the reasoning behind these selections. This step is crucial for uncovering different perspectives and potential misunderstandings.</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Sixth Step -->
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <img src="assets/images/image7.png" alt="Consensus?">
-                      <h3>Consensus?</h3>
-                      <p>The team evaluates whether there is a consensus on the estimate. If there is a consensus, the estimate is finalized. If not, further discussion is needed.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <!-- The End -->
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <img src="assets/images/image6.png" alt="Success">
-                      <h3>Success</h3>
-                      <p>If consensus is reached, the estimation process for the user story is completed successfully, and the team can move on to the next user story.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <br>
-            <br>
-          </div>
+            <button nbButton nbStepperPrevious>prev</button>
+            <button nbButton nbStepperNext>next</button>
+          </nb-step>
+        <!-- ----------------------Partie Stepper 4 : what if--------------------------->
+        <nb-step [label]="labelFour">
+          <ng-template #labelFour>What If ?</ng-template>
           <br>
-          <div>
-            <nb-card >
+         <div class="h6" style="color:darkblue;">what if we test a real application ?⚡🚀</div>
+           <div class="row g-0 bg-light position-relative">
+             <div class="col-md-6">
+               <video autoplay="" loop="" height="440" width="100%">
+                 <source src="/assets/videos/20240706-1104-39.2886108.mp4" type="video/mp4">
+                 Your browser does not support the video tag.
+               </video>
+             </div>
+             <div class="col-md-6">
+               <div class="interface-container">
+
+                 <div class="col-sm-auto btn btn-outline-primary btn-rounded" (click)=" createStep(step)" style="float: right;">
+                   <i class="bi bi-bookmark-plus-fill">+</i>
+                 </div>
+                 <ul class="instructions"  *ngFor="let s of steps">
+                   <li class=" items-center gap-3 pb-7"><img src="assets/images/how.png" alt="Create Icon" style="color: orangered">
+                     <div class="quote">
+                       {{s.title}}
+                     </div>
+                   </li>
+                 </ul>
+               </div>
+             </div>
+             <br>
+             <br>
+           </div>
+          <br>
+          <div >
+            <nb-card class="container" >
               <br>
-              <div *ngFor="let diagram of diagrams">
-                <i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDiagram(diagram.id)"></i>
-                <i class="far fa-edit" style="color:dimgrey;" (click)=" openDiagram(diagram)"></i>
-                <div class="card">
-                  <div class="card-body">
-                    <img src="assets/images/image6.png" alt="Success">
-                    <h3>{{diagram.stptitle}}</h3>
-                    <p>{{diagram.stpDescription}}</p>
-                  </div>
-                </div>
+              <div   *ngFor="let step of steps">
+                <i class="far fa-edit" style="color:dimgrey;" (click)=" openStep(step)"></i>&nbsp;
+                <i class="fas fa-trash-alt fa-lg mt-2" style="color: red; cursor: pointer;" (click)="deleteStep(step.id)"></i>
+                <h6 style="position:relative">
+                  ⚡🚀{{step.title}}⚡🚀
+                </h6>
+                <p class="lorem">
+                  {{step.stepDescription}}
+                </p>
               </div>
             </nb-card>
             <br>
           </div>
           <button nbButton nbStepperPrevious>prev</button>
-          <button nbButton nbStepperNext>next</button>
-        </nb-step>
-        <!--        what if step-->
-        <nb-step [label]="labelFour">
-          <ng-template #labelFour>What If ?</ng-template>
-          <h3>Step content #4</h3>
-          <button nbButton nbStepperPrevious>prev</button>
           <button nbButton disabled nbStepperNext>next</button>
         </nb-step>
       </nb-stepper>
     </nb-card-body>
-
-
   </nb-card>
 </div>
+<br>
+<br>
+<!------------------------------------- limits --------------------------------------->
+<div class="container">
+  <h6>The limits of Scrum Planning Poker </h6>
+  <button nbButton status="info" style="margin-bottom: 25px" (click)="openLimitsAdd()">Add Limit</button>
 
-<!--news -->
-<nb-card class="container"  *ngFor="let n of infos">
-  <br>
-  <div class="h6 p-md-4 " style="color:darkblue">{{n.title}}⚡🃏🚀</div>
+  <div class="row">
 
-  <div >
-    <div class="row g-0  p-md-4 ">
-      <div >
-        <br>
-        <div>
-          <p style="font-size:16px; ">{{n.newsDescription}}
-            <i class="far fa-edit fa-lg mt-2" style="color: black; cursor: pointer;" (click)="openInfoUpdate(info)"></i>
+    <div class="col-md-4 col-sm-6 mb-4" *ngFor="let limit of limits">
+      <div class="feature-card">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front1 text-center">
+              <h5 class="discover-title">{{limit.title}}</h5>
+              <img src="assets/images/limits.png" class="img-fluid" style="width: 90px; height: 90px;" alt="Description de l'image">
+            </div>
+            <i class="far fa-edit fa-lg mt-2" style="color: black; cursor: pointer;" (click)="openLimitsUpdate(limit)"></i>
+            &nbsp; <i class="fas fa-trash-alt fa-lg mt-2" style="color: red; cursor: pointer;" (click)="deleteLimit(limit.id)"></i>
+
+            <div class="flip-card-back1 text-center">
+              <p class="quote">{{limit.limitDescription}}</p>
+            </div>
+          </div>
         </div>
       </div>
-      <!--<div class="col-md-6  ">
-        <img src="assets/images/scrum.jpg" alt="Description de l'image" class="responsive-image">
-      </div>-->
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<!-------------------------------------------- partie news ---------------------------------------->
+<nb-card class="container" *ngFor="let n of news">
+  <div class="card-header">
+    <h6 class="title" style="color: darkblue">
+      {{n.title}}⚡🃏🚀
+    </h6>
+    <div class="icons">
+      <i class="far fa-edit fa-lg" style="color: black; cursor: pointer;" (click)="openNewsUpdate(n)"></i>&nbsp;
+      &nbsp; <i class="fas fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteNew(n.id)"></i>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="row g-0 p-md-4">
+      <div>
+        <p style="font-size: 16px; line-height: 1.75;">{{n.newsDescription}}</p>
+      </div>
     </div>
   </div>
 </nb-card>
+<!-------------------------------------------- partie cards ---------------------------------------->
+
+  <div class="col-md-12 mb-md-0 p-md-4 ">
+    <ngx-security-cameras></ngx-security-cameras>
+  </div>
+
+
+
 
 
 

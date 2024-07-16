@@ -286,7 +286,6 @@
     color: white;
     box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
   }
-
   .responsive-image {
     width: 100%;
     height: auto;
@@ -362,13 +361,6 @@
     color: white;
     transform: rotateY(180deg);
   }
-
-  .container {
-    width: 80%;
-    margin: auto;
-  }
-  // hedha mtaa Lhow
-
   .card {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -403,5 +395,7 @@
     width: 80px; /* Adjust size as needed */
     height: auto;
   }
+
+
 
 }

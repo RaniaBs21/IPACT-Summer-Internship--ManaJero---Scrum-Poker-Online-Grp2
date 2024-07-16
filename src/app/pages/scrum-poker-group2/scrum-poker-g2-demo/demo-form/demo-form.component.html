@@ -1,11 +1,13 @@
 <nb-card>
-  <nb-card-header>Update your step</nb-card-header>
+  <nb-card-header style="font-weight: bold">Add New Information</nb-card-header>
   <nb-card-body>
-    <input nbInput fullWidth placeholder="Title" [(ngModel)]="infos.title" />
-    <textarea rows="5" nbInput fullWidth shape="round" [(ngModel)]="infos.newsDescription"></textarea>
+    <form [formGroup]="addNewForm">
+      <input nbInput shape="round" fullWidth placeholder="Title" formControlName="title" style="margin-bottom: 8px" />
+      <textarea rows="5" nbInput fullWidth shape="round" placeholder="Description" formControlName="newsDescription"></textarea>
+    </form>
   </nb-card-body>
-  <nb-card-footer>
-    <button nbButton hero status="primary" (click)="addNews(infos)">Add</button>
-    <button nbButton status="danger" class="cancel-button" (click)="cancel()">Cancel</button>
+  <nb-card-footer class="footer-buttons">
+    <button nbButton hero status="primary" (click)="confirmAdd()">Add Information</button>
+    &nbsp;<button nbButton status="danger" class="cancel-button" (click)="cancel()">Cancel</button>
   </nb-card-footer>
 </nb-card>

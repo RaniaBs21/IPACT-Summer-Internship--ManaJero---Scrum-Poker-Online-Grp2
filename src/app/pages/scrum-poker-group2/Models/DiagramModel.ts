@@ -1,5 +1,6 @@
 export class DiagramModel {
-     id: string;
-     stptitle: string;
-     stpDescription: string;
+  id: string;
+  stptitle: string;
+  stpDescription: string;
+
 }
