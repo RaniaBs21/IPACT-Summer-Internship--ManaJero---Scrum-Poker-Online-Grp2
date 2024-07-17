@@ -11,16 +11,16 @@ import {
 } from '@angular/core';
 import { Location, LocationStrategy } from '@angular/common';
 
-let uniqueId = 0;
-const VIEW_BOX_SIZE = 300;
+/*let uniqueId = 0;
+const VIEW_BOX_SIZE = 300;*/
 
 @Component({
   selector: 'ngx-temperature-dragger',
   templateUrl: './temperature-dragger.component.html',
   styleUrls: ['./temperature-dragger.component.scss'],
 })
-export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
-
+export class TemperatureDraggerComponent  {
+/*
   @ViewChild('svgRoot', { static: true }) svgRoot: ElementRef;
 
   @Input() fillColors: string|string[];
@@ -376,5 +376,5 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
 
   private static toRad(angle) {
     return Math.PI * angle / 180;
-  }
+  }*/
 }

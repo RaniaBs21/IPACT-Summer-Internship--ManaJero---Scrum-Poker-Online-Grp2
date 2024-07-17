@@ -1,3 +1,4 @@
+<!--
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsAQMAAABDsxw2AAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAACJJREFUaN7twTEBAAAAwiD7pzbFPmAAAAAAAAAAAAAAAGQOLbQAAU3zwM4AAAAASUVORK5CYII=">
 
 <div class="svg-container">
@@ -23,7 +24,7 @@
         <g class="toFilter" [attr.filter]="getUrlPath('#blurFilter')">
           <path [attr.d]="arc.d" [attr.fill]="off ? styles.nonSelectedArc.color : arc.color" *ngFor="let arc of styles.gradArcs"></path>
         </g>
-        <!-- ngFor is a quirk fix for webkit rendering issues -->
+        &lt;!&ndash; ngFor is a quirk fix for webkit rendering issues &ndash;&gt;
         <path [attr.d]="styles.nonSelectedArc.d" [attr.fill]="styles.nonSelectedArc.color" *ngFor="let number of [0,1,2,3,4,5]"></path>
       </g>
 
@@ -45,3 +46,4 @@
 <button nbButton appearance="ghost" class="power-bg" [class.on]="!off" (click)="switchPower()">
   <nb-icon class="power-icon" icon="power-outline" pack="eva"></nb-icon>
 </button>
+-->
