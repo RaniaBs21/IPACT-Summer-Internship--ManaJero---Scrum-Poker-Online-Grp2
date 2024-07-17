@@ -30,7 +30,8 @@ body {
   width: 400px;
   height: 200px;
   border-radius: 20px;
-  background:beige; overflow:hidden;
+  background:beige;
+  overflow:hidden;
   box-shadow: 0 4px 8px rgb(119, 112, 111);
   transition: box-shadow 0.3s;
 }
@@ -119,7 +120,7 @@ body {
   color: #e2e8f0;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Signika:700,300,600);
+@import url('https://fonts.googleapis.com/css?family=Signika:700,300,600');
 
 html, body {
   height: 100%;
@@ -182,8 +183,8 @@ span:nth-child(4n-2) {
   text-shadow: 1px 1px #cc5129, 2px 2px #cc5129, 3px 3px #cc5129, 4px 4px #e0632c;
 }
 span:nth-child(4n-3) {
-  color: #F3BB00;
-  text-shadow: 1px 1px #D19A00, 2px 2px #D19A00, 3px 3px #D19A00, 4px 4px #F3BB00;
+  color: #f3bb00;
+  text-shadow: 1px 1px #d19a00, 2px 2px #d19a00, 3px 3px #d19a00, 4px 4px #f3bb00;
 }
 h1 span:nth-child(2) {
   animation-delay: 0.05s;
@@ -254,6 +255,7 @@ h1 span:nth-child(14) {
   .topnav .custom-button:focus {
     outline: none;
   }
+
 .sidebar {
   position: fixed;
   top: 0;
