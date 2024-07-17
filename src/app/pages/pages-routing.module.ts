@@ -1,12 +1,13 @@
 import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
-
+import { NgModule} from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 import {DemoFormComponent} from './scrum-poker-group2/scrum-poker-g2-demo/demo-form/demo-form.component';
+import {SessionComponent} from './scrum-poker-group2/session/session.component';
+import {RoomComponent} from './scrum-poker-group2/room/room.component';
 
 const routes: Routes = [{
   path: '',
@@ -19,6 +20,14 @@ const routes: Routes = [{
     {
       path: 'agile/scrum-poker-group2/demoform',
       component: DemoFormComponent,
+    },
+    {
+      path: 'agile/createSession',
+      component: SessionComponent ,
+    },
+    {
+      path: 'agile/room',
+      component: RoomComponent ,
     },
     {
       path: 'dashboard',

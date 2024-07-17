@@ -1,0 +1,58 @@
+/*
+.header{
+
+}
+.logo {
+  width: 60px; !* Ajustez la taille selon vos besoins *!
+  height: 60px; !* Vous pouvez aussi mettre 'auto' pour garder les proportions *!
+  border-radius: 50%; !* Rond *!
+}
+.invite-button {
+  //align-items: end;
+  justify-content: flex-end;
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 30px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  //margin-right: -5px;
+  //margin-left: 800px;
+
+}
+*/
+.row {
+  display: flex;
+  align-items: center; /* Aligne les éléments verticalement au centre */
+  justify-content: space-between; /* Espace entre les éléments pour pousser le bouton à droite */
+  padding: 10px;
+  //border: 1px solid #ccc;
+}
+.left-content {
+  display: flex;
+  align-items: center; /* Aligne les éléments verticalement au centre */
+}
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+.invite-button {
+  padding: 10px 20px;
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.invite-button i {
+  margin-right: 8px; /* Espace entre l'icône et le texte */
+}
