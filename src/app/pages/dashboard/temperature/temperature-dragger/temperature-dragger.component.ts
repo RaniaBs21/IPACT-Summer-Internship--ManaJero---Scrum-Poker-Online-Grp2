@@ -57,7 +57,7 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event) {
     this.invalidate();
   }
 
