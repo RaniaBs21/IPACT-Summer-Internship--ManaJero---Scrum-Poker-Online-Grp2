@@ -1,0 +1,22 @@
+<div class="create-game-container">
+  <div class="header">
+    <h3 class="welcome-message">👌 Welcome to Our Game! 👌</h3>
+  </div>
+  <form [formGroup]="addSessionForm" (ngSubmit)="confirmAdd()" #sessionForm="ngForm">
+    <div class="form-group">
+      <input type="text" placeholder="Game's name" class="form-control" formControlName="name" required>
+      <!-- Validation pour le nom du jeu -->
+    </div>
+    <div class="form-group">
+      <label style="font-weight: bold">Voting system</label>
+      <select class="form-control" formControlName="votingSystem" (change)="onVotingSystemChange($event.target.value)" required>
+        <option *ngFor="let system of votingSystems" [value]="system.value">{{ system.description }}</option>
+      </select>
+      <!-- Validation pour le système de vote -->
+    </div>
+    <button type="submit" class="start-button" [disabled]="addSessionForm.invalid">
+      Start Session <span class="arrow">→</span>
+    </button>
+  </form>
+
+</div>
