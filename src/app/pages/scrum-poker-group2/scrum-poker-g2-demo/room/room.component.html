@@ -79,8 +79,8 @@
 
       <h5>issues</h5>
       <div class="dropdown-container">
-        <img src="assets/images/import.png" width="50" height="50" class="spaced-img" (click)="toggleDropdown()"
-             style="cursor:pointer;">
+        <img src="assets/images/import.png" style="width: 50px; height: 50px" class="spaced-img" (click)="toggleDropdown()"
+             style="cursor:pointer;" alt="desc">
         <ul *ngIf="isDropdownOpen" class="dropdown-content">
           <li (click)="selectOption('jira')">Import from JIRA</li>
           <li (click)="selectOption('linear')">Import from Linear</li>
@@ -88,10 +88,10 @@
           <li (click)="selectOption('csv')">Import from CSV</li>
         </ul>
       </div>
-      <img src="assets/images/close.png" width="50" height="50" (click)="toggleSidebar()" class="close-button">
+      <img src="assets/images/close.png" style="width: 50px; height: 50px" (click)="toggleSidebar()" class="close-button" alt="desc">
     </div>
     <button class="btn btn-light" *ngIf="!showForm" (click)="toggleForm()">
-      <img src="assets/images/addUserStory.png" width="45" height="45">
+      <img src="assets/images/addUserStory.png" style="width: 45px; height: 45px" alt="desc">
       Add An issues
     </button>
     <div *ngIf="showForm" class="issue-form">
