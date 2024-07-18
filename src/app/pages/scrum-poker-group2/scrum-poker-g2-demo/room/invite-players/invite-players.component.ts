@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {NbDialogRef, NbToastrService} from '@nebular/theme';
-import {ApiService} from '../../../services/api-service.service';
+import {NbDialogRef } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-invite-players',

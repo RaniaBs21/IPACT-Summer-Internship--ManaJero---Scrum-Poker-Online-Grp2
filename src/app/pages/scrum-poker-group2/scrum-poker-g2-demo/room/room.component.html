@@ -1,73 +1,4 @@
-<!--
-<body>
-<div class="container">
-    <div class="topnav">
-        <button class="custom-button" (click)="toggleSidebar()">
-            <img src="assets/images/menu.png" style="width: 45px; height: 40px; " class="button-icon" alt="description">
-        </button>
 
-        <button class="custom-button">
-            <img src="assets/images/invitation.png" style="width: 45px; height: 45px;" class="button-icon" alt="description">
-            Invite players
-        </button>
-    </div>
-
-    <div class="button-container">
-        <div class="button-wrapper">
-            <br>
-            <h1><span>P</span><span>I</span><span>C</span><span>K</span><span> </span><span>Y</span><span>O</span><span>U</span><span>R</span><span> </span><span>C</span><span>A</span><span>R</span><span>D</span><span>S</span><span>!</span></h1>        </div>
-    </div>
-
-    <div class="card">
-        <h5 class="card-name">nour</h5>
-    </div>
-
-    <div class="cards">
-        <div class="group relative h-40 cursor-pointer" *ngFor="let card of cards" [id]="'vote_card_' + card" (click)="selectCard(card)" [style.opacity]="selectedCard === card ? '1' : '0.5'">
-            <button class="card-button">{{card}}</button>
-        </div>
-    </div>
-
-
-    &lt;!&ndash; Sidebar &ndash;&gt;
-    <div class="sidebar" [class.open]="isSidebarOpen">
-        <div class="sidebar-header">
-            <h2>Issues</h2>
-        </div>
-        <div class="sidebar-content">
-            <div class="header-container">
-
-                <h5>issues</h5>
-                <img src="assets/images/import.png" style="width: 50px; height: 50px;" class="spaced-img" alt="desc">
-                <img src="assets/images/close.png" style="width: 50px; height: 50px;"  (click)="toggleSidebar()" class="close-button" alt="desc">
-
-
-            </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <button class="btn btn-light">
-                <img src="assets/images/addUserStory.png" style="width: 45px; height: 45px;" alt="desc">
-                Add An issues
-            </button>
-        </div>
-    </div>
-
-
-    &lt;!&ndash; Overlay &ndash;&gt;
-    <div class="overlay" [class.show]="isSidebarOpen" (click)="toggleSidebar()"></div>
-
-</div>
-</body>
-
--->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
 <body>
 <div class="container">
   <div class="topnav">
@@ -76,10 +7,10 @@
     </div>
 
     <button class="custom-button" (click)="toggleSidebar()">
-      <img src="assets/images/menu.png" width="45" height="40" class="button-icon">
+      <img src="assets/images/menu.png" style="width: 45px; height: 40px"  class="button-icon" alt="desc">
     </button>
     <button class="custom-button" (click)="openInvitePlayers()">
-      <img src="assets/images/invitation.png" width="45" height="45" class="button-icon">
+      <img src="assets/images/invitation.png" style="width: 45px; height: 45px"  class="button-icon" alt="desc">
       Invite players
     </button>
   </div>
@@ -112,12 +43,12 @@
   <div class="sidebar-content">
     <div class="header-container">
       <h5>issues</h5>
-      <img src="assets/images/import.png" width="50" height="50" class="spaced-img">
-      <img src="assets/images/close.png" width="50" height="50" (click)="toggleSidebar()" class="close-button">
+      <img src="assets/images/import.png" style="width: 50px; height: 50px"  class="spaced-img" alt="desc">
+      <img src="assets/images/close.png" style="width: 50px; height: 50px" (click)="toggleSidebar()" class="close-button" alt="desc">
     </div>
     <br><br><br><br>
     <button class="btn btn-light">
-      <img src="assets/images/addUserStory.png" width="45" height="45">
+      <img src="assets/images/addUserStory.png" style="width: 45px; height: 45px" alt="desc">
       Add An issue
     </button>
   </div>
@@ -130,4 +61,4 @@
   <i class="fas fa-times"></i>
   Close Session
 </button>
-</html>
+

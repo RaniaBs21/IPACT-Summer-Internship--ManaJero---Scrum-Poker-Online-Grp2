@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {SessionModel} from '../../Models/SessionModel';
 import {ApiService} from '../../services/api-service.service';
 import {ActivatedRoute} from '@angular/router';
-import {DemoFormComponent} from '../demo-form/demo-form.component';
 import {NbDialogService} from '@nebular/theme';
 import {InvitePlayersComponent} from './invite-players/invite-players.component';
 import { Location } from '@angular/common';
