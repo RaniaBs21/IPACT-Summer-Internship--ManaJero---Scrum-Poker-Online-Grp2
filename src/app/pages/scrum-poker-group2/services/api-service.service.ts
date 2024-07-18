@@ -7,6 +7,7 @@ import {LimitsModel} from '../Models/LimitsModel';
 import {StepsModel} from '../Models/stepsModel';
 import {NewsModel} from '../Models/NewsModel';
 import {DiagramModel} from '../Models/DiagramModel';
+import {SessionModel} from '../models/SessionModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -131,4 +132,12 @@ export class ApiService {
     return this.httpClient.delete<void>(`${this.API_URL}/deleteDiagram/${id}`);
   }
 
+  // ********************** Session services ***********************
+
+  addSession(session: SessionModel): Observable<SessionModel> {
+    return this.httpClient.post<SessionModel>(`${this.API_URL}/addSession`, session);
+  }
+  getSession(id: string): Observable<SessionModel> {
+    return this.httpClient.get<SessionModel>(`${this.API_URL}/getSession/${id}`);
+  }
 }

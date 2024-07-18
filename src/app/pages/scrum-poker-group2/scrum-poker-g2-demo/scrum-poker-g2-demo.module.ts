@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import {
   NbActionsModule,
@@ -31,6 +32,8 @@ import {SecurityCamerasComponent} from './security-cameras/security-cameras.comp
 import {IntroUpdateComponent} from './intro-update/intro-update.component';
 import {DiagramAddComponent} from './diagram-add/diagram-add.component';
 import {DiagramUpdateComponent} from './diagram-update/diagram-update.component';
+import { SessionComponent } from './session/session.component';
+import {RoomComponent} from './room/room.component';
 // import { BenefitsUpdateComponent } from './benefits-update/benefits-update.component';
 
 // import { LimitssAddComponent } from './limitss-add/limitss-add.component';
@@ -71,6 +74,8 @@ import {DiagramUpdateComponent} from './diagram-update/diagram-update.component'
     IntroUpdateComponent,
     DiagramAddComponent,
     DiagramUpdateComponent,
+    SessionComponent,
+    RoomComponent,
   ],
   exports: [
   ],
