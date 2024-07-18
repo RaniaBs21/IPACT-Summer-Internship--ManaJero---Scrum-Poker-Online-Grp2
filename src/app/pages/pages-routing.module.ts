@@ -8,6 +8,7 @@ import {ScrumPokerG2DemoComponent} from './scrum-poker-group2/scrum-poker-g2-dem
 import {DemoFormComponent} from './scrum-poker-group2/scrum-poker-g2-demo/demo-form/demo-form.component';
 import {SessionComponent} from './scrum-poker-group2/scrum-poker-g2-demo/session/session.component';
 import {RoomComponent} from './scrum-poker-group2/scrum-poker-g2-demo/room/room.component';
+import {ResultComponent} from './scrum-poker-group2/scrum-poker-g2-demo/room/result/result.component';
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
@@ -21,13 +22,17 @@ const routes: Routes = [{
       component: DemoFormComponent,
     },
     {
-      path: 'agile/scrum-poker-group2/createGame/room',
+      path: 'agile/scrum-poker-group2/session/room/:id',
       component: RoomComponent,
     },
 
     {
-      path: 'agile/scrum-poker-group2/createGame',
+      path: 'agile/scrum-poker-group2/session',
       component: SessionComponent,
+    },
+    {
+      path: 'agile/scrum-poker-group2/session/room/:id/result',
+      component: ResultComponent,
     },
     {
       path: 'dashboard',

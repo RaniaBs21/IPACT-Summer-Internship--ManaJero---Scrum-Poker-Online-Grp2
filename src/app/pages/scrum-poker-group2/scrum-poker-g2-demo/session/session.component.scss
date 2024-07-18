@@ -1,3 +1,5 @@
+
+/*
 body {
   font-family: 'Arial', sans-serif;
   display: flex;
@@ -66,13 +68,13 @@ body {
 }
 
 select.form-control {
-  font-size: 1em; /* Adjust the font size if needed */
+  font-size: 1em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  appearance: none; /* Hide default dropdown arrow */
+  appearance: none;
   background: none;
-  padding-right: 30px; /* Space for custom arrow */
+  padding-right: 30px;
 }
 
 .select-wrapper {
@@ -86,7 +88,7 @@ select.form-control {
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
-  pointer-events: none; /* Make the arrow clickable */
+  pointer-events: none;
   width: 20px;
   height: 20px;
 }
@@ -163,3 +165,96 @@ select.form-control {
   font-size: 1.5em;
   margin-left: 10px;
 }
+*/
+
+
+
+.create-game-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #e75413;
+  outline: none;
+}
+
+select.form-control {
+  font-size: 20px;
+  white-space: normal;
+}
+
+.start-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  border: none;
+  color: white;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 40px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.start-button:hover {
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
+}
+
+.arrow {
+  font-size: 1.8em;
+  margin-left: 10px;
+}
+
+select {
+  width: 90%;
+  padding: 24px;
+  margin-bottom: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 2.1em;
+}
+.welcome-message {
+  margin: 50px;
+  font-size: 30px;
+
+}
+.error {
+  .error-message {
+    color: #d9534f;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+  }
+}
+
