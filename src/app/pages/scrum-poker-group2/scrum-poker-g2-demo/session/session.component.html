@@ -5,18 +5,24 @@
   <form [formGroup]="addSessionForm" (ngSubmit)="confirmAdd()" #sessionForm="ngForm">
     <div class="form-group">
       <input type="text" placeholder="Game's name" class="form-control" formControlName="name" required>
-      <!-- Validation pour le nom du jeu -->
+      <!-- Validation messages for the game name -->
+      <div *ngIf="addSessionForm.get('name').invalid && (addSessionForm.get('name').dirty || addSessionForm.get('name').touched)" class="error">
+        <small *ngIf="addSessionForm.get('name').errors.required" class="error-message">Game's name is required.</small>
+        <small *ngIf="addSessionForm.get('name').errors.minlength" class="error-message">Game's name must be at least 3 characters long.</small>
+      </div>
     </div>
     <div class="form-group">
       <label style="font-weight: bold">Voting system</label>
       <select class="form-control" formControlName="votingSystem" (change)="onVotingSystemChange($event.target.value)" required>
         <option *ngFor="let system of votingSystems" [value]="system.value">{{ system.description }}</option>
       </select>
-      <!-- Validation pour le système de vote -->
+      <!-- Validation messages for the voting system -->
+      <div *ngIf="addSessionForm.get('votingSystem').invalid && (addSessionForm.get('votingSystem').dirty || addSessionForm.get('votingSystem').touched)" class="error">
+        <small *ngIf="addSessionForm.get('votingSystem').errors.required" class="error-message">Voting system is required.</small>
+      </div>
     </div>
     <button type="submit" class="start-button" [disabled]="addSessionForm.invalid">
       Start Session <span class="arrow">→</span>
     </button>
   </form>
-
 </div>
