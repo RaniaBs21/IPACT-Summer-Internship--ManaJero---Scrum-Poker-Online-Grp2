@@ -33,6 +33,11 @@ const routes: Routes = [{
       path: 'agile/scrum-poker-group2/createGame',
       component: SessionComponent,
     },
+    {
+      path: 'agile/scrum-poker-group2/createGame/room/createGame',
+      component: SessionComponent,
+    },
+
 
     {
       path: 'dashboard',

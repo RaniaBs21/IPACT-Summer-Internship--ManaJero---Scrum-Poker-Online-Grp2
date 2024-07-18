@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
@@ -7,26 +8,27 @@ import {LimitsModel} from '../Models/LimitsModel';
 import {StepsModel} from '../Models/stepsModel';
 import {NewsModel} from '../Models/NewsModel';
 import {DiagramModel} from '../Models/DiagramModel';
+import {SessionModel} from '../models/SessionModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
 
   readonly API_URL = 'http://localhost:8082';
   // readonly ENDPOINT_DEMO = '/getDemo' ;
- // readonly ENDPOINT_Benefits = '/getBenefits' ;
- // readonly ENDPOINT_Limits = '/getLimits' ;
+  // readonly ENDPOINT_Benefits = '/getBenefits' ;
+  // readonly ENDPOINT_Limits = '/getLimits' ;
   // readonly ENDPOINT_Demo_update = '/updateDemo/' ;
- // readonly ENDPOINT_Benefits_update = '/updateBenefits/' ;
- // readonly ENDPOINT_Limits_update = '/updateLimits/' ;
+  // readonly ENDPOINT_Benefits_update = '/updateBenefits/' ;
+  // readonly ENDPOINT_Limits_update = '/updateLimits/' ;
   // readonly ENDPOINT_Demo_Create = '/adddemo' ;
- // readonly ENDPOINT_Steps = '/getSteps' ;
+  // readonly ENDPOINT_Steps = '/getSteps' ;
   // readonly ENDPOINT_Steps_by_Id = '/getSteps' ;
- // readonly ENDPOINT_delete_step = '/deleteStep/' ;
+  // readonly ENDPOINT_delete_step = '/deleteStep/' ;
   // readonly ENDPOINT_Steps_update = '/updateStep/' ;
- // readonly ENDPOINT_Step_Create = '/addSteps' ;
- // readonly ENDPOINT_News_Create = '/addNews' ;
- // readonly ENDPOINT_News = '/getNews' ;
- // readonly ENDPOINT_News_update = '/updateNew/' ;
+  // readonly ENDPOINT_Step_Create = '/addSteps' ;
+  // readonly ENDPOINT_News_Create = '/addNews' ;
+  // readonly ENDPOINT_News = '/getNews' ;
+  // readonly ENDPOINT_News_update = '/updateNew/' ;
 
 
 
@@ -131,4 +133,12 @@ export class ApiService {
     return this.httpClient.delete<void>(`${this.API_URL}/deleteDiagram/${id}`);
   }
 
+  // ********************** Session services ***********************
+
+  addSession(session: SessionModel): Observable<SessionModel> {
+    return this.httpClient.post<SessionModel>(`${this.API_URL}/addSession`, session);
+  }
+  getSession(id: string): Observable<SessionModel> {
+    return this.httpClient.get<SessionModel>(`${this.API_URL}/getSession/${id}`);
+  }
 }
