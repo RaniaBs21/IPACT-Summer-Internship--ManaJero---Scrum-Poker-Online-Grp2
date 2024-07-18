@@ -11,7 +11,7 @@ import { SessionModel } from '../../models/SessionModel';
 export class RoomComponent implements OnInit {
   sessionId: string;
   session: SessionModel;
-  cards: string[] = [' ☕', '0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89'];
+  cards: string[] = [];
   selectedCard: string | null = null;
   isSidebarOpen = false;
 
@@ -28,11 +28,27 @@ export class RoomComponent implements OnInit {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
         this.session = session;
+        this.cards = this.getCardsForSystem(session.votingSystem);
       },
       (error) => {
         console.error('Error fetching session details:', error);
       },
     );
+  }
+
+  getCardsForSystem(system: string): string[] {
+    switch (system) {
+      case 'FIBONACCI':
+        return [' ☕', '0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89'];
+      case 'MODIFIED_FIBONACCI':
+        return [' ☕', '0', '½', '1', '2', '3', '5', '8', '13', '20', '40', '100'];
+      case 'TSHIRTS':
+        return [' ☕', 'XS', 'S', 'M', 'L', 'XL'];
+      case 'POWERS_OF_2':
+        return [' ☕', '0', '1', '2', '4', '8', '16', '32', '64'];
+      default:
+        return [];
+    }
   }
 
   selectCard(card: string) {

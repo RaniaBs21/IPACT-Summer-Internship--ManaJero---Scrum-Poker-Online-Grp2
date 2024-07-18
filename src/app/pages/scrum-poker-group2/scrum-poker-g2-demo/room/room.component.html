@@ -32,6 +32,7 @@
   <div class="card">
     <h5 class="card-name">nour</h5>
   </div>
+  <!-- Cards for voting -->
 
   <div class="cards">
     <div class="group relative h-40 cursor-pointer" *ngFor="let card of cards" [id]="'vote_card_' + card" (click)="selectCard(card)" [style.opacity]="selectedCard === card ? '1' : '0.5'">
@@ -40,7 +41,7 @@
   </div>
 </div>
 
-<!-- Sidebar -->
+  <!-- Sidebar -->
 <div class="sidebar" [class.open]="isSidebarOpen">
   <div class="sidebar-header">
     <h2>Issues</h2>

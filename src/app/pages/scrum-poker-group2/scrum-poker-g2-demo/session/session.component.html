@@ -21,6 +21,15 @@
         <small *ngIf="addSessionForm.get('votingSystem').errors.required" class="error-message">Voting system is required.</small>
       </div>
     </div>
+    <!-- Display cards -->
+    <div class="form-group">
+      <label style="font-weight: bold">Cards</label>
+      <div *ngIf="addSessionForm.get('cards').value as cards" class="cards-container">
+        <div *ngFor="let card of cards" class="card">
+          <span>{{ card }}</span>
+        </div>
+      </div>
+    </div>
     <button type="submit" class="start-button" [disabled]="addSessionForm.invalid">
       Start Session <span class="arrow">→</span>
     </button>

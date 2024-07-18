@@ -1,3 +1,36 @@
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.card {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  text-align: center;
+  width: 60px; /* Adjust width as needed */
+  height: 80px; /* Adjust height as needed */
+  line-height: 80px; /* Vertically center the text */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card span {
+  display: block;
+  font-size: 24px;
+}
+
+
 .create-game-container {
   max-width: 1000px; /* Augmenté la largeur maximale */
   margin: 0 auto;
@@ -85,4 +118,6 @@ select {
     font-size: 1rem;
     margin-top: 0.25rem;
   }
+
+
 }

@@ -28,6 +28,7 @@ export class SessionComponent implements OnInit {
     this.addSessionForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       votingSystem: [VotingSystem.FIBONACCI, Validators.required],
+      cards: [this.getCardsForSystem(VotingSystem.FIBONACCI)],
     });
   }
 
