@@ -15,6 +15,7 @@ export class SessionComponent implements OnInit {
     value: key,
     description: VotingSystem[key],
   }));
+
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
@@ -26,6 +27,7 @@ export class SessionComponent implements OnInit {
     this.addSessionForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       votingSystem: [VotingSystem.FIBONACCI, Validators.required],
+      cards: [this.getCardsForSystem(VotingSystem.FIBONACCI)],
     });
   }
 
@@ -34,6 +36,7 @@ export class SessionComponent implements OnInit {
     const cards = this.getCardsForSystem(selectedSystem);
     this.addSessionForm.patchValue({ cards });
   }
+
   getCardsForSystem(system: VotingSystem): string[] {
     switch (system) {
       case VotingSystem.FIBONACCI:
