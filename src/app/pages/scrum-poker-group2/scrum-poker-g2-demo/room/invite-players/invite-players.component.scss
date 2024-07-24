@@ -587,7 +587,7 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
   background-color: #f0f4ff;
   padding: 15px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -633,10 +633,10 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
   margin-left: 8px;
 }
 .row {
-  position: relative; /* Nécessaire pour que les boutons de modification et de suppression soient correctement positionnés */
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Distribue les éléments avec de l'espace entre eux */
+  justify-content: space-between;
 }
 
 .edit-delete-buttons {
