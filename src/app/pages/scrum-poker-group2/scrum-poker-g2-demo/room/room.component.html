@@ -79,35 +79,65 @@
 
       <h5>issues</h5>
       <div class="dropdown-container">
-        <img src="assets/images/import.png" style="width: 50px; height: 50px" class="spaced-img" (click)="toggleDropdown()"
-             style="cursor:pointer;" alt="desc">
-        <ul *ngIf="isDropdownOpen" class="dropdown-content">
-          <li (click)="selectOption('jira')">Import from JIRA</li>
-          <li (click)="selectOption('linear')">Import from Linear</li>
-          <li (click)="selectOption('urls')">Add from URLs</li>
-          <li (click)="selectOption('csv')">Import from CSV</li>
-        </ul>
-      </div>
-      <img src="assets/images/close.png" style="width: 50px; height: 50px" (click)="toggleSidebar()" class="close-button" alt="desc">
+
+
+          <img src="assets/images/import.png" width="50" height="50" class="spaced-img" (click)="toggleDropdown()"
+               style="cursor:pointer;" alt="desc">
+          <ul *ngIf="isDropdownOpen" class="dropdown-content">
+            <li (click)="selectOption('jira')">Import from JIRA</li>
+            <li (click)="selectOption('linear')">Import from Linear</li>
+            <li (click)="selectOption('urls')">Add from URLs</li>
+            <li (click)="selectOption('csv')">Import from CSV</li>
+          </ul>
+        </div>
+        <img src="assets/images/close.png" width="50" height="50" (click)="toggleSidebar()" class="close-button" alt="desc">
     </div>
     <button class="btn btn-light" *ngIf="!showForm" (click)="toggleForm()">
-      <img src="assets/images/addUserStory.png" style="width: 45px; height: 45px" alt="desc">
+      <img src="assets/images/addUserStory.png" width="45" height="45" alt="desc">
       Add An issues
     </button>
+
+
+<!------------------------------ add issue form ------------------------->
+
+
     <div *ngIf="showForm" class="issue-form">
-      <nb-card-body>
-        <form>
-          <div class="form-group">
-                        <textarea rows="5" nbInput fullWidth shape="round" [(ngModel)]="issueTitle"
-                                  placeholder="Enter a title for the issue"></textarea>
+      <div class="scrollable-issues">
+          <div *ngFor="let issue of issues" class="issue-item">
+            <div class="issue-card">
+              <div class="row">
+
+                <p style=" line-height: 1.75;">{{ issue.issueDescription }}</p>
+
+                <button
+                  class="btn"
+                  [class.voting]="issue.isVoting"
+                  (click)="toggleVote(issue)">
+                  {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
+                </button>
+                <div class="edit-delete-buttons">
+                <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
+                <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
+              </div>
+              </div>
+
+            </div>
           </div>
 
-          <div class="button-group">
-            <button (click)="saveIssue()" class="btn btn-primary">Save</button>
-            <button (click)="cancel()" class="btn btn-light">Cancel</button>
+      <nb-card-body>
+        <form [formGroup]="addIssuesForm" >
+          <div class="form-group">
+            <textarea rows="5" nbInput fullWidth shape="round" formControlName="issueDescription" placeholder="Enter a new issue"></textarea>
           </div>
         </form>
       </nb-card-body>
+      <nb-card-footer class="footer-buttons">
+        <div class="button-group">
+          <button (click)="confirmIssueAdd()" class="btn btn-primary">Save</button>
+          <button (click)="cancel()" class="btn btn-light">Cancel</button>
+        </div>
+      </nb-card-footer>
+    </div>
     </div>
   </div>
 </div>

@@ -579,4 +579,90 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
   z-index: -1; // Mettre en arrière-plan
   animation: generate-confetti 1s linear infinite; // Animation pour générer
 }
+.issue-item {
+  margin: 10px 0;
+}
 
+.issue-card {
+  background-color: #f0f4ff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.issue-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.issue-card button:hover {
+  background-color: #0056b3;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: underline;
+}
+.issue-form {
+  display: flex;
+  flex-direction: column; /* Empile les enfants verticalement */
+}
+.scrollable-issues {
+  height: 600px;
+  overflow-y: auto; /* Ajoute un défilement vertical si le contenu dépasse */
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.btn {
+  padding: 5px 10px;
+  margin-left: 8px;
+}
+.row {
+  position: relative; /* Nécessaire pour que les boutons de modification et de suppression soient correctement positionnés */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribue les éléments avec de l'espace entre eux */
+}
+
+.edit-delete-buttons {
+  display: none; /* Masquer les boutons par défaut */
+  position: absolute;
+  right: 0; /* Aligne les boutons à droite du conteneur */
+  top: 80%; /* Aligne verticalement les boutons au centre du conteneur */
+  transform: translateY(-50%); /* Ajuste le positionnement vertical */
+  gap: 10px; /* Espacement entre les boutons */
+}
+
+.row:hover .edit-delete-buttons {
+  display: flex; /* Affiche les boutons lorsque le conteneur est survolé */
+}
+
+.edit-icon, .delete-icon {
+  font-size: 16px; /* Réduit la taille des icônes */
+  color: grey; /* Couleur des icônes */
+  cursor: pointer; /* Change le curseur lorsqu'on survole les icônes */
+  transition: color 0.3s; /* Ajoute une transition de couleur */
+}
+
+.edit-icon:hover {
+  color: black; /* Changement de couleur au survol pour l'icône de modification */
+}
+
+.delete-icon:hover {
+  color: red; /* Changement de couleur au survol pour l'icône de suppression */
+}

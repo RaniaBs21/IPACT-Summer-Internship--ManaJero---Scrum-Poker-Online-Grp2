@@ -8,6 +8,7 @@ import {StepsModel} from '../Models/stepsModel';
 import {NewsModel} from '../Models/NewsModel';
 import {DiagramModel} from '../Models/DiagramModel';
 import {SessionModel} from '../Models/SessionModel';
+import {IssuesModel} from '../Models/IssuesModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -139,5 +140,20 @@ export class ApiService {
   }
   getSession(id: string): Observable<SessionModel> {
     return this.httpClient.get<SessionModel>(`${this.API_URL}/getSession/${id}`);
+  }
+
+  // ********************** Issues services ***********************
+  addIssue(sessionId: string, issue: IssuesModel): Observable<IssuesModel> {
+    return this.httpClient.post<IssuesModel>(`${this.API_URL}/session/${sessionId}`, issue);
+  }
+  getIssuesBySessionId(sessionId: string): Observable<IssuesModel[]> {
+    return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
+  }
+  updateIssue ( id: string, issues: IssuesModel): Observable<IssuesModel> {
+    const url = `${this.API_URL}/updateIssue/${id}`;
+    return this.httpClient.put<IssuesModel>( url, issues );
+  }
+  deleteIssue(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.API_URL}/deleteIssue/${id}`);
   }
 }

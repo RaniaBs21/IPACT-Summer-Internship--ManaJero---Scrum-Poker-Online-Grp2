@@ -1,12 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {SessionModel} from '../../Models/SessionModel';
 import {ApiService} from '../../services/api-service.service';
 import {ActivatedRoute} from '@angular/router';
-import {NbDialogService} from '@nebular/theme';
+import {NbDialogService, NbToastrService} from '@nebular/theme';
 import {InvitePlayersComponent} from './invite-players/invite-players.component';
 import { Location } from '@angular/common';
 // @ts-ignore
 import confetti from 'canvas-confetti';
+import {LimitsModel} from '../../Models/LimitsModel';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {IssuesModel} from '../../Models/IssuesModel';
+import {DemoModel} from '../../Models/DemoModel';
+import {LimitsUpdateComponent} from '../limits-update/limits-update.component';
+import {IssuesUpdateComponent} from './issues-update/issues-update.component';
 
 @Component({
   selector: 'ngx-room',
@@ -23,16 +29,36 @@ export class RoomComponent implements OnInit {
   showForm = false;
   issueTitle = '';
   revealedCard: number | string | null = null;
-
+  addIssuesForm: FormGroup;
+  issues: IssuesModel[] = [];
+  loading: boolean = false;
+  page: number = 1; // Page de départ
+  pageSize: number = 20; // Nombre d'éléments par page
+  private isLoading: boolean = false;
+  dropdownVisible = false;
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
-              private location: Location) {}
+              private location: Location,
+              private toastrService: NbToastrService,
+              private fb: FormBuilder) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.sessionId = params['id'];
       this.getSessionDetails(this.sessionId);
+    });
+    if (!this.sessionId) {
+      this.sessionId = this.route.snapshot.paramMap.get('sessionId');
+    }
+    this.loadIssues();
+    this.addIssuesForm = this.fb.group({
+      issueDescription: ['', Validators.required],
+    });
+  }
+  loadIssues() {
+    this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
+      this.issues = issues;
     });
   }
   triggerConfetti(): void {
@@ -42,8 +68,6 @@ export class RoomComponent implements OnInit {
       origin: { y: 0.6 },
     });
   }
-
-
   getSessionDetails(sessionId: string) {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
@@ -72,20 +96,21 @@ export class RoomComponent implements OnInit {
   selectCard(card: string) {
     this.selectedCard = card;
   }
-
+  toggleVote(issue) {
+    issue.isVoting = !issue.isVoting;
+  }
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
-  selectOption(option: string) {
-    this.selectedOption = option;
-    this.isDropdownOpen = false;
-  }
-
   toggleForm() {
     this.showForm = !this.showForm;
   }
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  selectOption(option: string) {
+    this.selectedOption = option;
+    this.isDropdownOpen = false;
   }
   saveIssue() {
     if (this.issueTitle) {
@@ -111,5 +136,50 @@ export class RoomComponent implements OnInit {
         url: currentUrl,
       },
     });
+  }
+  confirmIssueAdd() {
+    if (this.addIssuesForm.valid) {
+      if (confirm('Are you sure you want to add this issue?')) {
+        this.addIssue();
+        this.loadIssues();
+      }
+    } else {
+      this.toastrService.danger('Please fill in all fields', 'Error');
+    }
+  }
+ addIssue() {
+    const newIssue: IssuesModel = this.addIssuesForm.value;
+    this.apiService.addIssue(this.sessionId, newIssue).subscribe(
+      (issue) => {
+        this.issues.push(issue);
+        this.addIssuesForm.reset();
+        this.toastrService.success('issue added successfully', 'Success');
+        this.loadIssues();
+      },
+      (error) => {
+        console.error('Error adding the issue:', error);
+        this.toastrService.danger('Failed to add the issue', 'Error');
+      },
+    );
+  }
+  openIssueUpdate(issue: IssuesModel) {
+    this.dialogService.open(IssuesUpdateComponent, {
+      context: {
+        title: 'Update issue',
+        issue: {...issue},
+      },
+    }).onClose.subscribe(() => this.loadIssues());
+  }
+  deleteIssue(id: string) {
+    if (confirm('Are you sure you want to delete this issue ?')) {
+      this.apiService.deleteIssue(id).subscribe(
+        () => {
+          this.issues = this.issues.filter((b) => b.id !== id);
+        },
+        (error) => {
+          console.error('Error deleting the issue :', error);
+        },
+      );
+    }
   }
 }
