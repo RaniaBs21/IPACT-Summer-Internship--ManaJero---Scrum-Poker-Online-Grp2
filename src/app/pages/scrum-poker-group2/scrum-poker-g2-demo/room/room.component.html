@@ -14,7 +14,7 @@
       </button>
       <ul *ngIf="isDropdownSessionOpen" class="dropdown-content">
         <li (click)="openSessionUpdate(session)"><i class="fas fa-cog"></i> Game settings</li>
-        <li ><i class="fas fa-history"></i> Voting History</li>
+        <li (click)="openVotingHistory()"><i class="fas fa-history"></i> Voting History</li>
       </ul>
     </div>
     <!-- Sous-titre pour le voting -->
@@ -94,7 +94,7 @@
             <li (click)="selectOption('csv')">Import from CSV</li>
           </ul>
         </div>
-        <img src="assets/images/close.png"  (click)="toggleSidebar()" class="close-button" alt="desc">
+        <img src="assets/images/close.png"  WIDTH="80" (click)="toggleSidebar()" class="close-button" alt="desc">
     </div>
     <button class="btn btn-light" *ngIf="!showForm" (click)="toggleForm()">
       <img src="assets/images/addUserStory.png" width="45" height="45" alt="desc">

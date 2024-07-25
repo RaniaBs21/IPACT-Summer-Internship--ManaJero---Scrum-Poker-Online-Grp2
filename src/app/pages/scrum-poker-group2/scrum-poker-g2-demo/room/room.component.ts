@@ -14,6 +14,7 @@ import {DemoModel} from '../../Models/DemoModel';
 import {LimitsUpdateComponent} from '../limits-update/limits-update.component';
 import {IssuesUpdateComponent} from './issues-update/issues-update.component';
 import {SessionUpdateComponent} from './session-update/session-update.component';
+import {VotingHistoryComponent} from './voting-history/voting-history.component';
 
 @Component({
   selector: 'ngx-room',
@@ -204,5 +205,11 @@ export class RoomComponent implements OnInit {
         session: {...session},
       },
     }).onClose.subscribe(() => this.loadSessions());
+  }
+  openVotingHistory() {
+    this.dialogService.open(VotingHistoryComponent, {
+      context: {
+      },
+    }).onClose.subscribe(() => this.loadIssues());
   }
 }
