@@ -12,11 +12,15 @@
       <span class="session-name" >{{ session?.name }} </span>
       <button class="btn btn-link dropdown-toggle" style="color:dimgrey" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"  (click)="toggleDropdownSession()">
       </button>
-      <ul *ngIf="isDropdownOpen" class="dropdown-content">
+      <ul *ngIf="isDropdownSessionOpen" class="dropdown-content">
         <li (click)="openSessionUpdate(session)"><i class="fas fa-cog"></i> Game settings</li>
         <li ><i class="fas fa-history"></i> Voting History</li>
       </ul>
     </div>
+    <!-- Sous-titre pour le voting -->
+    <!--<div *ngIf="selectedIssue" class="voting-subtitle">
+      <p>Voting: {{ selectedIssue.issueDescription }}</p>
+    </div>-->
 
     <button class="custom-button" (click)="toggleSidebar()">
       <img src="assets/images/menu.png" style="width: 45px; height: 40px"  class="button-icon" alt="desc">
@@ -90,7 +94,7 @@
             <li (click)="selectOption('csv')">Import from CSV</li>
           </ul>
         </div>
-        <img src="assets/images/close.png" width="50" height="50" (click)="toggleSidebar()" class="close-button" alt="desc">
+        <img src="assets/images/close.png"  (click)="toggleSidebar()" class="close-button" alt="desc">
     </div>
     <button class="btn btn-light" *ngIf="!showForm" (click)="toggleForm()">
       <img src="assets/images/addUserStory.png" width="45" height="45" alt="desc">
@@ -105,20 +109,29 @@
       <div class="scrollable-issues">
           <div *ngFor="let issue of issues" class="issue-item">
             <div class="issue-card">
+              <div>
+
+              </div>
+
+              <br>
+              <br>
               <div class="row">
+                <p class="card-header">{{issue.issueNumber}}</p>
+               <div class="card-body">
+                 <p style=" line-height: 1.75;" >{{ issue.issueDescription }}</p>
+                 <button
+                   class="btn-vote"
+                   [class.voting]="issue.isVoting"
+                   (click)="toggleVote(issue)">
+                   {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
+                 </button>
 
-                  <p style=" line-height: 1.75;">{{ issue.issueDescription }}</p>
-                  <button
-                    class="btn"
-                    [class.voting]="issue.isVoting"
-                    (click)="toggleVote(issue)">
-                    {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
-                  </button>
+                 <div class="edit-delete-buttons">
+                   <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
+                   <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
+                 </div>
+               </div>
 
-                  <div class="edit-delete-buttons">
-                      <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
-                      <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
-                  </div>
               </div>
 
             </div>

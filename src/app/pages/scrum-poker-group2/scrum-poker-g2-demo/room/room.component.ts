@@ -38,6 +38,9 @@ export class RoomComponent implements OnInit {
   pageSize: number = 20; // Nombre d'éléments par page
   private isLoading: boolean = false;
   dropdownVisible = false;
+  selectedIssue: IssuesModel | null = null;
+  isDropdownSessionOpen = false;
+
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -104,8 +107,9 @@ export class RoomComponent implements OnInit {
   selectCard(card: string) {
     this.selectedCard = card;
   }
-  toggleVote(issue) {
+  toggleVote(issue: IssuesModel) {
     issue.isVoting = !issue.isVoting;
+    this.selectedIssue = issue.isVoting ? issue : null;
   }
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -191,7 +195,7 @@ export class RoomComponent implements OnInit {
     }
   }
   toggleDropdownSession() {
-    this.isDropdownOpen = !this.isDropdownOpen;
+    this.isDropdownSessionOpen = !this.isDropdownSessionOpen;
   }
   openSessionUpdate(session: SessionModel) {
     this.dialogService.open(SessionUpdateComponent, {
