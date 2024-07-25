@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import {
   NbActionsModule,
@@ -33,10 +32,15 @@ import {IntroUpdateComponent} from './intro-update/intro-update.component';
 import {DiagramAddComponent} from './diagram-add/diagram-add.component';
 import {DiagramUpdateComponent} from './diagram-update/diagram-update.component';
 import { SessionComponent } from './session/session.component';
-import {RoomComponent} from './room/room.component';
-// import { BenefitsUpdateComponent } from './benefits-update/benefits-update.component';
-
-// import { LimitssAddComponent } from './limitss-add/limitss-add.component';
+import { RoomComponent } from './room/room.component';
+import { InvitePlayersComponent } from './room/invite-players/invite-players.component';
+import { ResultComponent } from './room/result/result.component';
+import {ChartModule} from 'angular2-chartjs';
+import {EchartsBarComponent} from './room/result/echarts-bar.component';
+import {EchartsPieComponent} from './room/result/echarts-pie.component';
+import {Ng2SmartTableModule} from 'ng2-smart-table';
+import { IssuesUpdateComponent } from './room/issues-update/issues-update.component';
+import { SessionUpdateComponent } from './room/session-update/session-update.component';
 
 
 @NgModule({
@@ -58,6 +62,8 @@ import {RoomComponent} from './room/room.component';
     ReactiveFormsModule,
     RouterLink,
     NbInputModule,
+    ChartModule,
+    Ng2SmartTableModule,
   ],
   declarations: [
     ScrumPokerG2DemoComponent,
@@ -76,6 +82,12 @@ import {RoomComponent} from './room/room.component';
     DiagramUpdateComponent,
     SessionComponent,
     RoomComponent,
+    InvitePlayersComponent,
+    ResultComponent,
+    EchartsBarComponent,
+    EchartsPieComponent,
+    IssuesUpdateComponent,
+    SessionUpdateComponent,
   ],
   exports: [
   ],

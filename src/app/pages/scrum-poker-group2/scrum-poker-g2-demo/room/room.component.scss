@@ -258,6 +258,18 @@ h1 span:nth-child(14) {
   text-decoration: none;
 }
 
+.close-button {
+  align-items: center;
+  float: right;
+  border: 2px solid #faedcd;
+  color: #032669;
+  padding: 10px 20px;
+  margin-left: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 17px;
+  text-decoration: none;
+}
 .topnav .custom-button .button-icon {
   margin-right: 10px;
 }
@@ -350,4 +362,338 @@ h1 span:nth-child(14) {
   display: flex;
   align-items: center; /* Aligner les éléments verticalement au centre */
   gap: 40px; /* Espacement entre les éléments */
+}
+
+/* select bar for the userstory  */
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  min-width: 200px; /* Dropdown width */
+  font-size: 18px;  /* Font size */
+}
+
+.dropdown-content li {
+  padding: 16px 24px; /* Larger padding */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-content li:hover {
+  background-color: #ddd;
+}
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+/* add-issue.component.css */
+
+.issue-form {
+  margin-top: 10px;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.btn {
+  margin-right: 10px;
+}
+
+/* VOTE */
+
+.container {
+  text-align: center;
+}
+
+.card-button.selected {
+  background-color: #8c8b80;
+  color: #050202;
+}
+
+//Reveal Buttom
+.neon-shadow {
+  height: 120px;
+  width: 120px;
+  border: none;
+  border-radius: 50px;
+  transition: 0.5s;
+  background-color: rgba(156, 161, 160, 0.3);
+  animation: glow 1s infinite;
+}
+
+.neon-shadow .span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  padding-top: 50%;
+  padding-right: 2.5%;
+  margin-right: 0;
+  font-size: 1.2rem;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.neon-shadow .span:hover {
+  transition: 0.3s;
+  opacity: 1;
+  font-weight: 700;
+}
+
+.neon-shadow:hover {
+  transform: translateX(-20px) rotate(30deg);
+  border-radius: 5px;
+  background-color: #faedcd;
+  transition: 0.5s;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 5px 5px 20px rgba(229, 46, 113, 1), -5px -5px 20px rgba(229, 46, 113, 1);
+  }
+  50% {
+    box-shadow: 5px 5px 20px rgba(255, 138, 0, 1), -5px -5px 20px rgba(255, 138, 0, 1);
+  }
+  100% {
+    box-shadow: 5px 5px 20px rgba(229, 46, 113, 1), -5px -5px 20px rgba(229, 46, 113, 1);
+  }
+}
+
+
+
+
+
+.reveal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 30px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+.reveal-button:hover {
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
+}
+//Average And Vote
+.average-agreement {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.average, .agreement {
+  display: flex;
+  align-items: center;
+}
+
+.votes {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+
+
+// Animation des
+$confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+// Génération aléatoire de confettis
+@keyframes generate-confetti {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+// Mixin pour créer un confetti avec une couleur aléatoire
+@mixin confetti($color) {
+  position: absolute;
+  background-color: $color;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: confetti-fall 5s linear infinite;
+}
+
+// Génère les confettis avec des couleurs aléatoires
+@for $i from 1 through 50 {
+  .confetti-#{$i} {
+    @include confetti(nth($confetti-colors, random(length($confetti-colors))));
+    left: random(100%);
+    animation-delay: random(10s); // Décalage d'animation aléatoire
+  }
+}
+
+// Conteneur pour les confettis
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; // Les confettis ne doivent pas être cliquables
+  z-index: -1; // Mettre en arrière-plan
+  animation: generate-confetti 1s linear infinite; // Animation pour générer
+}
+.issue-item {
+  margin: 10px 0;
+}
+
+.issue-card {
+  background-color: #f0f4ff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.issue-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.issue-card button:hover {
+  background-color: #0056b3;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: underline;
+}
+.issue-form {
+  display: flex;
+  flex-direction: column; /* Empile les enfants verticalement */
+}
+.scrollable-issues {
+  height: 600px;
+  overflow-y: auto; /* Ajoute un défilement vertical si le contenu dépasse */
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.btn {
+  padding: 5px 10px;
+  margin-left: 8px;
+}
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribue les éléments avec de l'espace entre eux */
+}
+
+.edit-delete-buttons {
+  float: right;
+  display: none; /* Masquer les boutons par défaut */
+  position: absolute;
+  right: 0; /* Aligne les boutons à droite du conteneur */
+  top: 80%; /* Aligne verticalement les boutons au centre du conteneur */
+  transform: translateY(-50%); /* Ajuste le positionnement vertical */
+  gap: 10px; /* Espacement entre les boutons */
+}
+
+.row:hover .edit-delete-buttons {
+  display: flex; /* Affiche les boutons lorsque le conteneur est survolé */
+}
+
+.edit-icon, .delete-icon {
+  font-size: 16px; /* Réduit la taille des icônes */
+  color: grey; /* Couleur des icônes */
+  cursor: pointer; /* Change le curseur lorsqu'on survole les icônes */
+  transition: color 0.3s; /* Ajoute une transition de couleur */
+}
+
+.edit-icon:hover {
+  color: black; /* Changement de couleur au survol pour l'icône de modification */
+}
+
+.delete-icon:hover {
+  color: red; /* Changement de couleur au survol pour l'icône de suppression */
+}
+.session-info {
+  display: flex;
+  align-items: center;
+}
+
+.session-name {
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  min-width: 10rem;
+}
+
+.btn-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+.voting-subtitle {
+  color: dimgrey;
+  margin-top: 10px;
+}
+
+.issue-number {
+  font-weight: bold;
+  font-size: 14px;
+  margin:15px;
+  color:orangered;
 }

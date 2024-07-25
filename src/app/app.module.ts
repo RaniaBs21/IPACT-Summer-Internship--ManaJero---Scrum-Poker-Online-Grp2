@@ -11,6 +11,7 @@ import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+
 import {
   NbChatModule,
   NbDatepickerModule,
@@ -22,6 +23,7 @@ import {
 } from '@nebular/theme';
 import {ScrumPokerG2DemoComponent} from './pages/scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 import {ScrumPokerG2DemodModule} from './pages/scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.module';
+import {PagesComponent} from './pages/pages.component';
 
 @NgModule({
   declarations: [AppComponent],

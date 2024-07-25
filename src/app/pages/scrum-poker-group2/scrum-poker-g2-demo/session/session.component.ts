@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NbToastrService } from '@nebular/theme';
-import { ApiService } from '../../services/api-service.service';
-import { SessionModel, VotingSystem } from '../../models/SessionModel';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SessionModel, VotingSystem} from '../../Models/SessionModel';
+import {ApiService} from '../../services/api-service.service';
+import {NbToastrService} from '@nebular/theme';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ngx-session',
   templateUrl: './session.component.html',
-  styleUrls: ['./session.component.scss'],
-})
+  styleUrls: ['./session.component.scss']})
 export class SessionComponent implements OnInit {
   addSessionForm: FormGroup;
   votingSystems = Object.keys(VotingSystem).map(key => ({
@@ -77,4 +76,5 @@ export class SessionComponent implements OnInit {
       },
     );
   }
+
 }
