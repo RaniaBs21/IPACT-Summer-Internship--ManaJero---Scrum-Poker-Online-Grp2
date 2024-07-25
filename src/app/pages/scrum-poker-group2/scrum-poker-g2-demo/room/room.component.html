@@ -51,7 +51,7 @@
 
         </div>
     </div>
-        </div>
+</div>
 
 <div class="cards" *ngIf="!revealedCard">
     <button *ngFor="let card of cards"
@@ -67,34 +67,155 @@
 
 <!-- Sidebar -->
 <div class="sidebar" [class.open]="isSidebarOpen">
+    <div class="scrollable">
     <div class="sidebar-header">
         <h2>Issues</h2>
     </div>
     <div class="sidebar-content">
         <div class="header-container">
 
+
             <h5>issues</h5>
+
             <div class="dropdown-container">
                 <img src="assets/images/import.png" width="50" height="50" class="spaced-img" (click)="toggleDropdown()"
                      style="cursor:pointer;">
                 <ul *ngIf="isDropdownOpen" class="dropdown-content">
-                    <li (click)="selectOption('jira')">Import from JIRA</li>
-                    <li (click)="selectOption('linear')">Import from Linear</li>
+                    <li (click)="jiraButtonClick(JiraProjectList)">Import from JIRA</li>
+                    <li (click)="azureButtonClick(AzureProjectList)">Import from Azure Devops</li>
                     <li (click)="selectOption('urls')">Add from URLs</li>
                     <li (click)="selectOption('csv')">Import from CSV</li>
                 </ul>
             </div>
+
+              <ng-template #JiraProjectList let-modal>
+                   <div class="modal-header">
+                       <h5 class="modal-title" id="staticBackdropLabel">Select project from jira</h5>
+                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModal()"></button>
+                   </div>
+
+                   <div class="modal-body">
+
+                       <div class="bg-light p-3 d-flex" *ngFor="let jirPro of jiraProjects">
+                           <div class="flex-grow-1">
+                               <img src="{{jirPro.avatarUrls['32x32']}}" alt="" class="avatar-sm rounded me-3">
+
+                               <h5 class="font-size-15 mb-2">{{jirPro.name}}</h5>
+
+
+                           </div>
+                           <div>
+                               <button class="btn btn-primary" (click)="selectJiraProject(jirPro.id, JiraIssuesList)">Select</button>
+                           </div>
+                       </div>
+                   </div>
+               </ng-template>
+
+
+               <ng-template #JiraIssuesList let-modal>
+                   <div class="modal-header">
+                       <h5 class="modal-title">Select jira issue</h5>
+                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModal()"></button>
+                   </div>
+
+                   <div class="modal-body">
+
+                       <div *ngIf="jiraIssues.issues">
+                           <div class="bg-light p-3 d-flex" *ngFor="let iss of jiraIssues.issues">
+                               <div class="flex-grow-1">
+                                   <h5 class="font-size-15 mb-2">{{iss.key}}</h5>
+                                   <h5 class="font-size-15 mb-2">{{iss.fields['summary']}}</h5>
+                               </div>
+                               <div>
+                                   <button class="btn btn-primary" (click)="addIssueToLocalList(iss.key, iss.fields['summary'])">Select</button>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </ng-template>
+
+               <ng-template #AzureProjectList let-modal>
+                   <div class="modal-header">
+                       <h5 class="modal-title" id="staticBackdropLabel">Select project from Azure</h5>
+                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModal()"></button>
+                   </div>
+
+                   <div class="modal-body">
+                       <div class="bg-light p-3 d-flex" *ngFor="let azure of azure">
+                           <div class="flex-grow-1">
+
+                               <h5 class="font-size-15 mb-2">{{azure.name}}</h5>
+
+                           </div>
+                           <div>
+                               <button class="btn btn-primary" (click)="selectAzureProject(azure.id, AzureIssuesList)">Select</button>
+                           </div>
+                       </div>
+                   </div>
+               </ng-template>
+               <ng-template #AzureIssuesList let-modal>
+                   <div class="modal-header">
+                       <h5 class="modal-title">Select jira issue</h5>
+                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModal()"></button>
+                   </div>
+
+                   <div class="modal-body">
+
+                       <div *ngIf="azure">
+                           <div class="bg-light p-3 d-flex" *ngFor="let iss of azure">
+                               <div class="flex-grow-1">
+                                   <h5 class="font-size-15 mb-2">{{iss.name}}</h5>
+                               </div>
+                               <div>
+                                   <button class="btn btn-primary" (click)="addIssueToLocalListAzure(iss.name)">Select your userstory</button>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </ng-template>
+
             <img src="assets/images/close.png" width="50" height="50" (click)="toggleSidebar()" class="close-button">
         </div>
+
         <button class="btn btn-light" *ngIf="!showForm" (click)="toggleForm()">
             <img src="assets/images/addUserStory.png" width="45" height="45">
             Add An issues
         </button>
+        <div *ngIf="!showForm" class="issue-form">
+
+                <div *ngFor="let issue of issuesRequests" class="issue-item">
+                    <div class="issue-card">
+                        <div>
+
+                        </div>
+                        <div class="row">
+                            <p class="card-header">{{issue.issueKey}}</p>
+                            <div class="card-body">
+                                <p style=" line-height: 1.75;" >{{ issue.description }}</p>
+                                <button
+                                        class="btn-vote"
+                                        [class.voting]="issue.isVoting"
+                                        (click)="toggleVote(issue)">
+                                    {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+            </div>
+        </div>
+
+
+
         <div *ngIf="showForm" class="issue-form">
             <nb-card-body>
                 <form>
                     <div class="form-group">
-                        <textarea rows="5" nbInput fullWidth shape="round" [(ngModel)]="issueTitle"
+                        <textarea rows="5" nbInput fullWidth shape="round"
                                   placeholder="Enter a title for the issue"></textarea>
                     </div>
 
@@ -105,8 +226,15 @@
                 </form>
             </nb-card-body>
         </div>
+        </div>
+
+
+
+
     </div>
+
 </div>
+
 <div class="overlay" [class.show]="isSidebarOpen" (click)="toggleSidebar()"></div>
 
 </body>

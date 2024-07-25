@@ -6,7 +6,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
@@ -20,9 +20,63 @@ import {
   NbToastrModule,
   NbWindowModule,
 } from '@nebular/theme';
-import {ScrumPokerG2DemoComponent} from './pages/scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 import {ScrumPokerG2DemodModule} from './pages/scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.module';
+import {
+  MSAL_INSTANCE,
+  MSAL_INTERCEPTOR_CONFIG,
+  MsalBroadcastService,
+  MsalInterceptor,
+  MsalInterceptorConfiguration,
+  MsalModule,
+  MsalService,
+} from '@azure/msal-angular';
+import {environment} from '../environments/environment';
+import {
+  BrowserCacheLocation,
+  InteractionType,
+  IPublicClientApplication, LogLevel,
+  PublicClientApplication,
+} from '@azure/msal-browser';
+import {OAuthModule, OAuthStorage} from 'angular-oauth2-oidc';
+export function loggerCallback(logLevel: LogLevel, message: string) {
+  // console.log(message);
+}
 
+
+export function MSALInstanceFactory(): IPublicClientApplication {
+  return new PublicClientApplication({
+    auth: {
+      clientId: environment.azureConfig.clientId,
+      authority: `https://login.microsoftonline.com/${environment.azureConfig.tenantId}`,
+      redirectUri: environment.azureConfig.redirectUrl,
+    },
+    cache: {
+      cacheLocation: BrowserCacheLocation.LocalStorage,
+    },
+    system: {
+      allowNativeBroker: false, // Disables WAM Broker
+      loggerOptions: {
+        loggerCallback,
+        // loggerCallback,
+        logLevel: LogLevel.Trace,
+        piiLoggingEnabled: true,
+      },
+    },
+  });
+}
+
+// MSAL Interceptor is required to request access tokens in order to access the protected resource (Graph)
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const protectedResourceMap = new Map<string, Array<string>>();
+  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
+  protectedResourceMap.set(`${environment.azureConfig.apiEndpoint}/_apis/projects${environment.azureConfig.apiVersion}`,
+      environment.azureConfig.scopes);
+  protectedResourceMap.set(`${environment.azureConfig.apiEndpoint}/*/_apis/wit/*`, environment.azureConfig.scopes);
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap,
+  };
+}
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -42,9 +96,30 @@ import {ScrumPokerG2DemodModule} from './pages/scrum-poker-group2/scrum-poker-g2
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     ScrumPokerG2DemodModule,
-
+    MsalModule,
+    OAuthModule.forRoot(),
   ],
   bootstrap: [AppComponent],
+  providers: [
+    {provide: OAuthStorage, useValue: localStorage},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true,
+    },
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory,
+    },
+    {
+      provide: MSAL_INTERCEPTOR_CONFIG,
+      useFactory: MSALInterceptorConfigFactory,
+    },
+    MsalService,
+    MsalBroadcastService,
+
+  ],
+  // {
 })
 export class AppModule {
 }

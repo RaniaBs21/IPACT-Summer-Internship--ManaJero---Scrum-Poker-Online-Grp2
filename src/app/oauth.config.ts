@@ -1,11 +1,6 @@
-/**
- * @license
- * Copyright Akveo. All Rights Reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
 import {AuthConfig} from 'angular-oauth2-oidc';
-import azureDevopsConfig from './azdevops.config';
-export const jiraConfig: AuthConfig = {
+
+export const authConfig: AuthConfig = {
   clientId: 'ZfPIoROl8gc2nTWtoxZYyD3oXrZUYqFq',
   scope: 'manage:jira-project read:jira-work manage:jira-configuration read:jira-user write:jira-work manage:jira-webhook manage:jira-data-provider read:me read:account offline_access',
   responseType: 'code',
@@ -26,8 +21,4 @@ export const jiraConfig: AuthConfig = {
   useSilentRefresh: true,
 
 };
-export const environment = {
-  production: false,
-  azureConfig: azureDevopsConfig,
-  jiraConfig: jiraConfig,
-};
+
