@@ -640,6 +640,7 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
 }
 
 .edit-delete-buttons {
+  float: right;
   display: none; /* Masquer les boutons par défaut */
   position: absolute;
   right: 0; /* Aligne les boutons à droite du conteneur */
@@ -665,4 +666,21 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
 
 .delete-icon:hover {
   color: red; /* Changement de couleur au survol pour l'icône de suppression */
+}
+.session-info {
+  display: flex;
+  align-items: center;
+}
+
+.session-name {
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  min-width: 10rem;
+}
+
+.btn-link {
+  color: inherit;
+  text-decoration: none;
 }

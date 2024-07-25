@@ -40,6 +40,7 @@ import {EchartsBarComponent} from './room/result/echarts-bar.component';
 import {EchartsPieComponent} from './room/result/echarts-pie.component';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import { IssuesUpdateComponent } from './room/issues-update/issues-update.component';
+import { SessionUpdateComponent } from './room/session-update/session-update.component';
 
 
 @NgModule({
@@ -86,6 +87,7 @@ import { IssuesUpdateComponent } from './room/issues-update/issues-update.compon
     EchartsBarComponent,
     EchartsPieComponent,
     IssuesUpdateComponent,
+    SessionUpdateComponent,
   ],
   exports: [
   ],

@@ -20,7 +20,6 @@ import {
   NbToastrModule,
   NbWindowModule,
 } from '@nebular/theme';
-import {ScrumPokerG2DemoComponent} from './pages/scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 import {ScrumPokerG2DemodModule} from './pages/scrum-poker-group2/scrum-poker-g2-demo/scrum-poker-g2-demo.module';
 
 @NgModule({
@@ -42,7 +41,6 @@ import {ScrumPokerG2DemodModule} from './pages/scrum-poker-group2/scrum-poker-g2
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     ScrumPokerG2DemodModule,
-
   ],
   bootstrap: [AppComponent],
 })

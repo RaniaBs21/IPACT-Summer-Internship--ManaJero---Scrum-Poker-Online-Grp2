@@ -1,6 +1,6 @@
 
 export class SessionModel {
-  sessionId?: string;
+  id?: string;
   name: string;
   votingSystem: VotingSystem;
   cards: string[];

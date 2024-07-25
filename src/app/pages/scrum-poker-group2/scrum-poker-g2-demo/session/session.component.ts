@@ -68,7 +68,7 @@ export class SessionComponent implements OnInit {
       (session) => {
         this.toastrService.success('Session started successfully', 'Success');
         this.addSessionForm.reset();
-        this.router.navigate(['/pages/agile/scrum-poker-group2/session/room', session.sessionId]);
+        this.router.navigate(['/pages/agile/scrum-poker-group2/session/room', session.id]);
       },
       (error) => {
         console.error('Error starting the session:', error);

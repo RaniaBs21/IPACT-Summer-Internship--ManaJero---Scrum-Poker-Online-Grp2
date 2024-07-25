@@ -4,8 +4,18 @@
 
 <!-----------------------------------  header ------------------------------->
   <div class="topnav">
-    <div class="session-info">
+   <!-- <div class="session-info">
       <span class="session-name">{{ session?.name }}</span>
+    </div>-->
+    <div class="dropdown-container">
+
+      <span class="session-name" >{{ session?.name }} </span>
+      <button class="btn btn-link dropdown-toggle" style="color:dimgrey" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"  (click)="toggleDropdownSession()">
+      </button>
+      <ul *ngIf="isDropdownOpen" class="dropdown-content">
+        <li (click)="openSessionUpdate(session)"><i class="fas fa-cog"></i> Game settings</li>
+        <li ><i class="fas fa-history"></i> Voting History</li>
+      </ul>
     </div>
 
     <button class="custom-button" (click)="toggleSidebar()">
@@ -50,16 +60,6 @@
 
     </div>
   </div>
- <!-- <div class="cards" *ngIf="!revealedCard">
-    <button *ngFor="let card of cards"
-            [ngClass]="{'selected': selectedCard === card}"
-            (click)="selectCard(card)"
-            class="card-button">
-      {{ card }}
-    </button>
-
-
-  </div>-->
 
 <!----------------------------------  algo cards --------------------------------->
   <div class="cards">
@@ -107,18 +107,18 @@
             <div class="issue-card">
               <div class="row">
 
-                <p style=" line-height: 1.75;">{{ issue.issueDescription }}</p>
+                  <p style=" line-height: 1.75;">{{ issue.issueDescription }}</p>
+                  <button
+                    class="btn"
+                    [class.voting]="issue.isVoting"
+                    (click)="toggleVote(issue)">
+                    {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
+                  </button>
 
-                <button
-                  class="btn"
-                  [class.voting]="issue.isVoting"
-                  (click)="toggleVote(issue)">
-                  {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
-                </button>
-                <div class="edit-delete-buttons">
-                <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
-                <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
-              </div>
+                  <div class="edit-delete-buttons">
+                      <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
+                      <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
+                  </div>
               </div>
 
             </div>

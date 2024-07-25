@@ -141,6 +141,14 @@ export class ApiService {
   getSession(id: string): Observable<SessionModel> {
     return this.httpClient.get<SessionModel>(`${this.API_URL}/getSession/${id}`);
   }
+  updateSession ( id: string, sessions: SessionModel): Observable<SessionModel> {
+    const url = `${this.API_URL}/updateSession/${id}`;
+    return this.httpClient.put<SessionModel>( url, sessions );
+  }
+  getSessionById(id: string): Observable<SessionModel> {
+    const url = `${this.API_URL}/getSession/${id}`;
+    return this.httpClient.get<SessionModel>(url);
+  }
 
   // ********************** Issues services ***********************
   addIssue(sessionId: string, issue: IssuesModel): Observable<IssuesModel> {

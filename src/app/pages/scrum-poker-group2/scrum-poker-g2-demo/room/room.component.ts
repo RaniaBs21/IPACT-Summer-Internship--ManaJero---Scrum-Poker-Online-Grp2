@@ -13,6 +13,7 @@ import {IssuesModel} from '../../Models/IssuesModel';
 import {DemoModel} from '../../Models/DemoModel';
 import {LimitsUpdateComponent} from '../limits-update/limits-update.component';
 import {IssuesUpdateComponent} from './issues-update/issues-update.component';
+import {SessionUpdateComponent} from './session-update/session-update.component';
 
 @Component({
   selector: 'ngx-room',
@@ -31,6 +32,7 @@ export class RoomComponent implements OnInit {
   revealedCard: number | string | null = null;
   addIssuesForm: FormGroup;
   issues: IssuesModel[] = [];
+  sessions: SessionModel[] = [];
   loading: boolean = false;
   page: number = 1; // Page de départ
   pageSize: number = 20; // Nombre d'éléments par page
@@ -61,6 +63,12 @@ export class RoomComponent implements OnInit {
       this.issues = issues;
     });
   }
+  loadSessions() {
+    this.apiService.getSessionById(this.sessionId).subscribe((session: SessionModel) => {
+      this.session = session;
+    });
+  }
+
   triggerConfetti(): void {
     confetti({
       particleCount: 100,
@@ -181,5 +189,16 @@ export class RoomComponent implements OnInit {
         },
       );
     }
+  }
+  toggleDropdownSession() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  openSessionUpdate(session: SessionModel) {
+    this.dialogService.open(SessionUpdateComponent, {
+      context: {
+        title: 'Update issue',
+        session: {...session},
+      },
+    }).onClose.subscribe(() => this.loadSessions());
   }
 }
