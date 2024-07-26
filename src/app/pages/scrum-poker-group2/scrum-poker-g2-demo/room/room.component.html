@@ -118,21 +118,40 @@
         <div *ngFor="let issue of issues" class="issue-item">
           <div class="issue-card">
             <p class="issue-number">{{ issue.issueNumber }}</p>
-
             <div class="row">
               <br>
-              <p style=" line-height: 1.75; color:black;font-size:20px; margin-top:18px">{{ issue.issueDescription }}</p>
+              <p style="line-height: 1.75; color:black;font-size:20px; margin-top:18px">{{ issue.issueDescription }}</p>
               <button class="btn" [class.voting]="issue.isVoting" (click)="toggleVote(issue)">
                 {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
               </button>
 
-              <div class="edit-delete-buttons">
-                <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
-                <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
+              <!------------------------------ dropdopwn ------------------------->
+
+              <div class="dropdown-container">
+                <button class="btn btn-link" (click)="toggleDropdownIssue(issue.id)">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <ul *ngIf="dropdownOpen[issue.id]" class="dropdown-content">
+                  <li (click)="openIssueUpdate(issue)">
+                    <i class="fas fa-edit"></i> Update
+                  </li>
+                  <li (click)="moveIssueToTop(issue.id)">
+                    <i class="fas fa-arrow-up"></i> Move to Top
+                  </li>
+                  <li (click)="moveIssueToBottom(issue.id)">
+                    <i class="fas fa-arrow-down"></i> Move to Bottom
+                  </li>
+                  <li (click)="deleteIssue(issue.id)">
+                    <i class="fas fa-trash-alt"></i> Delete
+                  </li>
+                </ul>
               </div>
+
             </div>
           </div>
         </div>
+
+        <!------------------------------------------------------->
 
         <nb-card-body>
           <form [formGroup]="addIssuesForm">
@@ -149,10 +168,10 @@
         </nb-card-footer>
       </div>
     </div>
+
   </div>
 </div>
-
-<!------------------------------------ Overlay ------------------------------------>
+    <!------------------------------------ Overlay ------------------------------------>
 <div class="overlay" [class.show]="isSidebarOpen" (click)="toggleSidebar()"></div>
 </body>
 
