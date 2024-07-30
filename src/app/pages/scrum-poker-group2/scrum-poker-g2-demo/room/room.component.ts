@@ -12,6 +12,7 @@ import {JiraAuthService} from '../../services/jira-auth.service';
 import {AuthAzureServiceService} from '../../../../auth-azure-service.service';
 import {MsalService} from '@azure/msal-angular';
 import {SessionModel} from '../../Models/SessionModel';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'ngx-room',
@@ -29,22 +30,22 @@ export class RoomComponent implements OnInit {
   // issues in session
   selectedAzureProjectName: string;
   jiraIssues: SearchResults;
-   azure: AzureDevOpsProject [] = [];
-   jiraLoginSuccessful: boolean = false;
-   azureLoginSuccessful: boolean = false;
-   jiraProjects: Project[] = [];
-   issuesRequests: IssuesRequest[] = [];
-   issues: IssuesModel = new IssuesModel();
-   issue: IssuesModel[] = [];
-   lastAddedIssues: any;
+  azure: AzureDevOpsProject [] = [];
+  jiraLoginSuccessful: boolean = false;
+  azureLoginSuccessful: boolean = false;
+  jiraProjects: Project[] = [];
+  issuesRequests: IssuesRequest[] = [];
+  issues: IssuesModel = new IssuesModel();
+  issue: IssuesModel[] = [];
+  lastAddedIssues: any;
   selectedJiraProjectName: string;
   // bread crumb items
   session: SessionModel;
-   hidden: boolean;
-    submittedDescription: string = '';
-   id: '1';
+  hidden: boolean;
+  submittedDescription: string = '';
+  id: '1';
   modalRef?: BsModalRef;
-   sessionId: '1';
+  sessionId: '1';
   constructor(
       private router: Router,
       private formBuilder: FormBuilder,
@@ -54,7 +55,7 @@ export class RoomComponent implements OnInit {
       private jiraAuthService: JiraAuthService,
       private azureAuthService: AuthAzureServiceService,
       private azureLogin: MsalService,
-     ) { }
+  ) { }
 
   ngOnInit() {
     this.azureLogin.initialize();
@@ -168,7 +169,7 @@ export class RoomComponent implements OnInit {
       });
     }
   }
-    selectJiraProject(jiraProjectName: any, template: TemplateRef<void>) {
+  selectJiraProject(jiraProjectName: any, template: TemplateRef<void>) {
 
     this.selectedJiraProjectName = jiraProjectName;
     this.modalRef.hide();
@@ -241,4 +242,70 @@ export class RoomComponent implements OnInit {
   toggleDropdownSession() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
+  // ************** Uplaod CSV *********************
+
+  saveToLocalStorage(): void {
+    localStorage.setItem('userStories', JSON.stringify(this.issue));
+    this.service.save(this.issues);
+  }
+
+  fetchUserStory() {
+    this.service.getIssues()
+        .subscribe((issue) => {
+          this.issue = issue;
+        });
+  }
+
+  ReadExcel(event: any, sessionId: string): void {
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+
+    fileReader.onload = (e) => {
+      const data = new Uint8Array(fileReader.result as ArrayBuffer);
+      const workBook = XLSX.read(data, { type: 'array' });
+
+      const sheet = workBook.Sheets[workBook.SheetNames[0]];
+      const excelData = XLSX.utils.sheet_to_json(sheet) as IssuesModel[];
+      excelData.forEach((row) => {
+        const description = row['description'];
+
+        this.service.uploadFile(file, sessionId).subscribe(
+            (response) => {
+              const newUserStory = new IssuesModel();
+              newUserStory.description = description;
+              this.service.save(newUserStory);
+              this.saveToLocalStorage();
+              this.fetchUserStory();
+            },
+            (error) => {
+              console.error('Upload error:', error);
+            },
+        );
+        this.issuesRequests.push({
+          description: description,
+        } as IssuesModel);
+      });
+
+    };
+
+    fileReader.readAsArrayBuffer(file);
+  }
+  downloadExcel() {
+    // Préparer les données à exporter
+    const worksheet = XLSX.utils.json_to_sheet(this.issuesRequests);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Issues');
+
+    // Générer et télécharger le fichier Excel
+    XLSX.writeFile(workbook, 'issues.xlsx');
+  }
+
+  deleteAllIssues() {
+  }
+
+  close() {
+    // Logique pour fermer le composant ou naviguer ailleurs
+  }
+
+
 }

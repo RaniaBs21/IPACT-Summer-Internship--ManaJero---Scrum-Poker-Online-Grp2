@@ -149,6 +149,33 @@ export class ApiService {
   getSession(id: string): Observable<SessionModel> {
     return this.httpClient.get<SessionModel>(`${this.API_URL}/getSession/${id}`);
   }
+  updateSession ( id: string, sessions: SessionModel): Observable<SessionModel> {
+    const url = `${this.API_URL}/updateSession/${id}`;
+    return this.httpClient.put<SessionModel>( url, sessions );
+  }
+  getSessionById(id: string): Observable<SessionModel> {
+    const url = `${this.API_URL}/getSession/${id}`;
+    return this.httpClient.get<SessionModel>(url);
+  }
+
+  // ********************** Issues services ***********************
+  addIssue(sessionId: string, issue: IssuesModel): Observable<IssuesModel> {
+    return this.httpClient.post<IssuesModel>(`${this.API_URL}/session/${sessionId}`, issue);
+  }
+  save(issue: IssuesModel): Observable<IssuesModel> {
+    return this.httpClient.post<IssuesModel>(`${this.API_URL}/save}`, issue);
+  }
+  getIssuesBySessionId(sessionId: string): Observable<IssuesModel[]> {
+    return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
+  }
+  updateIssue ( id: string, issues: IssuesModel): Observable<IssuesModel> {
+    const url = `${this.API_URL}/updateIssue/${id}`;
+    return this.httpClient.put<IssuesModel>( url, issues );
+  }
+  deleteIssue(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.API_URL}/deleteIssue/${id}`);
+  }
+
   // ***********************Issues Service **************************+
   addIssues(issues: IssuesModel): Observable<IssuesModel> {
     return this.httpClient.post<IssuesModel>(`${this.API_URL}/addIssues`, issues);
@@ -199,7 +226,7 @@ export class ApiService {
     );
   }
 
-  uploadFile(file: File, sessionId: number): Observable<number> {
+  uploadFile(file: File, sessionId: string): Observable<number> {
     const formData = new FormData();
     formData.append('file', file);
     return this.httpClient.post<number>(`${this.API_URL}/upload/${sessionId}`, formData, {
