@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpEventType} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
@@ -9,30 +9,24 @@ import {NewsModel} from '../Models/NewsModel';
 import {DiagramModel} from '../Models/DiagramModel';
 import {SessionModel} from '../Models/SessionModel';
 import {IssuesModel} from '../Models/IssuesModel';
+import {Project, SearchResults} from 'jira.js/out/version3/models';
+import {JiraAuthService} from './jira-auth.service';
+import {SearchForIssuesUsingJql} from 'jira.js/out/version3/parameters';
+import {IssuesRequest} from '../Models/ImportRepresentation/IssuesRequest';
+import {ProjectInfo} from 'azure-devops-node-api/interfaces/CoreInterfaces';
+import {environment} from '../../../../environments/environment';
+import {map, mergeMap} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
 
   readonly API_URL = 'http://localhost:8082';
-  // readonly ENDPOINT_DEMO = '/getDemo' ;
- // readonly ENDPOINT_Benefits = '/getBenefits' ;
- // readonly ENDPOINT_Limits = '/getLimits' ;
-  // readonly ENDPOINT_Demo_update = '/updateDemo/' ;
- // readonly ENDPOINT_Benefits_update = '/updateBenefits/' ;
- // readonly ENDPOINT_Limits_update = '/updateLimits/' ;
-  // readonly ENDPOINT_Demo_Create = '/adddemo' ;
- // readonly ENDPOINT_Steps = '/getSteps' ;
-  // readonly ENDPOINT_Steps_by_Id = '/getSteps' ;
- // readonly ENDPOINT_delete_step = '/deleteStep/' ;
-  // readonly ENDPOINT_Steps_update = '/updateStep/' ;
- // readonly ENDPOINT_Step_Create = '/addSteps' ;
- // readonly ENDPOINT_News_Create = '/addNews' ;
- // readonly ENDPOINT_News = '/getNews' ;
- // readonly ENDPOINT_News_update = '/updateNew/' ;
 
 
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private jiraAuthService: JiraAuthService,
+              ) { }
 
   // ********************* Demo services ************************
   addDemo(demo: DemoModel): Observable<DemoModel[]> {
@@ -163,5 +157,75 @@ export class ApiService {
   }
   deleteIssue(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.API_URL}/deleteIssue/${id}`);
+  }
+  getIssues(): Observable<IssuesModel[]> {
+    return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/getIssues`);
+  }
+  save(issue: IssuesModel): Observable<IssuesModel> {
+    return this.httpClient.post<IssuesModel>(`${this.API_URL}/save}`, issue);
+  }
+  getProjects(): Observable<Project[]> {
+    const accessToken = this.jiraAuthService.getAccessToken();
+    return this.httpClient.get<Project[]>(`${this.jiraAuthService.jiraApiEndpoint}/project`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
+  getProjectIssues(projectName: string, paramters?: SearchForIssuesUsingJql): Observable<SearchResults> {
+    const accessToken = this.jiraAuthService.getAccessToken();
+    return this.httpClient.get<SearchResults>(`${this.jiraAuthService.jiraApiEndpoint}/search?jql=project=${projectName}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+
+    });
+  }
+
+  insertUserStory(issues: IssuesRequest[], sessionId: string): Observable<IssuesModel> {
+    return this.httpClient.post<IssuesModel>(`${this.API_URL}/insert/session/${sessionId}`, issues);
+  }
+
+
+  getProjectsAzure(): Observable<ProjectInfo[]> {
+    return this.httpClient.get<ProjectInfo[]>(`${environment.azureConfig.apiEndpoint}/_apis/projects${environment.azureConfig.apiVersion}`);
+  }
+
+
+  getWorkItems(projectName: string): Observable<any> {
+    return this.httpClient.post<any>(`${environment.azureConfig.apiEndpoint}/${projectName}/_apis/wit/wiql${environment.azureConfig.apiVersion}`, {
+      'query': 'Select [System.Id] From WorkItems',
+    }).pipe(
+      mergeMap(briefItems => {
+          const ids = briefItems.workItems.map((workItem: any) => workItem.id);
+          return this.httpClient.post<any>(`${environment.azureConfig.apiEndpoint}/${projectName}/_apis/wit/workitemsbatch${environment.azureConfig.apiVersion}`, {'ids': ids});
+        },
+      ),
+    );
+  }
+
+  uploadFile(file: File, sessionId: string): Observable<number> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post<number>(`${this.API_URL}/upload/${sessionId}`, formData, {
+      reportProgress: true,
+      observe: 'events',
+    }).pipe(
+      map(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          return Math.round(100 * event.loaded / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          return event.body;
+        }
+      }),
+    );
+  }
+
+  findBySessionId(sessionId: string) {
+    return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
+  }
+  addIssuesBySessionId(issues: IssuesModel, sessionId: string ) {
+    return this.httpClient.post<IssuesModel[]>(`${this.API_URL}/ajoutIssues//${sessionId}`, issues);
+
   }
 }

@@ -42,6 +42,9 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
 import { IssuesUpdateComponent } from './room/issues-update/issues-update.component';
 import { SessionUpdateComponent } from './room/session-update/session-update.component';
 import { VotingHistoryComponent } from './room/voting-history/voting-history.component';
+import {OAuthStorage} from 'angular-oauth2-oidc';
+
+
 
 
 @NgModule({
