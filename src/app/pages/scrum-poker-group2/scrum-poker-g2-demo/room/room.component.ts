@@ -41,6 +41,7 @@ export class RoomComponent implements OnInit {
   dropdownVisible = false;
   selectedIssue: IssuesModel | null = null;
   isDropdownSessionOpen = false;
+  dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
@@ -175,15 +176,15 @@ export class RoomComponent implements OnInit {
       },
     );
   }
-  openIssueUpdate(issue: IssuesModel) {
+/*  openIssueUpdate(issue: IssuesModel) {
     this.dialogService.open(IssuesUpdateComponent, {
       context: {
         title: 'Update issue',
         issue: {...issue},
       },
     }).onClose.subscribe(() => this.loadIssues());
-  }
-  deleteIssue(id: string) {
+  }*/
+  /*deleteIssue(id: string) {
     if (confirm('Are you sure you want to delete this issue ?')) {
       this.apiService.deleteIssue(id).subscribe(
         () => {
@@ -194,7 +195,7 @@ export class RoomComponent implements OnInit {
         },
       );
     }
-  }
+  }*/
   toggleDropdownSession() {
     this.isDropdownSessionOpen = !this.isDropdownSessionOpen;
   }
@@ -212,4 +213,48 @@ export class RoomComponent implements OnInit {
       },
     }).onClose.subscribe(() => this.loadIssues());
   }
+  ///////////////////////////// dropdown ///////////////////////
+
+  toggleDropdownIssue(issueId: number) {
+    this.dropdownOpen[issueId] = !this.dropdownOpen[issueId];
+  }
+
+  openIssueUpdate(issue: IssuesModel) {
+    this.dialogService.open(IssuesUpdateComponent, {
+      context: {
+        title: 'Update issue',
+        issue: { ...issue },
+      },
+    }).onClose.subscribe(() => this.loadIssues());
+  }
+
+  deleteIssue(id: string) {
+    if (confirm('Are you sure you want to delete this issue?')) {
+      this.apiService.deleteIssue(id).subscribe(
+        () => {
+          this.issues = this.issues.filter((b) => b.id !== id);
+        },
+        (error) => {
+          console.error('Error deleting the issue:', error);
+        },
+      );
+    }
+  }
+
+  moveIssueToTop(issueId: number) {
+    const index = this.issues.findIndex(issue => issue.id === issueId.toString());
+    if (index > 0) {
+      const [issue] = this.issues.splice(index, 1);
+      this.issues.unshift(issue);
+    }
+  }
+
+  moveIssueToBottom(issueId: number) {
+    const index = this.issues.findIndex(issue => issue.id === issueId.toString());
+    if (index !== -1 && index < this.issues.length - 1) {
+      const [issue] = this.issues.splice(index, 1);
+      this.issues.push(issue);
+    }
+  }
+///////////////////////////////////////////////////
 }

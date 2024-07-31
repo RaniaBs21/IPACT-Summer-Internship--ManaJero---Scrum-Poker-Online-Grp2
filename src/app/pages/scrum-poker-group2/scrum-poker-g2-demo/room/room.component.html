@@ -18,9 +18,9 @@
       </ul>
     </div>
     <!-- Sous-titre pour le voting -->
-    <!--<div *ngIf="selectedIssue" class="voting-subtitle">
+   <div *ngIf="selectedIssue" class="voting-subtitle">
       <p>Voting: {{ selectedIssue.issueDescription }}</p>
-    </div>-->
+    </div>
 
     <button class="custom-button" (click)="toggleSidebar()">
       <img src="assets/images/menu.png" style="width: 45px; height: 40px"  class="button-icon" alt="desc">
@@ -109,14 +109,29 @@
       <div class="scrollable-issues">
           <div *ngFor="let issue of issues" class="issue-item">
             <div class="issue-card">
-              <div>
-
-              </div>
-
               <br>
               <br>
               <div class="row">
                 <p class="card-header">{{issue.issueNumber}}</p>
+                <div class="dropdown-container">
+                  <button class="btn btn-link" (click)="toggleDropdownIssue(issue.id)">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul *ngIf="dropdownOpen[issue.id]" class="dropdown-content">
+                    <li (click)="openIssueUpdate(issue)">
+                      <i class="fas fa-edit"></i> Update
+                    </li>
+                    <li (click)="moveIssueToTop(issue.id)">
+                      <i class="fas fa-arrow-up"></i> Move to Top
+                    </li>
+                    <li (click)="moveIssueToBottom(issue.id)">
+                      <i class="fas fa-arrow-down"></i> Move to Bottom
+                    </li>
+                    <li (click)="deleteIssue(issue.id)">
+                      <i class="fas fa-trash-alt"></i> Delete
+                    </li>
+                  </ul>
+                </div>
                <div class="card-body">
                  <p style=" line-height: 1.75;" >{{ issue.issueDescription }}</p>
                  <button
@@ -126,15 +141,18 @@
                    {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
                  </button>
 
-                 <div class="edit-delete-buttons">
+                <!-- <div class="edit-delete-buttons">
                    <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
                    <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
-                 </div>
+                 </div>-->
+
+
+
+
                </div>
-
               </div>
-
             </div>
+
           </div>
 
       <nb-card-body>
