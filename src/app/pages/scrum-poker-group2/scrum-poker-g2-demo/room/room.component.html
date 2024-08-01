@@ -36,14 +36,14 @@
     <div class="button-wrapper">
       <br>
       <h1 *ngIf="!revealedCard && selectedCard === null">
-        <span>P</span><span>I</span><span>C</span><span>K</span><span> </span><span>Y</span><span>O</span><span>U</span><span>R</span><span> </span><span>C</span><span>A</span><span>R</span><span>D</span><span>S</span><span>!</span>
+        <span>P</span><span>I</span><span>C</span><span>K</span><span> </span><span>Y</span><span>O</span><span>U</span><span>R</span><span> </span><span>C</span><span>A</span><span>R</span><span>D</span><span>S</span><span>!</span>
       </h1>
       <button *ngIf="selectedCard !== null && !revealedCard" (click)="revealCard()" class="neon-shadow">
         Reveal card
       </button>
       <br>
       <button *ngIf="revealedCard" (click)="revealCard()" class="reveal-button" routerLink="createGame">
-        start new voting
+        Start new voting
       </button>
     </div>
     <div class="container">
@@ -54,14 +54,14 @@
       <div class="average-agreement" *ngIf="revealedCard">
         <div class="average">
           <h5 style="color: #3A3A3A">Average:</h5>
-          <h3>{{ selectedCard }}</h3>
+          <!--        <h3>{{ calculateAverage(votes) }}</h3>-->
+          <h3>{{ revealedCard }}</h3>
         </div>
         <div class="vote">
           <h5 style="color: #3A3A3A">Vote:</h5>
-          <h3>{{ selectedCard }}</h3>
+          <h3>{{ revealedCard }}</h3>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -183,6 +183,7 @@
                 <button class="btn btn-primary" (click)="addIssueToLocalListAzure(iss.name)">Select your userstory</button>
               </div>
             </div>
+
           </div>
         </div>
       </ng-template>
@@ -193,8 +194,9 @@
       <img src="assets/images/addUserStory.png" width="45" height="45" alt="desc">
       Add An issues
     </button>
-    <div *ngIf="!showForm" class="issue-form">
 
+    <div *ngIf="!showForm" class="issue-form">
+      <div class="scrollable-issues">
       <div *ngFor="let issue of issuesRequests" class="issue-item">
         <div class="issue-card">
           <div>
@@ -217,7 +219,7 @@
 
         </div>
 
-
+      </div>
       </div>
     </div>
 

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {OAuthErrorEvent, OAuthService} from 'angular-oauth2-oidc';
-import {authConfig} from './oauth.config';
 import {ActivatedRoute, Router} from '@angular/router';
-import {environment} from '../environments/environment';
+import {authConfig, environment} from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +9,7 @@ import {environment} from '../environments/environment';
 export class AuthServiceService {
 
   private configureOAuth() {
-    this.oauthService.configure(authConfig);
+    this.oauthService.configure(authConfig());
     this.oauthService.setupAutomaticSilentRefresh();
     this.oauthService.setStorage(localStorage);
   }

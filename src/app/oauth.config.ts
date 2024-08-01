@@ -1,7 +1,7 @@
 import {AuthConfig} from 'angular-oauth2-oidc';
 
 
-export const authConfig: AuthConfig = {
+export const ff: AuthConfig = {
 
   clientId: 'guhytL7qi0X6IYqVbeMVlTxSpdP6dl9V',
   scope: 'manage:jira-project read:jira-work manage:jira-configuration read:jira-user write:jira-work manage:jira-webhook manage:jira-data-provider read:me read:account offline_access',

@@ -24,12 +24,14 @@ import {AuthAzureServiceService} from '../../../../auth-azure-service.service';
 import {MsalService} from '@azure/msal-angular';
 import {AzureDevOpsProject} from '../../Models/ImportRepresentation/AzureDevOpsProject';
 import {AuthServiceService} from '../../../../auth-service.service';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {VoteModel} from '../../Models/VoteModel';
 @Component({
   selector: 'ngx-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss']})
 export class RoomComponent implements OnInit {
-  sessionId: string;
+  sessionId: string | null = null;
   session: SessionModel;
   cards: string[] = [];
   selectedCard: string | null = null;
@@ -65,6 +67,10 @@ export class RoomComponent implements OnInit {
   modalRef?: BsModalRef;
   submittedDescription: string = '';
   hidden: boolean;
+  state: string | null = null;
+  code: string | null = null;
+  selectedIssueId: string | null = null;
+  votes: VoteModel[] = [];
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -78,6 +84,7 @@ export class RoomComponent implements OnInit {
               private azureAuthService: AuthAzureServiceService,
               private azureLogin: MsalService,
               private authService: AuthServiceService,
+              private oauthService: OAuthService,
               ) {}
 
   ngOnInit() {
@@ -94,6 +101,16 @@ export class RoomComponent implements OnInit {
     });
     this.azureLogin.initialize();
     this.hidden = true;
+
+  this.route.queryParams.subscribe((params) => {
+      this.state = params['state'];
+      this.code = params['code'];
+      //  console.log('State:', this.state);
+      //  console.log('Code:', this.code);
+
+      // Call OAuth login flow
+      this.handleOAuthCallback();
+    });
   }
   loadIssues() {
     this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
@@ -106,13 +123,13 @@ export class RoomComponent implements OnInit {
     });
   }
 
-  triggerConfetti(): void {
+ /* triggerConfetti(): void {
     confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 },
     });
-  }
+  }*/
   getSessionDetails(sessionId: string) {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
@@ -138,13 +155,13 @@ export class RoomComponent implements OnInit {
         return [];
     }
   }
-  selectCard(card: string) {
+  /*selectCard(card: string) {
     this.selectedCard = card;
-  }
-  toggleVote(issue: IssuesModel) {
+  }*/
+  /*toggleVote(issue: IssuesModel) {
     issue.isVoting = !issue.isVoting;
     this.selectedIssue = issue.isVoting ? issue : null;
-  }
+  }*/
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
@@ -168,12 +185,12 @@ export class RoomComponent implements OnInit {
     this.showForm = false;
     this.issueTitle = '';
   }
-  revealCard(): void {
+  /*revealCard(): void {
     if (this.selectedCard !== null) {
       this.revealedCard = this.selectedCard;
     }
     this.triggerConfetti();
-  }
+  }*/
   openInvitePlayers() {
     const currentUrl = this.location.path();
     this.dialogService.open(InvitePlayersComponent, {
@@ -439,5 +456,88 @@ export class RoomComponent implements OnInit {
     // Générer et télécharger le fichier Excel
     XLSX.writeFile(workbook, 'issues.xlsx');
   }
+  private handleOAuthCallback(): void {
+    this.oauthService
+      .tryLoginCodeFlow()
+      .then(() => {
+        if (this.oauthService.hasValidAccessToken()) {
+          const sessionId = localStorage.getItem('sessionId'); // ou un autre moyen de récupérer sessionId
+          this.router.navigate([`/pages/agile/scrum-poker-group2/session/room/${sessionId}`]);
+        } else {
+          console.error('Invalid access token.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error during OAuth login:', error);
+      });
+  }
 
+  private initializeRoom(sessionId: string | null): void {
+    if (sessionId) {
+      // Initialiser la salle avec l'ID de session
+      // console.log('Initializing room with session ID:', sessionId);
+    } else {
+      console.error('Session ID not found.');
+    }
+  }
+
+  ///////////// vote/////////////
+  selectCard(card: string) {
+    this.selectedCard = card;
+  }
+  revealCard(): void {
+    if (this.selectedCard !== null) {
+      this.revealedCard = this.selectedCard;
+      this.submitVote();
+    }
+    this.triggerConfetti();
+  }
+  toggleVote(issue: IssuesModel) {
+    issue.isVoting = !issue.isVoting;
+    if (issue.isVoting) {
+      this.selectedIssue = issue;
+      this.selectedIssueId = issue.id.toString(); // Set selectedIssueId when selecting an issue
+    } else {
+      this.selectedIssue = null;
+      this.selectedIssueId = null; // Clear selectedIssueId when deselecting an issue
+    }
+  }
+
+  submitVote() {
+    if (this.selectedCard !== null && this.selectedIssueId !== null) {
+      const vote: VoteModel = {
+        sessionId: this.session.id,
+        issueId: this.selectedIssueId,
+        vote: this.selectedCard,
+      };
+
+      this.apiService.addVote(vote).subscribe((response) => {
+        // tslint:disable-next-line:no-console
+        console.log('Vote submitted:', response);
+        this.revealedCard = this.selectedCard;
+        this.selectedCard = null;
+        this.selectedIssue = null;
+        this.selectedIssueId = null;
+        this.loadVotes(this.session.id, this.selectedIssueId);  // Update to reflect the latest votes
+        this.selectedCard = null;
+      });
+    } else {
+      console.error('No card selected or no issue selected.');
+    }
+  }
+
+  loadVotes(sessionId: string, issueId: string) {
+    this.apiService.getVotes(sessionId, issueId).subscribe(
+      (votes: VoteModel[]) => {
+        this.votes = votes;
+      },
+      (error) => {
+        console.error('Error fetching votes:', error);
+      },
+    );
+  }
+
+  triggerConfetti() {
+    confetti();
+  }
 }
