@@ -9,6 +9,7 @@ import {NewsModel} from '../Models/NewsModel';
 import {DiagramModel} from '../Models/DiagramModel';
 import {SessionModel} from '../models/SessionModel';
 import {IssuesModel} from '../models/IssuesModel';
+import {VoteModel} from '../models/VoteModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -164,5 +165,13 @@ export class ApiService {
     return this.httpClient.delete<void>(`${this.API_URL}/deleteIssue/${id}`);
   }
 
+  // ********************** Vote services ***********************
 
+  addVote(vote: VoteModel): Observable<VoteModel> {
+    return this.httpClient.post<VoteModel>(`${this.API_URL}/votes`, vote);
+  }
+
+  getVotes(sessionId: string, issueId: string): Observable<VoteModel[]> {
+    return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/session/${sessionId}/issue/${issueId}`);
+  }
 }

@@ -7,13 +7,11 @@ import { InvitePlayersComponent } from './invite-players/invite-players.componen
 import { Location } from '@angular/common';
 // @ts-ignore
 import confetti from 'canvas-confetti';
-import { LimitsModel } from '../../Models/LimitsModel';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IssuesModel } from '../../Models/IssuesModel';
-import { DemoModel } from '../../Models/DemoModel';
-import { LimitsUpdateComponent } from '../limits-update/limits-update.component';
 import { IssuesUpdateComponent } from './issues-update/issues-update.component';
 import { SessionUpdateComponent } from './session-update/session-update.component';
+import { VoteModel } from '../../models/VoteModel';
 
 @Component({
   selector: 'ngx-room',
@@ -42,6 +40,9 @@ export class RoomComponent implements OnInit {
   dropdownVisible = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
 
+  selectedIssueId: string | null = null;
+  votes: VoteModel[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -56,9 +57,6 @@ export class RoomComponent implements OnInit {
       this.sessionId = params['id'];
       this.getSessionDetails(this.sessionId);
     });
-    if (!this.sessionId) {
-      this.sessionId = this.route.snapshot.paramMap.get('sessionId');
-    }
     this.loadIssues();
     this.addIssuesForm = this.fb.group({
       issueDescription: ['', Validators.required],
@@ -70,21 +68,11 @@ export class RoomComponent implements OnInit {
       this.issues = issues;
     });
   }
-
   loadSessions() {
     this.apiService.getSessionById(this.sessionId).subscribe((session: SessionModel) => {
       this.session = session;
     });
   }
-
-  triggerConfetti(): void {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  }
-
   getSessionDetails(sessionId: string) {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
@@ -110,15 +98,6 @@ export class RoomComponent implements OnInit {
       default:
         return [];
     }
-  }
-
-  selectCard(card: string) {
-    this.selectedCard = card;
-  }
-
-  toggleVote(issue: IssuesModel) {
-    issue.isVoting = !issue.isVoting;
-    this.selectedIssue = issue.isVoting ? issue : null;
   }
 
   toggleSidebar() {
@@ -149,14 +128,6 @@ export class RoomComponent implements OnInit {
     this.showForm = false;
     this.issueTitle = '';
   }
-
-  revealCard(): void {
-    if (this.selectedCard !== null) {
-      this.revealedCard = this.selectedCard;
-    }
-    this.triggerConfetti();
-  }
-
   openInvitePlayers() {
     const currentUrl = this.location.path();
     this.dialogService.open(InvitePlayersComponent, {
@@ -193,7 +164,6 @@ export class RoomComponent implements OnInit {
       },
     );
   }
-///////////////////////////// dropdown ///////////////////////
 
   toggleDropdownIssue(issueId: number) {
     this.dropdownOpen[issueId] = !this.dropdownOpen[issueId];
@@ -236,7 +206,7 @@ export class RoomComponent implements OnInit {
       this.issues.push(issue);
     }
   }
-///////////////////////////////////////////////////
+
   toggleDropdownSession() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
@@ -249,4 +219,80 @@ export class RoomComponent implements OnInit {
       },
     }).onClose.subscribe(() => this.loadSessions());
   }
+  ///////////// vote/////////////
+  selectCard(card: string) {
+    this.selectedCard = card;
+  }
+  revealCard(): void {
+    if (this.selectedCard !== null) {
+      this.revealedCard = this.selectedCard;
+      this.submitVote();
+    }
+    this.triggerConfetti();
+  }
+  toggleVote(issue: IssuesModel) {
+    if (this.selectedIssue && this.selectedIssue.id === issue.id) {
+      this.selectedCard = null;
+      this.revealedCard = null;
+      this.selectedIssue.isVoting = !this.selectedIssue.isVoting;
+    } else {
+      this.issues.forEach(i => i.isVoting = false);
+      this.selectedCard = null;
+      this.revealedCard = null;
+
+      // Set the new issue for voting
+      this.selectedIssue = issue;
+      this.selectedIssueId = issue.id.toString();
+      issue.isVoting = true;
+    }
+  }
+  submitVote() {
+    if (this.selectedCard !== null && this.selectedIssueId !== null) {
+      const vote: VoteModel = {
+        sessionId: this.session.id,
+        issueId: this.selectedIssueId,
+        vote: this.selectedCard,
+      };
+
+      this.apiService.addVote(vote).subscribe((response) => {
+
+        const issue = this.issues.find(i => i.id === this.selectedIssueId);
+        if (issue) {
+          issue.hasVoted = true; // Mark issue as voted
+          issue.isVoting = false; // End the voting process for this issue
+        }
+
+        this.revealedCard = this.selectedCard;
+        this.selectedCard = null;
+        this.selectedIssue = null;
+        this.selectedIssueId = null;
+        this.loadVotes(this.session.id, this.selectedIssueId);
+
+        this.triggerConfetti();
+      });
+    } else {
+      console.error('No card selected or no issue selected.');
+    }
+  }
+
+  loadVotes(sessionId: string, issueId: string) {
+    this.apiService.getVotes(sessionId, issueId).subscribe(
+      (votes: VoteModel[]) => {
+        this.votes = votes;
+      },
+      (error) => {
+        console.error('Error fetching votes:', error);
+      },
+    );
+  }
+
+  triggerConfetti() {
+    confetti();
+  }
+  calculateAverage(votes: VoteModel[]): string {
+    const sum = votes.reduce((acc, vote) => acc + parseFloat(vote.vote), 0);
+    return (sum / votes.length).toFixed(2);
+  }
+
 }
+

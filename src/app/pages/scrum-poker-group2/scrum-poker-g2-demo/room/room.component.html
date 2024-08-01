@@ -47,46 +47,48 @@
     </button>
   </div>
 </div>
-  <!------------------------------  pick your card --------------------------------->
-  <div class="button-container">
-    <div class="button-wrapper">
-      <br>
-      <h1 *ngIf="!revealedCard && selectedCard === null">
-        <span>P</span><span>I</span><span>C</span><span>K</span><span> </span><span>Y</span><span>O</span><span>U</span><span>R</span><span> </span><span>C</span><span>A</span><span>R</span><span>D</span><span>S</span><span>!</span>
-      </h1>
-      <button *ngIf="selectedCard !== null && !revealedCard" (click)="revealCard()" class="neon-shadow">
-        Reveal card
-      </button>
-      <br>
-      <button *ngIf="revealedCard" (click)="revealCard()" class="reveal-button" routerLink="createGame">
-        start new voting
-      </button>
-    </div>
-    <div class="container">
-      <h1 *ngIf="revealedCard">
-        <span>Your selected card: {{ revealedCard }}</span>
-      </h1>
 
-      <div class="average-agreement" *ngIf="revealedCard">
-        <div class="average">
-          <h5 style="color: #3A3A3A">Average:</h5>
-          <h3>{{ selectedCard }}</h3>
-        </div>
-        <div class="vote">
-          <h5 style="color: #3A3A3A">Vote:</h5>
-          <h3>{{ selectedCard }}</h3>
-        </div>
+<!------------------------------  pick your card --------------------------------->
+<div class="button-container">
+  <div class="button-wrapper">
+    <br>
+    <h1 *ngIf="!revealedCard && selectedCard === null">
+      <span>P</span><span>I</span><span>C</span><span>K</span><span> </span><span>Y</span><span>O</span><span>U</span><span>R</span><span> </span><span>C</span><span>A</span><span>R</span><span>D</span><span>S</span><span>!</span>
+    </h1>
+    <button *ngIf="selectedCard !== null && !revealedCard" (click)="revealCard()" class="neon-shadow">
+      Reveal card
+    </button>
+    <br>
+    <button *ngIf="revealedCard" (click)="revealCard()" class="reveal-button" routerLink="createGame">
+      Start new voting
+    </button>
+  </div>
+  <div class="container">
+    <h1 *ngIf="revealedCard">
+      <span>Your selected card: {{ revealedCard }}</span>
+    </h1>
+
+    <div class="average-agreement" *ngIf="revealedCard">
+      <div class="average">
+        <h5 style="color: #3A3A3A">Average:</h5>
+<!--        <h3>{{ calculateAverage(votes) }}</h3>-->
+              <h3>{{ revealedCard }}</h3>
+      </div>
+      <div class="vote">
+        <h5 style="color: #3A3A3A">Vote:</h5>
+        <h3>{{ revealedCard }}</h3>
       </div>
     </div>
   </div>
+</div>
 
-  <!----------------------------------  algo cards --------------------------------->
-  <div class="cards">
-    <div class="group relative h-40 cursor-pointer" *ngFor="let card of cards" [id]="'vote_card_' + card" (click)="selectCard(card)" [style.opacity]="selectedCard === card ? '1' : '0.5'" [ngClass]="{'selected': selectedCard === card}">
-      <button class="card-button">{{ card }}</button>
-    </div>
+<!----------------------------------  algo cards --------------------------------->
+<div class="cards">
+  <div class="group relative h-40 cursor-pointer" *ngFor="let card of cards" [id]="'vote_card_' + card" (click)="selectCard(card)" [style.opacity]="selectedCard === card ? '1' : '0.5'"
+       [ngClass]="{'selected': selectedCard === card}">
+    <button class="card-button">{{ card }}</button>
   </div>
-
+</div>
 
 <!------------------------------------------ Sidebar : issues --------------------------------->
 <div class="sidebar" [class.open]="isSidebarOpen">
@@ -95,7 +97,7 @@
   </div>
   <div class="sidebar-content">
     <div class="header-container">
-      <h5>issues</h5>
+      <h5>Issues</h5>
       <div class="dropdown-container">
         <img src="assets/images/import.png" width="50" height="50" class="spaced-img" (click)="toggleDropdown()" style="cursor:pointer;" alt="desc">
         <ul *ngIf="isDropdownOpen" class="dropdown-content">
@@ -109,7 +111,7 @@
     </div>
     <button class="btn btn-light" *ngIf="!showForm" (click)="toggleForm()">
       <img src="assets/images/addUserStory.png" width="45" height="45" alt="desc">
-      Add An issues
+      Add An Issue
     </button>
 
     <!------------------------------ add issue form ------------------------->
@@ -121,9 +123,10 @@
             <div class="row">
               <br>
               <p style="line-height: 1.75; color:black;font-size:20px; margin-top:18px">{{ issue.issueDescription }}</p>
-              <button class="btn" [class.voting]="issue.isVoting" (click)="toggleVote(issue)">
-                {{ issue.isVoting ? 'Voting now...' : 'Vote !! ' }}
+              <button class="btn" (click)="toggleVote(issue)">
+                {{ issue.isVoting ? 'Voting now...' : issue.hasVoted ? 'Vote again' : 'Vote' }}
               </button>
+
 
               <!------------------------------ dropdopwn ------------------------->
 
@@ -168,10 +171,10 @@
         </nb-card-footer>
       </div>
     </div>
-
   </div>
 </div>
-    <!------------------------------------ Overlay ------------------------------------>
+
+<!------------------------------------ Overlay ------------------------------------>
 <div class="overlay" [class.show]="isSidebarOpen" (click)="toggleSidebar()"></div>
 </body>
 
