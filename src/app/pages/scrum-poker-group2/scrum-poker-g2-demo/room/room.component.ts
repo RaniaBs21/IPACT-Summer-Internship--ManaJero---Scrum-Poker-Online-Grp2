@@ -155,13 +155,6 @@ export class RoomComponent implements OnInit {
         return [];
     }
   }
-  /*selectCard(card: string) {
-    this.selectedCard = card;
-  }*/
-  /*toggleVote(issue: IssuesModel) {
-    issue.isVoting = !issue.isVoting;
-    this.selectedIssue = issue.isVoting ? issue : null;
-  }*/
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
@@ -171,26 +164,10 @@ export class RoomComponent implements OnInit {
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
-  selectOption(option: string) {
-    this.selectedOption = option;
-    this.isDropdownOpen = false;
-  }
-  saveIssue() {
-    if (this.issueTitle) {
-      this.showForm = false;
-      this.issueTitle = '';
-    }
-  }
   cancel() {
     this.showForm = false;
     this.issueTitle = '';
   }
-  /*revealCard(): void {
-    if (this.selectedCard !== null) {
-      this.revealedCard = this.selectedCard;
-    }
-    this.triggerConfetti();
-  }*/
   openInvitePlayers() {
     const currentUrl = this.location.path();
     this.dialogService.open(InvitePlayersComponent, {
@@ -442,19 +419,8 @@ export class RoomComponent implements OnInit {
           description: description,
         } as IssuesModel);
       });
-
     };
-
     fileReader.readAsArrayBuffer(file);
-  }
-  downloadExcel() {
-    // Préparer les données à exporter
-    const worksheet = XLSX.utils.json_to_sheet(this.issuesRequests);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Issues');
-
-    // Générer et télécharger le fichier Excel
-    XLSX.writeFile(workbook, 'issues.xlsx');
   }
   private handleOAuthCallback(): void {
     this.oauthService
@@ -493,16 +459,21 @@ export class RoomComponent implements OnInit {
     this.triggerConfetti();
   }
   toggleVote(issue: IssuesModel) {
-    issue.isVoting = !issue.isVoting;
-    if (issue.isVoting) {
-      this.selectedIssue = issue;
-      this.selectedIssueId = issue.id.toString(); // Set selectedIssueId when selecting an issue
+    if (this.selectedIssue && this.selectedIssue.id === issue.id) {
+      this.selectedCard = null;
+      this.revealedCard = null;
+      this.selectedIssue.isVoting = !this.selectedIssue.isVoting;
     } else {
-      this.selectedIssue = null;
-      this.selectedIssueId = null; // Clear selectedIssueId when deselecting an issue
+      this.issues.forEach(i => i.isVoting = false);
+      this.selectedCard = null;
+      this.revealedCard = null;
+
+      // Set the new issue for voting
+      this.selectedIssue = issue;
+      this.selectedIssueId = issue.id.toString();
+      issue.isVoting = true;
     }
   }
-
   submitVote() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
@@ -512,14 +483,20 @@ export class RoomComponent implements OnInit {
       };
 
       this.apiService.addVote(vote).subscribe((response) => {
-        // tslint:disable-next-line:no-console
-        console.log('Vote submitted:', response);
+
+        const issue = this.issues.find(i => i.id === this.selectedIssueId);
+        if (issue) {
+          issue.hasVoted = true; // Mark issue as voted
+          issue.isVoting = false; // End the voting process for this issue
+        }
+
         this.revealedCard = this.selectedCard;
         this.selectedCard = null;
         this.selectedIssue = null;
         this.selectedIssueId = null;
-        this.loadVotes(this.session.id, this.selectedIssueId);  // Update to reflect the latest votes
-        this.selectedCard = null;
+        this.loadVotes(this.session.id, this.selectedIssueId);
+
+        this.triggerConfetti();
       });
     } else {
       console.error('No card selected or no issue selected.');

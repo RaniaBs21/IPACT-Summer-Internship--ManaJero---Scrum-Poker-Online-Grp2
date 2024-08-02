@@ -7,5 +7,7 @@ export class IssuesModel {
   platformId: string;
   issueDescription: string;
   issueNumber: string;
-  isVoting: boolean;
+  hasVoted: boolean = false;
+  isVoting: boolean = false;
+
 }
