@@ -3,6 +3,9 @@ import {SessionModel} from './SessionModel';
 export class IssuesModel {
   id: string;
   issueDescription: string;
-  isVoting: boolean;
+  hasVoted: boolean = false;
+  isVoting: boolean = false;
   issueNumber: string;
+  lastVoteValue?: string;
+
 }

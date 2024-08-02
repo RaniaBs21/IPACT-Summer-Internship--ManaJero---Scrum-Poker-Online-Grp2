@@ -121,60 +121,45 @@
           <div class="issue-card">
             <p class="issue-number">{{ issue.issueNumber }}</p>
             <div class="row">
-              <br>
-              <p style="line-height: 1.75; color:black;font-size:20px; margin-top:18px">{{ issue.issueDescription }}</p>
-              <button class="btn" (click)="toggleVote(issue)">
-                {{ issue.isVoting ? 'Voting now...' : issue.hasVoted ? 'Vote again' : 'Vote' }}
-              </button>
-
-
-              <!------------------------------ dropdopwn ------------------------->
-
-              <div class="dropdown-container">
-                <button class="btn btn-link" (click)="toggleDropdownIssue(issue.id)">
-                  <i class="fas fa-ellipsis-v"></i>
+              <p style="line-height: 1.75; color:black; font-size:20px; margin-top:18px">
+                {{ issue.issueDescription }}
+              </p>
+              <div class="action-buttons">
+                <button class="btn" (click)="toggleVote(issue)">
+                  {{ issue.isVoting ? 'Voting now...' : issue.hasVoted ? 'Vote again' : 'Vote' }}
                 </button>
-                <ul *ngIf="dropdownOpen[issue.id]" class="dropdown-content">
-                  <li (click)="openIssueUpdate(issue)">
-                    <i class="fas fa-edit"></i> Update
-                  </li>
-                  <li (click)="moveIssueToTop(issue.id)">
-                    <i class="fas fa-arrow-up"></i> Move to Top
-                  </li>
-                  <li (click)="moveIssueToBottom(issue.id)">
-                    <i class="fas fa-arrow-down"></i> Move to Bottom
-                  </li>
-                  <li (click)="deleteIssue(issue.id)">
-                    <i class="fas fa-trash-alt"></i> Delete
-                  </li>
-                </ul>
+                <div class="dropdown-container">
+                  <button class="btn btn-link" (click)="toggleDropdownIssue(issue.id)">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul *ngIf="dropdownOpen[issue.id]" class="dropdown-content">
+                    <li (click)="openIssueUpdate(issue)">
+                      <i class="fas fa-edit"></i> Update
+                    </li>
+                    <li (click)="moveIssueToTop(issue.id)">
+                      <i class="fas fa-arrow-up"></i> Move to Top
+                    </li>
+                    <li (click)="moveIssueToBottom(issue.id)">
+                      <i class="fas fa-arrow-down"></i> Move to Bottom
+                    </li>
+                    <li (click)="deleteIssue(issue.id)">
+                      <i class="fas fa-trash-alt"></i> Delete
+                    </li>
+                  </ul>
+                </div>
               </div>
-
             </div>
+            <!-- Last vote-->
+            <p *ngIf="issue.lastVoteValue" class="last-vote" style="font-weight: bold; margin-top: 10px">
+              Last vote: {{ issue.lastVoteValue }}
+            </p>
           </div>
         </div>
-
-        <!------------------------------------------------------->
-
-        <nb-card-body>
-          <form [formGroup]="addIssuesForm">
-            <div class="form-group">
-              <textarea rows="5" nbInput fullWidth shape="round" formControlName="issueDescription" placeholder="Enter a new issue"></textarea>
-            </div>
-          </form>
-        </nb-card-body>
-        <nb-card-footer class="footer-buttons">
-          <div class="button-group">
-            <button (click)="confirmIssueAdd()" class="btn btn-primary">Save</button>
-            <button (click)="cancel()" class="btn btn-light">Cancel</button>
-          </div>
-        </nb-card-footer>
       </div>
     </div>
   </div>
 </div>
-
-<!------------------------------------ Overlay ------------------------------------>
+    <!------------------------------------ Overlay ------------------------------------>
 <div class="overlay" [class.show]="isSidebarOpen" (click)="toggleSidebar()"></div>
 </body>
 

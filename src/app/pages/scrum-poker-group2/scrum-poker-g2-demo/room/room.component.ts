@@ -246,6 +246,34 @@ export class RoomComponent implements OnInit {
       issue.isVoting = true;
     }
   }
+  // submitVote() {
+  //   if (this.selectedCard !== null && this.selectedIssueId !== null) {
+  //     const vote: VoteModel = {
+  //       sessionId: this.session.id,
+  //       issueId: this.selectedIssueId,
+  //       vote: this.selectedCard,
+  //     };
+  //
+  //     this.apiService.addVote(vote).subscribe((response) => {
+  //
+  //       const issue = this.issues.find(i => i.id === this.selectedIssueId);
+  //       if (issue) {
+  //         issue.hasVoted = true; // Mark issue as voted
+  //         issue.isVoting = false; // End the voting process for this issue
+  //       }
+  //
+  //       this.revealedCard = this.selectedCard;
+  //       this.selectedCard = null;
+  //       this.selectedIssue = null;
+  //       this.selectedIssueId = null;
+  //       this.loadVotes(this.session.id, this.selectedIssueId);
+  //
+  //       this.triggerConfetti();
+  //     });
+  //   } else {
+  //     console.error('No card selected or no issue selected.');
+  //   }
+  // }
   submitVote() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
@@ -255,11 +283,11 @@ export class RoomComponent implements OnInit {
       };
 
       this.apiService.addVote(vote).subscribe((response) => {
-
         const issue = this.issues.find(i => i.id === this.selectedIssueId);
         if (issue) {
-          issue.hasVoted = true; // Mark issue as voted
-          issue.isVoting = false; // End the voting process for this issue
+          issue.hasVoted = true;
+          issue.isVoting = false;
+          issue.lastVoteValue = this.selectedCard; // Store the last vote value
         }
 
         this.revealedCard = this.selectedCard;
