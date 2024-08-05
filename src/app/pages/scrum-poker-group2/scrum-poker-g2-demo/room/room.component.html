@@ -11,7 +11,9 @@
       </button>
       <ul *ngIf="isDropdownSessionOpen" class="dropdown-content">
         <li (click)="openSessionUpdate(session)"><i class="fas fa-cog"></i> Game settings</li>
+<!--
         <li (click)="openVotingHistory()"><i class="fas fa-history"></i> Voting History</li>
+-->
       </ul>
     </div>
     <br>
@@ -87,7 +89,9 @@
         <img src="assets/images/import.png" width="50" height="50" class="spaced-img" (click)="toggleDropdown()"
              style="cursor:pointer;" alt="desc">
         <ul *ngIf="isDropdownOpen" class="dropdown-content">
+<!--
           <li (click)="jiraButtonClick(JiraProjectList)">Import from JIRA</li>
+-->
           <li (click)="azureButtonClick(AzureProjectList)">Import from azure devops</li>
           <li>
             <form method="POST" action="/spring-mvc-xml/upload/{{sessionId}}" enctype="multipart/form-data">
