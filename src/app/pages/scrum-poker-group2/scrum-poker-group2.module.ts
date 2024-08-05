@@ -19,7 +19,11 @@ import { ScrumPokerGroup2RoutingModule } from './scrum-poker-group2-routing.modu
 import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo/scrum-poker-g2-demo.component';
 import { SessionComponent } from './session/session.component';
 import {RoomComponent} from './scrum-poker-g2-demo/room/room.component';
-
+import {OAuthModule, OAuthStorage} from 'angular-oauth2-oidc';
+import {MsalModule} from '@azure/msal-angular';
+import {CoreModule} from '../../@core/core.module';
+import {CommonModule} from '@angular/common';
+import {BrowserModule} from '@angular/platform-browser';
 
 const MODULES = [
   FormsModule,
@@ -44,12 +48,18 @@ const SERVICES = [
     imports: [
         ...MODULES,
         ReactiveFormsModule,
+      OAuthModule.forRoot(),
+      MsalModule,
+      CoreModule,
+      CommonModule,
+      BrowserModule,
     ],
   declarations: [
     SessionComponent,
   ],
   providers: [
     ...SERVICES,
+    {provide: OAuthStorage, useValue: localStorage},
   ],
 })
 export class ScrumPokerGroup2Module {

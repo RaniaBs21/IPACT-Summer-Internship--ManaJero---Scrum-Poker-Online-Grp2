@@ -1,25 +1,36 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { SessionModel } from '../../Models/SessionModel';
-import { ApiService } from '../../services/api-service.service';
-import { ActivatedRoute } from '@angular/router';
-import { NbDialogService, NbToastrService } from '@nebular/theme';
-import { InvitePlayersComponent } from './invite-players/invite-players.component';
+import {Component, HostListener, Input, OnInit, TemplateRef} from '@angular/core';
+import {SessionModel} from '../../Models/SessionModel';
+import {ApiService} from '../../services/api-service.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NbDialogService, NbToastrService} from '@nebular/theme';
+import {InvitePlayersComponent} from './invite-players/invite-players.component';
 import { Location } from '@angular/common';
 // @ts-ignore
 import confetti from 'canvas-confetti';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IssuesModel } from '../../Models/IssuesModel';
-import { IssuesUpdateComponent } from './issues-update/issues-update.component';
-import { SessionUpdateComponent } from './session-update/session-update.component';
-import { VoteModel } from '../../models/VoteModel';
-
+import {LimitsModel} from '../../Models/LimitsModel';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {IssuesModel} from '../../Models/IssuesModel';
+import {DemoModel} from '../../Models/DemoModel';
+import {LimitsUpdateComponent} from '../limits-update/limits-update.component';
+import {IssuesUpdateComponent} from './issues-update/issues-update.component';
+import {SessionUpdateComponent} from './session-update/session-update.component';
+import {SearchResults, Project} from 'jira.js/out/version3/models';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {IssuesRequest} from '../../Models/ImportRepresentation/IssuesRequest';
+import {JiraAuthService} from '../../services/jira-auth.service';
+import * as XLSX from 'xlsx';
+import {AuthAzureServiceService} from '../../../../auth-azure-service.service';
+import {MsalService} from '@azure/msal-angular';
+import {AzureDevOpsProject} from '../../Models/ImportRepresentation/AzureDevOpsProject';
+import {AuthServiceService} from '../../../../auth-service.service';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {VoteModel} from '../../Models/VoteModel';
 @Component({
   selector: 'ngx-room',
   templateUrl: './room.component.html',
-  styleUrls: ['./room.component.scss'],
-})
+  styleUrls: ['./room.component.scss']})
 export class RoomComponent implements OnInit {
-  sessionId: string;
+  sessionId: string | null = null;
   session: SessionModel;
   cards: string[] = [];
   selectedCard: string | null = null;
@@ -29,7 +40,6 @@ export class RoomComponent implements OnInit {
   showForm = false;
   issueTitle = '';
   revealedCard: number | string | null = null;
-  selectedIssue: IssuesModel | null = null;
   addIssuesForm: FormGroup;
   issues: IssuesModel[] = [];
   sessions: SessionModel[] = [];
@@ -38,31 +48,69 @@ export class RoomComponent implements OnInit {
   pageSize: number = 20; // Nombre d'éléments par page
   private isLoading: boolean = false;
   dropdownVisible = false;
+  selectedIssue: IssuesModel | null = null;
+  isDropdownSessionOpen = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
-
+  // issues in session
+  selectedAzureProjectName: string;
+  jiraIssues: SearchResults;
+  azure: AzureDevOpsProject [] = [];
+  jiraLoginSuccessful: boolean = false;
+  azureLoginSuccessful: boolean = false;
+  jiraProjects: Project[] = [];
+  issuesRequests: IssuesRequest[] = [];
+  iss: IssuesModel = new IssuesModel();
+  issue: IssuesModel[] = [];
+  lastAddedIssues: any;
+  selectedJiraProjectName: string;
+  modalRef?: BsModalRef;
+  submittedDescription: string = '';
+  hidden: boolean;
+  state: string | null = null;
+  code: string | null = null;
   selectedIssueId: string | null = null;
   votes: VoteModel[] = [];
-
-  constructor(
-    private route: ActivatedRoute,
-    private apiService: ApiService,
-    private dialogService: NbDialogService,
-    private location: Location,
-    private toastrService: NbToastrService,
-    private fb: FormBuilder,
-  ) { }
+  constructor(private route: ActivatedRoute,
+              private apiService: ApiService,
+              private dialogService: NbDialogService,
+              private location: Location,
+              private toastrService: NbToastrService,
+              private fb: FormBuilder,
+              private router: Router,
+              private formBuilder: FormBuilder,
+              private modalService: BsModalService,
+              private jiraAuthService: JiraAuthService,
+              private azureAuthService: AuthAzureServiceService,
+              private azureLogin: MsalService,
+              private authService: AuthServiceService,
+              private oauthService: OAuthService,
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.sessionId = params['id'];
       this.getSessionDetails(this.sessionId);
     });
+    if (!this.sessionId) {
+      this.sessionId = this.route.snapshot.paramMap.get('sessionId');
+    }
     this.loadIssues();
     this.addIssuesForm = this.fb.group({
       issueDescription: ['', Validators.required],
     });
-  }
+    this.azureLogin.initialize();
+    this.hidden = true;
 
+    this.route.queryParams.subscribe((params) => {
+      this.state = params['state'];
+      this.code = params['code'];
+      //  console.log('State:', this.state);
+      //  console.log('Code:', this.code);
+
+      // Call OAuth login flow
+      this.handleOAuthCallback();
+    });
+  }
   loadIssues() {
     this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
       this.issues = issues;
@@ -73,6 +121,14 @@ export class RoomComponent implements OnInit {
       this.session = session;
     });
   }
+
+  /* triggerConfetti(): void {
+     confetti({
+       particleCount: 100,
+       spread: 70,
+       origin: { y: 0.6 },
+     });
+   }*/
   getSessionDetails(sessionId: string) {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
@@ -84,7 +140,6 @@ export class RoomComponent implements OnInit {
       },
     );
   }
-
   getCardsForSystem(system: string): string[] {
     switch (system) {
       case 'FIBONACCI':
@@ -99,31 +154,15 @@ export class RoomComponent implements OnInit {
         return [];
     }
   }
-
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
-
   toggleForm() {
     this.showForm = !this.showForm;
   }
-
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
-
-  selectOption(option: string) {
-    this.selectedOption = option;
-    this.isDropdownOpen = false;
-  }
-
-  saveIssue() {
-    if (this.issueTitle) {
-      this.showForm = false;
-      this.issueTitle = '';
-    }
-  }
-
   cancel() {
     this.showForm = false;
     this.issueTitle = '';
@@ -137,7 +176,6 @@ export class RoomComponent implements OnInit {
       },
     });
   }
-
   confirmIssueAdd() {
     if (this.addIssuesForm.valid) {
       if (confirm('Are you sure you want to add this issue?')) {
@@ -148,14 +186,13 @@ export class RoomComponent implements OnInit {
       this.toastrService.danger('Please fill in all fields', 'Error');
     }
   }
-
   addIssue() {
     const newIssue: IssuesModel = this.addIssuesForm.value;
     this.apiService.addIssue(this.sessionId, newIssue).subscribe(
       (issue) => {
         this.issues.push(issue);
         this.addIssuesForm.reset();
-        this.toastrService.success('Issue added successfully', 'Success');
+        this.toastrService.success('issue added successfully', 'Success');
         this.loadIssues();
       },
       (error) => {
@@ -164,6 +201,18 @@ export class RoomComponent implements OnInit {
       },
     );
   }
+  toggleDropdownSession() {
+    this.isDropdownSessionOpen = !this.isDropdownSessionOpen;
+  }
+  openSessionUpdate(session: SessionModel) {
+    this.dialogService.open(SessionUpdateComponent, {
+      context: {
+        title: 'Update issue',
+        session: {...session},
+      },
+    }).onClose.subscribe(() => this.loadSessions());
+  }
+  ///////////////////////////// dropdown ///////////////////////
 
   toggleDropdownIssue(issueId: number) {
     this.dropdownOpen[issueId] = !this.dropdownOpen[issueId];
@@ -206,19 +255,191 @@ export class RoomComponent implements OnInit {
       this.issues.push(issue);
     }
   }
-
-  toggleDropdownSession() {
-    this.isDropdownOpen = !this.isDropdownOpen;
+// **************Issues Process ****************++
+  openBootstrapModal(template: TemplateRef<void>) {
+    this.modalRef = this.modalService.show(template);
+  }
+  hideModal() {
+    this.modalRef?.hide();
   }
 
-  openSessionUpdate(session: SessionModel) {
-    this.dialogService.open(SessionUpdateComponent, {
-      context: {
-        title: 'Update session',
-        session: { ...session },
-      },
-    }).onClose.subscribe(() => this.loadSessions());
+  jiraButtonClick(template: TemplateRef<void>) {
+    if (!this.jiraLoginSuccessful) {
+      this.loginToJira();
+    } else {
+      this.getJiraProjects(template);
+    }
   }
+  azureButtonClick(template: TemplateRef<void>) {
+    if (!this.azureLoginSuccessful) {
+      this.loginToAzure();
+    } else {
+      this.getAzureProjects(template);
+    }
+  }
+
+  getAzureProjects(template: TemplateRef<void>) {
+    if (this.azureLoginSuccessful) {
+      this.apiService.getProjectsAzure().subscribe((response: any) => {
+        const responses: AzureDevOpsProject[] = [];
+        if (response && response.value && response.value.length > 0) {
+          response.value.forEach((projects: any) => {
+            const id = projects.id;
+            const name = projects.name;
+            const newProject = new AzureDevOpsProject(id, name);
+            responses.push(newProject);
+          });
+
+        }
+        this.azure = responses;
+        this.openBootstrapModal(template);
+      });
+
+    }
+
+  }
+
+  loginToAzure() {
+    this.azureAuthService.login();
+    this.azureLoginSuccessful = true;
+  }
+
+  loginToJira() {
+    this.jiraAuthService.login();
+    this.jiraLoginSuccessful = true;
+  }
+  getJiraProjects(template: TemplateRef<void>) {
+    if (this.jiraLoginSuccessful) {
+      this.apiService.getProjects().subscribe(value => {
+        this.jiraProjects = value;
+        this.openBootstrapModal(template);
+      });
+    }
+  }
+  selectJiraProject(jiraProjectName: any, template: TemplateRef<void>) {
+
+    this.selectedJiraProjectName = jiraProjectName;
+    this.modalRef.hide();
+    this.getIssues(this.selectedJiraProjectName, template);
+  }
+  selectAzureProject(azureProjectName: any, template: TemplateRef<void>) {
+
+    this.selectedAzureProjectName = azureProjectName;
+    this.modalRef.hide();
+    this.getIssuesAzure(this.selectedAzureProjectName, template);
+
+  }
+
+  getIssues(projectName: string, template: TemplateRef<void>) {
+    this.apiService.getProjectIssues(projectName).subscribe(value => {
+      this.jiraIssues = value;
+      this.openBootstrapModal(template);
+    });
+  }
+  getIssuesAzure(projectName: string, template: TemplateRef<void>) {
+    this.apiService.getWorkItems(projectName).subscribe((response: any) => {
+      const responses: AzureDevOpsProject[] = [];
+      if (response && response.value && response.value.length > 0) {
+        response.value.forEach((issue: any) => {
+          const fields = issue.fields;
+          const key: string = fields['System.Id'];
+          const summary: string = fields['System.Title'];
+          const status: string = fields['System.State'];
+          responses.push(new AzureDevOpsProject(key, summary));
+        });
+      }
+      this.azure = responses;
+
+      this.openBootstrapModal(template);
+    });
+  }
+
+  addIssueToLocalList(issuesKey: string, issueDescription: string) {
+    this.issuesRequests.push({
+      description: issueDescription,
+      issueKey: issuesKey,
+      platformId: 'JIRA',
+    } as IssuesRequest);
+    this.apiService.insertUserStory(this.issuesRequests, this.sessionId).subscribe(rep => null);
+    console.error(this.issuesRequests);
+  }
+  addIssueToLocalListAzure(issueDescription: string) {
+    this.issuesRequests.push({
+      description: issueDescription,
+      platformId: 'AZURE',
+    } as IssuesRequest);
+  }
+  // ************** Uplaod CSV *********************
+
+  saveToLocalStorage(): void {
+    localStorage.setItem('userStories', JSON.stringify(this.issue));
+    this.apiService.save(this.iss);
+  }
+
+  fetchUserStory() {
+    this.apiService.getIssues()
+      .subscribe((issue) => {
+        this.issue = issue;
+      });
+  }
+
+  ReadExcel(event: any, sessionId: string): void {
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+
+    fileReader.onload = (e) => {
+      const data = new Uint8Array(fileReader.result as ArrayBuffer);
+      const workBook = XLSX.read(data, { type: 'array' });
+
+      const sheet = workBook.Sheets[workBook.SheetNames[0]];
+      const excelData = XLSX.utils.sheet_to_json(sheet) as IssuesModel[];
+      excelData.forEach((row) => {
+        const description = row['description'];
+
+        this.apiService.uploadFile(file, sessionId).subscribe(
+          (response) => {
+            const newUserStory = new IssuesModel();
+            newUserStory.description = description;
+            this.apiService.save(newUserStory);
+            this.saveToLocalStorage();
+            this.fetchUserStory();
+          },
+          (error) => {
+            console.error('Upload error:', error);
+          },
+        );
+        this.issuesRequests.push({
+          description: description,
+        } as IssuesModel);
+      });
+    };
+    fileReader.readAsArrayBuffer(file);
+  }
+  private handleOAuthCallback(): void {
+    this.oauthService
+      .tryLoginCodeFlow()
+      .then(() => {
+        if (this.oauthService.hasValidAccessToken()) {
+          const sessionId = localStorage.getItem('sessionId'); // ou un autre moyen de récupérer sessionId
+          this.router.navigate([`/pages/agile/scrum-poker-group2/session/room/${sessionId}`]);
+        } else {
+          console.error('Invalid access token.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error during OAuth login:', error);
+      });
+  }
+
+  private initializeRoom(sessionId: string | null): void {
+    if (sessionId) {
+      // Initialiser la salle avec l'ID de session
+      // console.log('Initializing room with session ID:', sessionId);
+    } else {
+      console.error('Session ID not found.');
+    }
+  }
+
   ///////////// vote/////////////
   selectCard(card: string) {
     this.selectedCard = card;
@@ -246,34 +467,6 @@ export class RoomComponent implements OnInit {
       issue.isVoting = true;
     }
   }
-  // submitVote() {
-  //   if (this.selectedCard !== null && this.selectedIssueId !== null) {
-  //     const vote: VoteModel = {
-  //       sessionId: this.session.id,
-  //       issueId: this.selectedIssueId,
-  //       vote: this.selectedCard,
-  //     };
-  //
-  //     this.apiService.addVote(vote).subscribe((response) => {
-  //
-  //       const issue = this.issues.find(i => i.id === this.selectedIssueId);
-  //       if (issue) {
-  //         issue.hasVoted = true; // Mark issue as voted
-  //         issue.isVoting = false; // End the voting process for this issue
-  //       }
-  //
-  //       this.revealedCard = this.selectedCard;
-  //       this.selectedCard = null;
-  //       this.selectedIssue = null;
-  //       this.selectedIssueId = null;
-  //       this.loadVotes(this.session.id, this.selectedIssueId);
-  //
-  //       this.triggerConfetti();
-  //     });
-  //   } else {
-  //     console.error('No card selected or no issue selected.');
-  //   }
-  // }
   submitVote() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
@@ -317,10 +510,4 @@ export class RoomComponent implements OnInit {
   triggerConfetti() {
     confetti();
   }
-  calculateAverage(votes: VoteModel[]): string {
-    const sum = votes.reduce((acc, vote) => acc + parseFloat(vote.vote), 0);
-    return (sum / votes.length).toFixed(2);
-  }
-
 }
-
