@@ -164,7 +164,7 @@ export class ScrumPokerG2DemoComponent implements OnInit {
   }
 
   deleteDemo(id: string) {
-    if (confirm('Are you sure you want to delete this demo?')) {
+    if (confirm('Are you sure you want to delete this introduction ?')) {
       this.apiService.deleteDemo(id).subscribe(
         () => {
           this.demos = this.demos.filter((d) => d.id !== id);
@@ -175,7 +175,6 @@ export class ScrumPokerG2DemoComponent implements OnInit {
       );
     }
   }
-
   deleteBenefit(id: string) {
     if (confirm('Are you sure you want to delete this benefit?')) {
       this.apiService.deleteBenefit(id).subscribe(

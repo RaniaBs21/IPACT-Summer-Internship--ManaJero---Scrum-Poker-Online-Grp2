@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   NbButtonModule,
   NbCardModule,
@@ -17,6 +17,8 @@ import {
 import { ThemeModule } from '../../@theme/theme.module';
 import { ScrumPokerGroup2RoutingModule } from './scrum-poker-group2-routing.module';
 import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo/scrum-poker-g2-demo.component';
+import { SessionComponent } from './session/session.component';
+import {RoomComponent} from './scrum-poker-g2-demo/room/room.component';
 
 
 const MODULES = [
@@ -41,12 +43,14 @@ const SERVICES = [
 @NgModule({
     imports: [
         ...MODULES,
+        ReactiveFormsModule,
     ],
-    declarations: [
-    ],
-    providers: [
-        ...SERVICES,
-    ],
+  declarations: [
+    SessionComponent,
+  ],
+  providers: [
+    ...SERVICES,
+  ],
 })
 export class ScrumPokerGroup2Module {
 }

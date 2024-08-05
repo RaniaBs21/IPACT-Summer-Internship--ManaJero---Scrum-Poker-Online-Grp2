@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BenefitsUpdateComponent } from './benefits-update.component';
+import { InvitePlayersComponent } from './invite-players.component';
 
-describe('BenefitsUpdateComponent', () => {
-  let component: BenefitsUpdateComponent;
-  let fixture: ComponentFixture<BenefitsUpdateComponent>;
+describe('InvitePlayersComponent', () => {
+  let component: InvitePlayersComponent;
+  let fixture: ComponentFixture<InvitePlayersComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BenefitsUpdateComponent ],
+      declarations: [ InvitePlayersComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BenefitsUpdateComponent);
+    fixture = TestBed.createComponent(InvitePlayersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -9,7 +9,7 @@
   </div>
   <div class="quote">
   </div>
-  <button class="start-button">Start New Game <span class="arrow">→</span></button>
+  <button class="start-button" routerLink="session">Start New Game <span class="arrow">→</span></button>
 </div>
 
 <!-- ----------------------Partie Intro --------------------------->
@@ -19,7 +19,7 @@
   <br>
   <br>
 
-<!-- ---------------------------------------  intro --------------------------------->
+  <!-- ---------------------------------------  intro --------------------------------->
 
   <nb-card  *ngFor="let d of demos">
     <div class="card-header">
@@ -120,77 +120,77 @@
         </nb-step>
 
         <!-- ----------------------Partie Stepper 3 : how --------------------------->
-          <nb-step [label]="labelThree">
-            <ng-template #labelThree>How?</ng-template>
-            <div class="h6" style="color:darkblue;">How it works ?⚡🚀</div>
+        <nb-step [label]="labelThree">
+          <ng-template #labelThree>How?</ng-template>
+          <div class="h6" style="color:darkblue;">How it works ?⚡🚀</div>
+          <br>
+          <div class="row g-0  position-relative">
+            <div class="container">
+              <button class="join-button" (click)="openDiagramAdd()" >Add somthing new</button>
+            </div>
+            <!-- Image Container -->
+            <div class="container">
+              <div>
+                <img src="assets/images/planning.PNG" class="img-fluid" alt="Responsive image">
+              </div>
+            </div>
             <br>
-            <div class="row g-0  position-relative">
-              <div class="container">
-                <button class="join-button" (click)="openDiagramAdd()" >Add somthing new</button>
-              </div>
-              <!-- Image Container -->
-              <div class="container">
-                <div>
-                  <img src="assets/images/planning.PNG" class="img-fluid" alt="Responsive image">
-                </div>
-              </div>
-              <br>
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6 col-sm-8 mb-4"  *ngFor="let diagram of diagrams">
-                    <div class="col">
-                      <div class="card">
-                        <div>
-                          <i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDiagram(diagram.id)"></i>
-                          &nbsp; &nbsp;<i class="far fa-edit" style="color:dimgrey;" (click)=" openDiagram(diagram)"></i>
-                        </div>
-                        <div class="card-body">
-                          <img src="assets/images/how.jpg" alt="Join the session">
-                          <h4>{{diagram.stptitle}}</h4>
-                          <p>{{diagram.stpDescription}}</p>
-                        </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6 col-sm-8 mb-4"  *ngFor="let diagram of diagrams">
+                  <div class="col">
+                    <div class="card">
+                      <div>
+                        <i class="far fa-trash-alt fa-lg" style="color: red; cursor: pointer;" (click)="deleteDiagram(diagram.id)"></i>
+                        &nbsp; &nbsp;<i class="far fa-edit" style="color:dimgrey;" (click)=" openDiagram(diagram)"></i>
+                      </div>
+                      <div class="card-body">
+                        <img src="assets/images/how.jpg" alt="Join the session">
+                        <h4>{{diagram.stptitle}}</h4>
+                        <p>{{diagram.stpDescription}}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <br>
-              <br>
             </div>
             <br>
-            <button nbButton nbStepperPrevious>prev</button>
-            <button nbButton nbStepperNext>next</button>
-          </nb-step>
+            <br>
+          </div>
+          <br>
+          <button nbButton nbStepperPrevious>prev</button>
+          <button nbButton nbStepperNext>next</button>
+        </nb-step>
         <!-- ----------------------Partie Stepper 4 : what if--------------------------->
         <nb-step [label]="labelFour">
           <ng-template #labelFour>What If ?</ng-template>
           <br>
-         <div class="h6" style="color:darkblue;">what if we test a real application ?⚡🚀</div>
-           <div class="row g-0 bg-light position-relative">
-             <div class="col-md-6">
-               <video autoplay="" loop="" height="440" width="100%">
-                 <source src="/assets/videos/20240706-1104-39.2886108.mp4" type="video/mp4">
-                 Your browser does not support the video tag.
-               </video>
-             </div>
-             <div class="col-md-6">
-               <div class="interface-container">
+          <div class="h6" style="color:darkblue;">what if we test a real application ?⚡🚀</div>
+          <div class="row g-0 bg-light position-relative">
+            <div class="col-md-6">
+              <video autoplay="" loop="" height="440" width="100%">
+                <source src="/assets/videos/20240706-1104-39.2886108.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="col-md-6">
+              <div class="interface-container">
 
-                 <div class="col-sm-auto btn btn-outline-primary btn-rounded" (click)=" createStep(step)" style="float: right;">
-                   <i class="bi bi-bookmark-plus-fill">+</i>
-                 </div>
-                 <ul class="instructions"  *ngFor="let s of steps">
-                   <li class=" items-center gap-3 pb-7"><img src="assets/images/how.png" alt="Create Icon" style="color: orangered">
-                     <div class="quote">
-                       {{s.title}}
-                     </div>
-                   </li>
-                 </ul>
-               </div>
-             </div>
-             <br>
-             <br>
-           </div>
+                <div class="col-sm-auto btn btn-outline-primary btn-rounded" (click)=" createStep(step)" style="float: right;">
+                  <i class="bi bi-bookmark-plus-fill">+</i>
+                </div>
+                <ul class="instructions"  *ngFor="let s of steps">
+                  <li class=" items-center gap-3 pb-7"><img src="assets/images/how.png" alt="Create Icon" style="color: orangered">
+                    <div class="quote">
+                      {{s.title}}
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <br>
+            <br>
+          </div>
           <br>
           <div >
             <nb-card class="container" >
@@ -267,12 +267,6 @@
 </nb-card>
 <!-------------------------------------------- partie cards ---------------------------------------->
 
-  <div class="col-md-12 mb-md-0 p-md-4 ">
-    <ngx-security-cameras></ngx-security-cameras>
-  </div>
-
-
-
-
-
-
+<div class="col-md-12 mb-md-0 p-md-4 ">
+  <ngx-security-cameras></ngx-security-cameras>
+</div>
