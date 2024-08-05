@@ -34,7 +34,7 @@ export class SessionUpdateComponent implements OnInit {
     });
   }
   confirmUpdate() {
-    if (confirm('Are you sure you want to update this issue?')) {
+    if (confirm('Are you sure you want to update this session?')) {
       this.updateSession();
     }
   }

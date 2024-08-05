@@ -483,11 +483,11 @@ export class RoomComponent implements OnInit {
       };
 
       this.apiService.addVote(vote).subscribe((response) => {
-
         const issue = this.issues.find(i => i.id === this.selectedIssueId);
         if (issue) {
-          issue.hasVoted = true; // Mark issue as voted
-          issue.isVoting = false; // End the voting process for this issue
+          issue.hasVoted = true;
+          issue.isVoting = false;
+          issue.lastVoteValue = this.selectedCard; // Store the last vote value
         }
 
         this.revealedCard = this.selectedCard;

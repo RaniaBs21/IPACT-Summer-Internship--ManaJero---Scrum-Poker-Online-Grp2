@@ -250,19 +250,20 @@
                   </li>
                 </ul>
               </div>
-              <div class="card-body">
+              <div >
                 <p style=" line-height: 1.75;" >{{ issue.issueDescription }}</p>
-                <button class="btn" (click)="toggleVote(issue)">
-                  {{ issue.isVoting ? 'Voting now...' : issue.hasVoted ? 'Vote again' : 'Vote' }}
-                </button>
+                <div class="row">
+                  <div class="btn-vote">
+                    <button  (click)="toggleVote(issue)">
+                      {{ issue.isVoting ? 'Voting now...' : issue.hasVoted ? 'Vote again' : 'Vote' }}
+                    </button>
+                  </div>
 
-                <!-- <div class="edit-delete-buttons">
-                   <i class="far fa-edit fa-lg edit-icon" (click)="openIssueUpdate(issue)"></i>
-                   <i class="fas fa-trash-alt fa-lg delete-icon" (click)="deleteIssue(issue.id)"></i>
-                 </div>-->
-
-
-
+                  <!-- Last vote-->
+                  <p *ngIf="issue.lastVoteValue" class="last-vote" style="font-weight: bold;">
+                    {{ issue.lastVoteValue }}
+                  </p>
+                </div>
 
               </div>
             </div>

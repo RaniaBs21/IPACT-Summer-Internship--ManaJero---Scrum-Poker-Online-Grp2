@@ -9,5 +9,6 @@ export class IssuesModel {
   issueNumber: string;
   hasVoted: boolean = false;
   isVoting: boolean = false;
+  lastVoteValue?: string;
 
 }
