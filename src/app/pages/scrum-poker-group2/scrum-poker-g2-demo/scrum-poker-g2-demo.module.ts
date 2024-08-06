@@ -43,6 +43,7 @@ import { IssuesUpdateComponent } from './room/issues-update/issues-update.compon
 import { SessionUpdateComponent } from './room/session-update/session-update.component';
 import { VotingHistoryComponent } from './room/voting-history/voting-history.component';
 import {OAuthStorage} from 'angular-oauth2-oidc';
+import { UserPseudoComponent } from './room/user-pseudo/user-pseudo.component';
 
 
 
@@ -93,6 +94,7 @@ import {OAuthStorage} from 'angular-oauth2-oidc';
     IssuesUpdateComponent,
     SessionUpdateComponent,
     VotingHistoryComponent,
+    UserPseudoComponent,
   ],
   exports: [
   ],

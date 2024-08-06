@@ -17,6 +17,7 @@ import {ProjectInfo} from 'azure-devops-node-api/interfaces/CoreInterfaces';
 import {environment} from '../../../../environments/environment';
 import {map, mergeMap} from 'rxjs/operators';
 import {VoteModel} from '../Models/VoteModel';
+import {UserModel} from '../Models/UserModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -226,7 +227,7 @@ export class ApiService {
     return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
   }
   addIssuesBySessionId(issues: IssuesModel, sessionId: string ) {
-    return this.httpClient.post<IssuesModel[]>(`${this.API_URL}/ajoutIssues//${sessionId}`, issues);
+    return this.httpClient.post<IssuesModel[]>(`${this.API_URL}/ajoutIssues/${sessionId}`, issues);
 
   }
 
@@ -238,5 +239,9 @@ export class ApiService {
 
   getVotes(sessionId: string, issueId: string): Observable<VoteModel[]> {
     return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/session/${sessionId}/issue/${issueId}`);
+  }
+  // ******************** User services *********************
+  addUser(sessionId: string, user: UserModel): Observable<UserModel> {
+    return this.httpClient.post<UserModel>(`${this.API_URL}/adduser/${sessionId}`, user);
   }
 }

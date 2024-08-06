@@ -9,6 +9,7 @@ import {DemoFormComponent} from './scrum-poker-group2/scrum-poker-g2-demo/demo-f
 import {SessionComponent} from './scrum-poker-group2/scrum-poker-g2-demo/session/session.component';
 import {RoomComponent} from './scrum-poker-group2/scrum-poker-g2-demo/room/room.component';
 import {ResultComponent} from './scrum-poker-group2/scrum-poker-g2-demo/room/result/result.component';
+import {UserPseudoComponent} from './scrum-poker-group2/scrum-poker-g2-demo/room/user-pseudo/user-pseudo.component';
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
@@ -36,6 +37,10 @@ const routes: Routes = [{
     {
       path: 'agile/scrum-poker-group2/session/room/:id/result',
       component: ResultComponent,
+    },
+    {
+      path: 'agile/scrum-poker-group2/session/room/:id',
+      component: UserPseudoComponent,
     },
     {
       path: 'dashboard',

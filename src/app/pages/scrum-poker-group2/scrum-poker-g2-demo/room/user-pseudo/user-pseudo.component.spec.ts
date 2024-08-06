@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DemoUpdateComponent } from './demo-update.component';
+import { UserPseudoComponent } from './user-pseudo.component';
 
-describe('DemoUpdateComponent', () => {
-  let component: DemoUpdateComponent;
-  let fixture: ComponentFixture<DemoUpdateComponent>;
+describe('UserPseudoComponent', () => {
+  let component: UserPseudoComponent;
+  let fixture: ComponentFixture<UserPseudoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DemoUpdateComponent ]})
+      declarations: [ UserPseudoComponent ]
+    })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DemoUpdateComponent);
+    fixture = TestBed.createComponent(UserPseudoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

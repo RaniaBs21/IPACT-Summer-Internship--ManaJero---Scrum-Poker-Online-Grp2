@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header style="font-weight: bold">Enter Your Pseudo</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="addUserForm">
+      <input nbInput shape="round" fullWidth placeholder="name" formControlName="name" style="margin-bottom: 8px" />
+    </form>
+  </nb-card-body>
+  <nb-card-footer class="footer-buttons">
+    <button nbButton hero status="primary" (click)="confirmAdd()">Continue to game</button>
+  </nb-card-footer>
+</nb-card>

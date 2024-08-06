@@ -3,4 +3,8 @@ export interface  IssuesRequest {
   platformId: string;
   issueKey?: string;
   name?: string;
+  lastVoteValue?: string;
+  issueNumber: string;
+  hasVoted: boolean ;
+  isVoting: boolean ;
 }

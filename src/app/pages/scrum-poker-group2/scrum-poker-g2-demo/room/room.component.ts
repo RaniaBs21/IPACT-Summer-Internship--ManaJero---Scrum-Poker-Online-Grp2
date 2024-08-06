@@ -50,6 +50,8 @@ export class RoomComponent implements OnInit {
   private isLoading: boolean = false;
   dropdownVisible = false;
   selectedIssue: IssuesModel | null = null;
+  selectedIssueAzure: IssuesRequest | null = null;
+
   isDropdownSessionOpen = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
   // issues in session
@@ -70,6 +72,7 @@ export class RoomComponent implements OnInit {
   state: string | null = null;
   code: string | null = null;
   selectedIssueId: string | null = null;
+  selectedIssueAzureId: string |null = null;
   votes: VoteModel[] = [];
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
@@ -375,6 +378,8 @@ export class RoomComponent implements OnInit {
       description: issueDescription,
       platformId: 'AZURE',
     } as IssuesRequest);
+    this.apiService.insertUserStory(this.issuesRequests, this.sessionId).subscribe(rep => null);
+    console.error(this.issuesRequests);
   }
   // ************** Uplaod CSV *********************
 
@@ -502,7 +507,6 @@ export class RoomComponent implements OnInit {
       console.error('No card selected or no issue selected.');
     }
   }
-
   loadVotes(sessionId: string, issueId: string) {
     this.apiService.getVotes(sessionId, issueId).subscribe(
       (votes: VoteModel[]) => {
