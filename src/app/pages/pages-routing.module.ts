@@ -39,10 +39,6 @@ const routes: Routes = [{
       component: ResultComponent,
     },
     {
-      path: 'agile/scrum-poker-group2/session/room/:id',
-      component: UserPseudoComponent,
-    },
-    {
       path: 'dashboard',
       component: ECommerceComponent,
     },

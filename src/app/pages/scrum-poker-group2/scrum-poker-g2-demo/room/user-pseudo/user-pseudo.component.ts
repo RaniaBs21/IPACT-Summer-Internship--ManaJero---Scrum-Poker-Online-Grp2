@@ -30,7 +30,11 @@ export class UserPseudoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sessionId = this.route.snapshot.paramMap.get('Id');
+    if (this.ref.componentRef.instance['sessionId']) {
+      this.sessionId = this.ref.componentRef.instance['sessionId'];
+    } else {
+      this.sessionId = this.route.snapshot.paramMap.get('Id');
+    }
     this.addUserForm = this.fb.group({
       name: ['', Validators.required],
     });
