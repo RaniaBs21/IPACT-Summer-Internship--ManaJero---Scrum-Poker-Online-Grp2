@@ -28,6 +28,7 @@ import {OAuthService} from 'angular-oauth2-oidc';
 import {VoteModel} from '../../Models/VoteModel';
 import {UserModel} from '../../Models/UserModel';
 import {UserPseudoComponent} from './user-pseudo/user-pseudo.component';
+import {CookieService} from 'ngx-cookie-service';
 @Component({
   selector: 'ngx-room',
   templateUrl: './room.component.html',
@@ -91,6 +92,7 @@ export class RoomComponent implements OnInit {
               private azureLogin: MsalService,
               private authService: AuthServiceService,
               private oauthService: OAuthService,
+              private cookieService: CookieService,
               ) {}
 
   ngOnInit() {

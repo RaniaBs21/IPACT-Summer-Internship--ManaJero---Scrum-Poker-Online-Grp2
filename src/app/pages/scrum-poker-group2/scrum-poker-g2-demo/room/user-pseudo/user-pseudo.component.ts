@@ -6,6 +6,7 @@ import {DiagramModel} from '../../../Models/DiagramModel';
 import {UserModel} from '../../../Models/UserModel';
 import {IssuesModel} from '../../../Models/IssuesModel';
 import {ActivatedRoute, Router} from '@angular/router';
+import {SessionModel} from '../../../Models/SessionModel';
 
 @Component({
   selector: 'ngx-user-pseudo',
@@ -17,7 +18,7 @@ export class UserPseudoComponent implements OnInit {
   addUserForm: FormGroup;
   name: string;
   users: UserModel[] = [];
-
+  session: SessionModel;
   constructor(
     private fb: FormBuilder,
     protected ref: NbDialogRef<UserPseudoComponent>,
@@ -54,8 +55,9 @@ export class UserPseudoComponent implements OnInit {
         (user) => {
           this.users.push(user);
           this.toastrService.success('welcome to the session', 'Success');
+          // window.location.reload();
           this.ref.close(user);
-         window.location.reload();
+
         },
         (error) => {
           console.error('can not play this game :', error);

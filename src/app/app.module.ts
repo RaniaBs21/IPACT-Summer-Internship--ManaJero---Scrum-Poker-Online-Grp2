@@ -38,6 +38,7 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import {OAuthModule, OAuthStorage} from 'angular-oauth2-oidc';
+import {CookieService} from 'ngx-cookie-service';
 export function loggerCallback(logLevel: LogLevel, message: string) {
   // console.log(message);
 }
@@ -101,6 +102,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   ],
   bootstrap: [AppComponent],
   providers: [
+    CookieService,
     {provide: OAuthStorage, useValue: localStorage},
     {
       provide: HTTP_INTERCEPTORS,
