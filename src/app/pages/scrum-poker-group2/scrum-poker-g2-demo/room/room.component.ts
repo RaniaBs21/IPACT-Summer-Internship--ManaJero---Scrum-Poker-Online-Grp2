@@ -26,6 +26,8 @@ import {AzureDevOpsProject} from '../../Models/ImportRepresentation/AzureDevOpsP
 import {AuthServiceService} from '../../../../auth-service.service';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {VoteModel} from '../../Models/VoteModel';
+import {UserModel} from '../../Models/UserModel';
+import {UserPseudoComponent} from './user-pseudo/user-pseudo.component';
 @Component({
   selector: 'ngx-room',
   templateUrl: './room.component.html',
@@ -74,6 +76,7 @@ export class RoomComponent implements OnInit {
   selectedIssueId: string | null = null;
   selectedIssueAzureId: string |null = null;
   votes: VoteModel[] = [];
+  users: UserModel[] = [];
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -114,6 +117,15 @@ export class RoomComponent implements OnInit {
       // Call OAuth login flow
       this.handleOAuthCallback();
     });
+
+    this.apiService.getUsersBySession(this.sessionId).subscribe(
+      (users: UserModel[]) => {
+        this.users = users;
+      },
+      (error) => {
+        console.error('Failed to load users:', error);
+      },
+    );
   }
   loadIssues() {
     this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
@@ -138,11 +150,19 @@ export class RoomComponent implements OnInit {
       (session: SessionModel) => {
         this.session = session;
         this.cards = this.getCardsForSystem(session.votingSystem);
+        this.openUserPseudo(session.id);
       },
       (error) => {
         console.error('Error fetching session details:', error);
       },
     );
+  }
+  openUserPseudo(sessionId: string) {
+    this.dialogService.open(UserPseudoComponent, {
+      context: {
+        sessionId: sessionId,
+      },
+    });
   }
   getCardsForSystem(system: string): string[] {
     switch (system) {

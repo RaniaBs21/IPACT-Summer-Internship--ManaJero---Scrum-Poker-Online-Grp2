@@ -74,7 +74,7 @@ export class SessionComponent implements OnInit {
         this.toastrService.success('Session started successfully', 'Success');
         this.addSessionForm.reset();
         this.router.navigate(['/pages/agile/scrum-poker-group2/session/room', session.id]);
-        this.openUserPseudo(session.id);
+        // this.openUserPseudo(session.id);
       },
       (error) => {
         console.error('Error starting the session:', error);
@@ -89,13 +89,6 @@ export class SessionComponent implements OnInit {
       },
     });
   }*/
-  openUserPseudo(sessionId: string) {
-    this.dialogService.open(UserPseudoComponent, {
-      context: {
-        sessionId: sessionId,
-      },
-    });
-  }
 
 
 }

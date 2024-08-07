@@ -30,6 +30,7 @@
       <img src="assets/images/invitation.png" style="width: 45px; height: 45px"  class="button-icon" alt="desc">
       Invite players
     </button>
+
   </div>
 
   <!------------------------------  pick your card --------------------------------->
@@ -65,7 +66,14 @@
       </div>
     </div>
   </div>
+  <!----------------------------------  user invitation--------------------------------->
 
+  <div class="user-cards">
+    <div *ngFor="let user of users" class="user-card">
+      <img src="assets/images/utilisateur.jpg" alt="User Avatar" class="user-avatar">
+      <p>{{ user.name }}</p>
+    </div>
+  </div>
   <!----------------------------------  algo cards --------------------------------->
   <div class="cards">
     <div class="group relative h-40 cursor-pointer" *ngFor="let card of cards" [id]="'vote_card_' + card" (click)="selectCard(card)" [style.opacity]="selectedCard === card ? '1' : '0.5'" [ngClass]="{'selected': selectedCard === card}">
@@ -104,7 +112,7 @@
         </ul>
       </div>
 
-      <ng-template #JiraProjectList let-modal>
+    <!--  <ng-template #JiraProjectList let-modal>
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Select project from jira</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModal()"></button>
@@ -125,9 +133,9 @@
             </div>
           </div>
         </div>
-      </ng-template>
+      </ng-template>-->
 
-      <ng-template #JiraIssuesList let-modal>
+      <!--<ng-template #JiraIssuesList let-modal>
         <div class="modal-header">
           <h5 class="modal-title">Select jira issue</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModal()"></button>
@@ -147,9 +155,9 @@
             </div>
           </div>
         </div>
-      </ng-template>
+      </ng-template>-->
 
-
+<!---------------------------------------  azure ----------------------------------------->
       <ng-template #AzureProjectList let-modal>
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Select project from Azure</h5>

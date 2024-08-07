@@ -244,4 +244,7 @@ export class ApiService {
   addUser(sessionId: string, user: UserModel): Observable<UserModel> {
     return this.httpClient.post<UserModel>(`${this.API_URL}/session/addUser/${sessionId}`, user);
   }
+  getUsersBySession(sessionId: string): Observable<UserModel[]> {
+    return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
+  }
 }

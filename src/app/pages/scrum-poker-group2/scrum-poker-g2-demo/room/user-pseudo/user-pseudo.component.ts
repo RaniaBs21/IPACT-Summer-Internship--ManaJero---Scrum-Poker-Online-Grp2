@@ -39,30 +39,6 @@ export class UserPseudoComponent implements OnInit {
       name: ['', Validators.required],
     });
   }
-
- /* confirmAdd() {
-    if (this.addUserForm.valid) {
-      if (confirm('Are you sure you want to play this session ?')) {
-        this.addUser();
-      }
-    } else {
-      this.toastrService.danger('Please fill in all fields', 'Error');
-    }
-  }*/
-
-  /*addUser() {
-    const newUser: UserModel = this.addUserForm.value;
-    this.apiService.addUser(newUser).subscribe(
-      (user) => {
-        this.toastrService.success('welcome to the session', 'Success');
-        this.ref.close(user);
-      },
-      (error) => {
-        console.error('can not play this game :', error);
-        this.toastrService.danger('can not play this game ', 'Error');
-      },
-    );
-  }*/
   confirmAdd() {
     if (this.addUserForm.valid) {
       if (confirm('Are you sure you want to play this session ?')) {
@@ -79,6 +55,7 @@ export class UserPseudoComponent implements OnInit {
           this.users.push(user);
           this.toastrService.success('welcome to the session', 'Success');
           this.ref.close(user);
+         window.location.reload();
         },
         (error) => {
           console.error('can not play this game :', error);
