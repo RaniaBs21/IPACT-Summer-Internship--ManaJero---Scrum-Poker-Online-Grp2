@@ -59,17 +59,16 @@
       </h1>
 
       <div class="average-agreement" *ngIf="revealedCard">
-<!--        <div class="average" *ngIf="averageVote !== null">-->
-<!--          <h5 style="color: #3A3A3A">Average:</h5>-->
-<!--         <h3>{{ averageVote }}</h3>-->
-<!--                   <h3>{{ revealedCard }}</h3>-->
-
-<!--        </div>-->
-
-        <div class="average" >
+        <!--<div class="average" *ngIf="averageVote !== null">
           <h5 style="color: #3A3A3A">Average:</h5>
-          <!--          <h3>{{ averageVote }}</h3>-->
-          <h3>{{ revealedCard }}</h3>
+          <h3>{{ averageVote }}</h3>
+        </div>-->
+        <div *ngIf="averageVote !== null">
+          <h5>Average:</h5>
+          <h3>{{ averageVote }}</h3>
+        </div>
+        <div *ngIf="averageVote === null">
+          <h5>Average.....</h5>
 
         </div>
         <div class="vote">

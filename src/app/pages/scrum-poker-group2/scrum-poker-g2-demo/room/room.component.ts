@@ -108,10 +108,6 @@ export class RoomComponent implements OnInit {
   this.route.queryParams.subscribe((params) => {
       this.state = params['state'];
       this.code = params['code'];
-      //  console.log('State:', this.state);
-      //  console.log('Code:', this.code);
-
-      // Call OAuth login flow
       this.handleOAuthCallback();
     });
 
@@ -123,12 +119,6 @@ export class RoomComponent implements OnInit {
         console.error('Failed to load users:', error);
       },
     );
-
-    if (this.sessionId && this.issueId) {
-      this.loadAverageVote();
-    } else {
-      console.error('Session ID or Issue ID is null.');
-    }
   }
   loadIssues() {
     this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
@@ -516,13 +506,14 @@ export class RoomComponent implements OnInit {
         this.selectedIssue = null;
         this.selectedIssueId = null;
         this.loadVotes(this.session.id, this.selectedIssueId);
-
+        this.loadAverageVote(this.session.id, issue.id);
         this.triggerConfetti();
       });
     } else {
       console.error('No card selected or no issue selected.');
     }
   }
+
   loadVotes(sessionId: string, issueId: string) {
     this.apiService.getVotes(sessionId, issueId).subscribe(
       (votes: VoteModel[]) => {
@@ -554,10 +545,9 @@ export class RoomComponent implements OnInit {
   triggerConfetti() {
     confetti();
   }
-
-  loadAverageVote(): void {
-    this.apiService.getAverageVote(this.sessionId, this.issueId).subscribe(
-      (average) => {
+  loadAverageVote(sessionId: string, issueId: string) {
+    this.apiService.getAverageVote(sessionId, issueId).subscribe(
+      (average: number) => {
         this.averageVote = average;
       },
       (error) => {
