@@ -1,5 +1,3 @@
-import {SessionModel} from './SessionModel';
-
 export class IssuesModel {
   id: string;
   description: string;

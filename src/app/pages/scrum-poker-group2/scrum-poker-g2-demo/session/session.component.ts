@@ -2,8 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SessionModel, VotingSystem} from '../../Models/SessionModel';
 import {ApiService} from '../../services/api-service.service';
-import {NbToastrService} from '@nebular/theme';
+import {NbDialogService, NbToastrService} from '@nebular/theme';
 import {Router} from '@angular/router';
+import {InvitePlayersComponent} from '../room/invite-players/invite-players.component';
+import {Location} from '@angular/common';
+import {UserPseudoComponent} from '../room/user-pseudo/user-pseudo.component';
 
 @Component({
   selector: 'ngx-session',
@@ -21,6 +24,8 @@ export class SessionComponent implements OnInit {
     private apiService: ApiService,
     private toastrService: NbToastrService,
     private router: Router,
+    private dialogService: NbDialogService,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +74,7 @@ export class SessionComponent implements OnInit {
         this.toastrService.success('Session started successfully', 'Success');
         this.addSessionForm.reset();
         this.router.navigate(['/pages/agile/scrum-poker-group2/session/room', session.id]);
+        // this.openUserPseudo(session.id);
       },
       (error) => {
         console.error('Error starting the session:', error);
@@ -76,5 +82,13 @@ export class SessionComponent implements OnInit {
       },
     );
   }
+  /*  openUserPseudo() {
+      this.dialogService.open(UserPseudoComponent, {
+        context: {
+          name: 'player name',
+        },
+      });
+    }*/
+
 
 }

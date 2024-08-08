@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit, TemplateRef} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {SessionModel} from '../../Models/SessionModel';
 import {ApiService} from '../../services/api-service.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -25,6 +25,8 @@ import {AzureDevOpsProject} from '../../Models/ImportRepresentation/AzureDevOpsP
 import {AuthServiceService} from '../../../../auth-service.service';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {VoteModel} from '../../Models/VoteModel';
+import {UserModel} from '../../Models/UserModel';
+import {UserPseudoComponent} from './user-pseudo/user-pseudo.component';
 @Component({
   selector: 'ngx-room',
   templateUrl: './room.component.html',
@@ -36,18 +38,14 @@ export class RoomComponent implements OnInit {
   selectedCard: string | null = null;
   isSidebarOpen = false;
   isDropdownOpen = false;
-  selectedOption: string;
   showForm = false;
   issueTitle = '';
   revealedCard: number | string | null = null;
   addIssuesForm: FormGroup;
   issues: IssuesModel[] = [];
-  sessions: SessionModel[] = [];
   loading: boolean = false;
   page: number = 1; // Page de départ
-  pageSize: number = 20; // Nombre d'éléments par page
   private isLoading: boolean = false;
-  dropdownVisible = false;
   selectedIssue: IssuesModel | null = null;
   isDropdownSessionOpen = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
@@ -61,15 +59,18 @@ export class RoomComponent implements OnInit {
   issuesRequests: IssuesRequest[] = [];
   iss: IssuesModel = new IssuesModel();
   issue: IssuesModel[] = [];
-  lastAddedIssues: any;
   selectedJiraProjectName: string;
   modalRef?: BsModalRef;
-  submittedDescription: string = '';
   hidden: boolean;
   state: string | null = null;
   code: string | null = null;
   selectedIssueId: string | null = null;
   votes: VoteModel[] = [];
+  users: UserModel[] = [];
+  selectedIssueImported: IssuesRequest | null = null;
+  issueeReq: IssuesRequest[] = [];
+  averageVote: number | null = null;
+  issueId: string | null = null;
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -104,12 +105,17 @@ export class RoomComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.state = params['state'];
       this.code = params['code'];
-      //  console.log('State:', this.state);
-      //  console.log('Code:', this.code);
-
-      // Call OAuth login flow
       this.handleOAuthCallback();
     });
+
+    this.apiService.getUsersBySession(this.sessionId).subscribe(
+      (users: UserModel[]) => {
+        this.users = users;
+      },
+      (error) => {
+        console.error('Failed to load users:', error);
+      },
+    );
   }
   loadIssues() {
     this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
@@ -122,23 +128,24 @@ export class RoomComponent implements OnInit {
     });
   }
 
-  /* triggerConfetti(): void {
-     confetti({
-       particleCount: 100,
-       spread: 70,
-       origin: { y: 0.6 },
-     });
-   }*/
   getSessionDetails(sessionId: string) {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
         this.session = session;
         this.cards = this.getCardsForSystem(session.votingSystem);
+        this.openUserPseudo(session.id);
       },
       (error) => {
         console.error('Error fetching session details:', error);
       },
     );
+  }
+  openUserPseudo(sessionId: string) {
+    this.dialogService.open(UserPseudoComponent, {
+      context: {
+        sessionId: sessionId,
+      },
+    });
   }
   getCardsForSystem(system: string): string[] {
     switch (system) {
@@ -212,6 +219,7 @@ export class RoomComponent implements OnInit {
       },
     }).onClose.subscribe(() => this.loadSessions());
   }
+
   ///////////////////////////// dropdown ///////////////////////
 
   toggleDropdownIssue(issueId: number) {
@@ -368,6 +376,8 @@ export class RoomComponent implements OnInit {
       description: issueDescription,
       platformId: 'AZURE',
     } as IssuesRequest);
+    this.apiService.insertUserStory(this.issuesRequests, this.sessionId).subscribe(rep => null);
+    console.error(this.issuesRequests);
   }
   // ************** Uplaod CSV *********************
 
@@ -488,7 +498,7 @@ export class RoomComponent implements OnInit {
         this.selectedIssue = null;
         this.selectedIssueId = null;
         this.loadVotes(this.session.id, this.selectedIssueId);
-
+        this.loadAverageVote(this.session.id, issue.id);
         this.triggerConfetti();
       });
     } else {
@@ -506,8 +516,36 @@ export class RoomComponent implements OnInit {
       },
     );
   }
+  toggleVote2(issues: IssuesRequest) {
+    if (this.selectedIssue && this.selectedIssue.id === issues.id) {
+      this.selectedCard = null;
+      this.revealedCard = null;
+      this.selectedIssueImported.isVoting = !this.selectedIssue.isVoting;
+    } else {
+      this.issuesRequests.forEach(i => i.isVoting = false);
+      this.selectedCard = null;
+      this.revealedCard = null;
+
+      // Set the new issue for voting
+      this.selectedIssueImported = issues;
+      this.selectedIssueId = issues.platformId.toString();
+      issues.isVoting = true;
+    }
+    this.submitVote();
+  }
 
   triggerConfetti() {
     confetti();
   }
+  loadAverageVote(sessionId: string, issueId: string) {
+    this.apiService.getAverageVote(sessionId, issueId).subscribe(
+      (average: number) => {
+        this.averageVote = average;
+      },
+      (error) => {
+        console.error('Error fetching average vote:', error);
+      },
+    );
+  }
+
 }

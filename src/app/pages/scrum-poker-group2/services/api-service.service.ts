@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpEventType} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
@@ -17,6 +17,7 @@ import {ProjectInfo} from 'azure-devops-node-api/interfaces/CoreInterfaces';
 import {environment} from '../../../../environments/environment';
 import {map, mergeMap} from 'rxjs/operators';
 import {VoteModel} from '../Models/VoteModel';
+import {UserModel} from '../Models/UserModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -226,7 +227,7 @@ export class ApiService {
     return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
   }
   addIssuesBySessionId(issues: IssuesModel, sessionId: string ) {
-    return this.httpClient.post<IssuesModel[]>(`${this.API_URL}/ajoutIssues//${sessionId}`, issues);
+    return this.httpClient.post<IssuesModel[]>(`${this.API_URL}/ajoutIssues/${sessionId}`, issues);
 
   }
 
@@ -238,5 +239,18 @@ export class ApiService {
 
   getVotes(sessionId: string, issueId: string): Observable<VoteModel[]> {
     return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/session/${sessionId}/issue/${issueId}`);
+  }
+  getAverageVote(sessionId: string, issueId: string): Observable<number> {
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('issueId', issueId);
+    return this.httpClient.get<number>(`${this.API_URL}/votes/getaverage`, { params });
+  }
+  // ******************** User services *********************
+  addUser(sessionId: string, user: UserModel): Observable<UserModel> {
+    return this.httpClient.post<UserModel>(`${this.API_URL}/session/addUser/${sessionId}`, user);
+  }
+  getUsersBySession(sessionId: string): Observable<UserModel[]> {
+    return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
   }
 }
