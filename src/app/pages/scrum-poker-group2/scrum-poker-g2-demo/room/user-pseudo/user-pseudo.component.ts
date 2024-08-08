@@ -55,8 +55,8 @@ export class UserPseudoComponent implements OnInit {
         (user) => {
           this.users.push(user);
           this.toastrService.success('welcome to the session', 'Success');
-          // window.location.reload();
           this.ref.close(user);
+          window.location.reload();
 
         },
         (error) => {

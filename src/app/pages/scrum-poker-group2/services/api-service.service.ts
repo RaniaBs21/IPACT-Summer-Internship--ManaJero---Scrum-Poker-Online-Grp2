@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpEventType} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
@@ -239,6 +239,12 @@ export class ApiService {
 
   getVotes(sessionId: string, issueId: string): Observable<VoteModel[]> {
     return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/session/${sessionId}/issue/${issueId}`);
+  }
+  getAverageVote(sessionId: string, issueId: string): Observable<number> {
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('issueId', issueId);
+    return this.httpClient.get<number>(`${this.API_URL}/getaverage`, { params });
   }
   // ******************** User services *********************
   addUser(sessionId: string, user: UserModel): Observable<UserModel> {

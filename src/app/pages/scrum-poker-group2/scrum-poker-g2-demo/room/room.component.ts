@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit, TemplateRef} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {SessionModel} from '../../Models/SessionModel';
 import {ApiService} from '../../services/api-service.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -40,21 +40,15 @@ export class RoomComponent implements OnInit {
   selectedCard: string | null = null;
   isSidebarOpen = false;
   isDropdownOpen = false;
-  selectedOption: string;
   showForm = false;
   issueTitle = '';
   revealedCard: number | string | null = null;
   addIssuesForm: FormGroup;
   issues: IssuesModel[] = [];
-  sessions: SessionModel[] = [];
   loading: boolean = false;
   page: number = 1; // Page de départ
-  pageSize: number = 20; // Nombre d'éléments par page
   private isLoading: boolean = false;
-  dropdownVisible = false;
   selectedIssue: IssuesModel | null = null;
-  selectedIssueAzure: IssuesRequest | null = null;
-
   isDropdownSessionOpen = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
   // issues in session
@@ -67,17 +61,18 @@ export class RoomComponent implements OnInit {
   issuesRequests: IssuesRequest[] = [];
   iss: IssuesModel = new IssuesModel();
   issue: IssuesModel[] = [];
-  lastAddedIssues: any;
   selectedJiraProjectName: string;
   modalRef?: BsModalRef;
-  submittedDescription: string = '';
   hidden: boolean;
   state: string | null = null;
   code: string | null = null;
   selectedIssueId: string | null = null;
-  selectedIssueAzureId: string |null = null;
   votes: VoteModel[] = [];
   users: UserModel[] = [];
+  selectedIssueImported: IssuesRequest | null = null;
+  issueeReq: IssuesRequest[] = [];
+  averageVote: number | null = null;
+  issueId: string | null = null;
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -128,6 +123,12 @@ export class RoomComponent implements OnInit {
         console.error('Failed to load users:', error);
       },
     );
+
+    if (this.sessionId && this.issueId) {
+      this.loadAverageVote();
+    } else {
+      console.error('Session ID or Issue ID is null.');
+    }
   }
   loadIssues() {
     this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
@@ -140,13 +141,6 @@ export class RoomComponent implements OnInit {
     });
   }
 
- /* triggerConfetti(): void {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  }*/
   getSessionDetails(sessionId: string) {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
@@ -539,8 +533,36 @@ export class RoomComponent implements OnInit {
       },
     );
   }
+  toggleVote2(issues: IssuesRequest) {
+    if (this.selectedIssue && this.selectedIssue.id === issues.id) {
+      this.selectedCard = null;
+      this.revealedCard = null;
+      this.selectedIssueImported.isVoting = !this.selectedIssue.isVoting;
+    } else {
+      this.issuesRequests.forEach(i => i.isVoting = false);
+      this.selectedCard = null;
+      this.revealedCard = null;
+
+      // Set the new issue for voting
+      this.selectedIssueImported = issues;
+      this.selectedIssueId = issues.platformId.toString();
+      issues.isVoting = true;
+    }
+    this.submitVote();
+  }
 
   triggerConfetti() {
     confetti();
+  }
+
+  loadAverageVote(): void {
+    this.apiService.getAverageVote(this.sessionId, this.issueId).subscribe(
+      (average) => {
+        this.averageVote = average;
+      },
+      (error) => {
+        console.error('Error fetching average vote:', error);
+      },
+    );
   }
 }

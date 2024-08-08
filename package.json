@@ -74,6 +74,7 @@
     "ngx-bootstrap": "^8.0.0",
     "ngx-cookie-service": "^18.0.0",
     "ngx-echarts": "^4.2.2",
+    "ngx-socket-io": "^4.7.0",
     "normalize.css": "6.0.0",
     "pace-js": "1.0.2",
     "roboto-fontface": "0.8.0",

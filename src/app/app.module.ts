@@ -39,6 +39,9 @@ import {
 } from '@azure/msal-browser';
 import {OAuthModule, OAuthStorage} from 'angular-oauth2-oidc';
 import {CookieService} from 'ngx-cookie-service';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 export function loggerCallback(logLevel: LogLevel, message: string) {
   // console.log(message);
 }
@@ -81,6 +84,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    SocketIoModule.forRoot(config),
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
