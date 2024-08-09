@@ -244,7 +244,7 @@ export class ApiService {
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('issueId', issueId);
-    return this.httpClient.get<number>(`${this.API_URL}/getaverage`, { params });
+    return this.httpClient.get<number>(`${this.API_URL}/votes/getaverage`, { params });
   }
   // ******************** User services *********************
   addUser(sessionId: string, user: UserModel): Observable<UserModel> {
@@ -252,5 +252,16 @@ export class ApiService {
   }
   getUsersBySession(sessionId: string): Observable<UserModel[]> {
     return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
+  }
+  getUserById(userId: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.API_URL}/getUserById/${userId}`);
+  }
+  sendEmail(to: string, subject: string, body: string): Observable<any> {
+    const params = {
+      to: to,
+      subject: subject,
+      body: body,
+    };
+    return this.httpClient.post(`${this.API_URL}/send`, null, { params: params });
   }
 }

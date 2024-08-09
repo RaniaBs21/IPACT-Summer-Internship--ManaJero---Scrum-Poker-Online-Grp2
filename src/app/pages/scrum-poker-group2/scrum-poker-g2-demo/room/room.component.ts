@@ -36,6 +36,7 @@ import {CookieService} from 'ngx-cookie-service';
 export class RoomComponent implements OnInit {
   sessionId: string | null = null;
   session: SessionModel;
+  issuee: IssuesModel;
   cards: string[] = [];
   selectedCard: string | null = null;
   isSidebarOpen = false;
@@ -73,6 +74,11 @@ export class RoomComponent implements OnInit {
   issueeReq: IssuesRequest[] = [];
   averageVote: number | null = null;
   issueId: string | null = null;
+  userId: string | null = null;
+  revealedCardAverage: number | string | null = null;
+  selectedUser: { name: string, email: string } | null = null;
+  currentUrl: string = window.location.href; // URL de l'interface active
+  issueImp: IssuesRequest[] = [];
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -136,7 +142,7 @@ export class RoomComponent implements OnInit {
       (session: SessionModel) => {
         this.session = session;
         this.cards = this.getCardsForSystem(session.votingSystem);
-        this.openUserPseudo(session.id);
+        // this.openUserPseudo(session.id);
       },
       (error) => {
         console.error('Error fetching session details:', error);
@@ -177,12 +183,22 @@ export class RoomComponent implements OnInit {
     this.showForm = false;
     this.issueTitle = '';
   }
+  /*openInvitePlayers() {
+    const currentUrl = this.location.path();
+    this.dialogService.open(InvitePlayersComponent, {
+      context: {
+        title: 'Invite players',
+        url: currentUrl,
+      },
+    });
+  }*/
   openInvitePlayers() {
     const currentUrl = this.location.path();
     this.dialogService.open(InvitePlayersComponent, {
       context: {
         title: 'Invite players',
         url: currentUrl,
+        sessionId: this.sessionId,
       },
     });
   }
@@ -469,6 +485,17 @@ export class RoomComponent implements OnInit {
     }
     this.triggerConfetti();
   }
+
+ /* showAverageVote() {
+    console.error('Session ID:', this.session?.id);
+    console.error('Selected Issue ID:', this.selectedIssueId);
+    const issue = this.issues.find(i => i.id === this.selectedIssueId);
+    if (this.selectedIssue.id && this.session?.id) {
+      this.loadAverageVote(this.session.id, this.selectedIssue.id);
+    } else {
+      console.error('Session ID or Issue ID is missing');
+    }
+  }*/
   toggleVote(issue: IssuesModel) {
     if (this.selectedIssue && this.selectedIssue.id === issue.id) {
       this.selectedCard = null;
@@ -485,7 +512,7 @@ export class RoomComponent implements OnInit {
       issue.isVoting = true;
     }
   }
-  submitVote() {
+submitVote() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
         sessionId: this.session.id,
@@ -514,6 +541,7 @@ export class RoomComponent implements OnInit {
     }
   }
 
+
   loadVotes(sessionId: string, issueId: string) {
     this.apiService.getVotes(sessionId, issueId).subscribe(
       (votes: VoteModel[]) => {
@@ -541,7 +569,6 @@ export class RoomComponent implements OnInit {
     }
     this.submitVote();
   }
-
   triggerConfetti() {
     confetti();
   }
@@ -555,4 +582,27 @@ export class RoomComponent implements OnInit {
       },
     );
   }
+
+  sendEmail() {
+    if (this.selectedUser) {
+      const emailContent = `
+                Bonjour ${this.selectedUser.name},
+
+                Vous avez été sélectionné. Voici l'URL de l'interface active :
+                ${this.currentUrl}
+
+                Cordialement,
+                Votre Équipe
+            `;
+
+      // Utilisez votre service pour envoyer l'email ici
+      this.apiService.sendEmail(this.selectedUser.email, 'URL de l\'interface active', emailContent)
+        .subscribe(response => {
+          console.error('Email envoyé avec succès');
+        }, error => {
+          console.error('Erreur lors de l\'envoi de l\'email', error);
+        });
+    }
+  }
+
 }

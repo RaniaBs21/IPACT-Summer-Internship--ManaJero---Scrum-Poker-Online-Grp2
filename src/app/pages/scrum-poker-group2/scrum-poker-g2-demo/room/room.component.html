@@ -48,10 +48,14 @@
       <button *ngIf="selectedCard !== null && !revealedCard" (click)="revealCard()" class="neon-shadow">
         Reveal card
       </button>
+      <!--<button *ngIf="!revealedCard && selectedCard === null"  class="neon-shadow">
+        Reveal card
+      </button>-->
       <br>
-      <button *ngIf="revealedCard" (click)="revealCard()" class="reveal-button" [routerLink]="['/pages/agile/scrum-poker-group2/session/room', sessionId]">
-        Start new voting
+      <button *ngIf="revealedCard"  (click)="revealCard()" class="reveal-button" [routerLink]="['/pages/agile/scrum-poker-group2/session/room', sessionId]">
+        start new vote
       </button>
+
     </div>
     <div class="container">
       <h1 *ngIf="revealedCard">
@@ -59,22 +63,25 @@
       </h1>
 
       <div class="average-agreement" *ngIf="revealedCard">
-        <!--<div class="average" *ngIf="averageVote !== null">
-          <h5 style="color: #3A3A3A">Average:</h5>
-          <h3>{{ averageVote }}</h3>
-        </div>-->
-        <div *ngIf="averageVote !== null">
-          <h5>Average:</h5>
-          <h3>{{ averageVote }}</h3>
-        </div>
-        <div *ngIf="averageVote === null">
-          <h5>Average.....</h5>
+        <div class="average-vote-container"   >
+          <!--<button (click)="showAverageVote()"  class="average-vote-button">
+            Show Average Vote
+          </button>-->
 
+          <div *ngIf="averageVote !== null" class="average-vote-display">
+            <h3>Average Vote: {{ averageVote }}</h3>
+          </div>
+          <div *ngIf="averageVote === null">
+            <h5>Average.....</h5>
+
+          </div>
+
+          <!-- <div class="vote" >
+             <h5 style="color: #3A3A3A">Vote:</h5>
+             <h3>{{ revealedCard }}</h3>
+           </div>-->
         </div>
-        <div class="vote">
-          <h5 style="color: #3A3A3A">Vote:</h5>
-          <h3>{{ revealedCard }}</h3>
-        </div>
+
       </div>
     </div>
   </div>
@@ -86,6 +93,34 @@
       <p>{{ user.name }}</p>
     </div>
   </div>
+  <!--<div class="user-cards">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 mb-4" *ngFor="let user of users">
+        <div class="feature-card">
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front1 text-center">
+                <br>
+                <br>
+                <img src="assets/images/utilisateur.jpg" alt="User Avatar" class="user-avatar">
+                <h5 class="discover-title">{{ user.name }}</h5>
+              </div>
+
+              <div class="flip-card-back1 " *ngIf="revealedCard">
+                <br>
+                <br>
+                <br>
+                <div class="vote" >
+                  <h5 style="color: #3A3A3A">Vote:</h5>
+                  <h3>{{ revealedCard }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>-->
   <!----------------------------------  algo cards --------------------------------->
   <div class="cards">
     <div class="group relative h-40 cursor-pointer" *ngFor="let card of cards" [id]="'vote_card_' + card" (click)="selectCard(card)" [style.opacity]="selectedCard === card ? '1' : '0.5'" [ngClass]="{'selected': selectedCard === card}">
@@ -250,7 +285,6 @@
         </div>
       </div>
     </div>
-    <!------------------------------    Votes des issues crées ---------------------------->
 
     <!------------------------------ add issue form ------------------------->
 

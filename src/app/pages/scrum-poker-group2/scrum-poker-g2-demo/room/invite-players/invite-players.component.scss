@@ -1,11 +1,12 @@
-/* CSS général pour la responsivité */
+/*
+!* CSS général pour la responsivité *!
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(141deg, #ccc 25%, #eee 40%, #ddd 55%);
   color: #ffffff;
   font-weight: 300;
-  font-size: 1.5rem; /* Utiliser rem pour une échelle de police plus flexible */
+  font-size: 1.5rem; !* Utiliser rem pour une échelle de police plus flexible *!
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,9 +15,9 @@ body {
   -webkit-backface-visibility: hidden;
 }
 
-/* Modal container */
+!* Modal container *!
 .nb-card {
-  max-width: 100%; /* S'assure que le modal ne dépasse pas la largeur de l'écran */
+  max-width: 100%; !* S'assure que le modal ne dépasse pas la largeur de l'écran *!
   padding: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -41,7 +42,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* Ajustements pour les tablettes */
+  !* Ajustements pour les tablettes *!
   .nb-card-header, .nb-card-footer {
     font-size: 1.2rem;
   }
@@ -62,7 +63,7 @@ body {
 }
 
 @media (max-width: 480px) {
-  /* Ajustements pour les mobiles */
+  !* Ajustements pour les mobiles *!
   .nb-card {
     width: 90%;
     padding: 0.5rem;
@@ -85,4 +86,97 @@ body {
     padding: 0.3rem 0.6rem;
     font-size: 0.8rem;
   }
+}
+*/
+
+nb-card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
+nb-card-header {
+  font-size: 1.25rem;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ddd;
+}
+
+nb-card-body {
+  padding: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+nb-select, nb-input {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+input[nbInput] {
+  width: 100%;
+}
+
+button[nbButton] {
+  margin: 0.5rem;
+}
+
+footer.footer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  border-top: 1px solid #ddd;
+  background-color: #f7f7f7;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 768px) {
+  nb-card {
+    padding: 0.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.start-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  border: none;
+  color: white;
+  padding: 1rem; /* Augmenté le padding */
+  font-size: 1.2rem; /* Augmenté la taille de la police */
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 40px; /* Augmenté le radius */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.start-button:hover {
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
 }

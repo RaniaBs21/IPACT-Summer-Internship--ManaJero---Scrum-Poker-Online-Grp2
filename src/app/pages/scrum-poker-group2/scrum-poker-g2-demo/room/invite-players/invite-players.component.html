@@ -1,3 +1,4 @@
+<!--
 <nb-card>
   <nb-card-header style="font-weight: bold">{{ title }}</nb-card-header>
   <nb-card-body>
@@ -6,4 +7,74 @@
   <nb-card-footer class="footer-buttons">
     &nbsp; <button nbButton status="danger" class="cancel-button" (click)="cancel()">Close</button>
   </nb-card-footer>
+</nb-card>
+-->
+
+
+<!--
+<nb-card>
+  <nb-card-header style="font-weight: bold">{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form (ngSubmit)="sendInvitation()" #inviteForm="ngForm">
+      <div class="form-group">
+        <label for="userSelect">Select User</label>
+        <nb-select id="userSelect" [(ngModel)]="selectedUser" name="user" required>
+          <nb-option *ngFor="let user of users" [value]="user.email">{{ user.name }}</nb-option>
+        </nb-select>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input nbInput id="subject" [(ngModel)]="subject" name="subject" required />
+      </div>
+
+      <div class="form-group">
+        <label for="url">URL</label>
+        <input nbInput id="url" [value]="url" disabled />
+      </div>
+
+      <nb-card-footer class="footer-buttons">
+
+        <button nbButton status="danger" class="cancel-button" (click)="cancel()">Close</button>
+
+        <button nbButton status="success" type="submit" class="start-button">Send Invitation</button>
+      </nb-card-footer>
+    </form>
+  </nb-card-body>
+</nb-card>
+-->
+<nb-card>
+  <nb-card-header style="font-weight: bold">{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form (ngSubmit)="sendInvitation()" #inviteForm="ngForm">
+      <!-- Champ pour le nom de l'utilisateur -->
+      <div class="form-group">
+        <label for="userName">User Name</label>
+        <input nbInput id="userName" [(ngModel)]="userName" name="userName" required />
+      </div>
+
+      <!-- Champ pour l'email de l'utilisateur -->
+      <div class="form-group">
+        <label for="userEmail">User Email</label>
+        <input nbInput id="userEmail" [(ngModel)]="userEmail" name="userEmail" required />
+      </div>
+
+      <!-- Champ pour le sujet de l'email -->
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input nbInput id="subject" [(ngModel)]="subject" name="subject" required />
+      </div>
+
+      <!-- Champ pour l'URL -->
+      <div class="form-group">
+        <label for="url">URL</label>
+        <input nbInput id="url" [value]="url" disabled />
+      </div>
+
+      <nb-card-footer class="footer-buttons">
+        <button nbButton status="danger" class="cancel-button" (click)="cancel()">Close</button>
+        <button nbButton status="success" type="submit" class="start-button">Send Invitation</button>
+      </nb-card-footer>
+    </form>
+  </nb-card-body>
 </nb-card>
