@@ -28,28 +28,37 @@ import {OAuthService} from 'angular-oauth2-oidc';
 import {VoteModel} from '../../Models/VoteModel';
 import {UserModel} from '../../Models/UserModel';
 import {UserPseudoComponent} from './user-pseudo/user-pseudo.component';
-import {CookieService} from 'ngx-cookie-service';
 @Component({
   selector: 'ngx-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss']})
 export class RoomComponent implements OnInit {
   sessionId: string | null = null;
+  issueId: string | null = null;
+  userId: string | null = null;
+  selectedIssueImported: IssuesRequest | null = null;
   session: SessionModel;
-  issuee: IssuesModel;
+  issu: IssuesRequest;
   cards: string[] = [];
   selectedCard: string | null = null;
+  id:  string | null = null;
   isSidebarOpen = false;
   isDropdownOpen = false;
+  selectedOption: string;
   showForm = false;
   issueTitle = '';
   revealedCard: number | string | null = null;
   addIssuesForm: FormGroup;
   issues: IssuesModel[] = [];
+  sessions: SessionModel[] = [];
   loading: boolean = false;
   page: number = 1; // Page de départ
+  pageSize: number = 20; // Nombre d'éléments par page
   private isLoading: boolean = false;
+  dropdownVisible = false;
   selectedIssue: IssuesModel | null = null;
+  selectedIssueAzure: IssuesRequest | null = null;
+
   isDropdownSessionOpen = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
   // issues in session
@@ -60,25 +69,24 @@ export class RoomComponent implements OnInit {
   azureLoginSuccessful: boolean = false;
   jiraProjects: Project[] = [];
   issuesRequests: IssuesRequest[] = [];
+  isss: IssuesRequest;
   iss: IssuesModel = new IssuesModel();
   issue: IssuesModel[] = [];
+  lastAddedIssues: any;
   selectedJiraProjectName: string;
   modalRef?: BsModalRef;
+  submittedDescription: string = '';
   hidden: boolean;
   state: string | null = null;
   code: string | null = null;
   selectedIssueId: string | null = null;
   votes: VoteModel[] = [];
   users: UserModel[] = [];
-  selectedIssueImported: IssuesRequest | null = null;
-  issueeReq: IssuesRequest[] = [];
+  dialogOpened: boolean = false; // Flag to track dialog state
   averageVote: number | null = null;
-  issueId: string | null = null;
-  userId: string | null = null;
-  revealedCardAverage: number | string | null = null;
-  selectedUser: { name: string, email: string } | null = null;
-  currentUrl: string = window.location.href; // URL de l'interface active
-  issueImp: IssuesRequest[] = [];
+  currentUserTurn: string;
+  private socketSubscription: any; // Stocke l'abonnement au WebSocket
+
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -93,9 +101,7 @@ export class RoomComponent implements OnInit {
               private azureLogin: MsalService,
               private authService: AuthServiceService,
               private oauthService: OAuthService,
-              private cookieService: CookieService,
-              ) {}
-
+  ) {}
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.sessionId = params['id'];
@@ -111,7 +117,7 @@ export class RoomComponent implements OnInit {
     this.azureLogin.initialize();
     this.hidden = true;
 
-  this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe((params) => {
       this.state = params['state'];
       this.code = params['code'];
       this.handleOAuthCallback();
@@ -126,6 +132,126 @@ export class RoomComponent implements OnInit {
       },
     );
   }
+  openInviteDialog() {
+    // Open the dialog with the current session ID
+    this.dialogService.open(InvitePlayersComponent, {
+      context: {
+        title: 'Invite Players',
+        sessionId: this.sessionId,
+      },
+    });
+  }
+  // ***********  MOYENNE *********************
+  loadAverageVote(sessionId: string, issueId: string) {
+    this.apiService.getAverageVote(sessionId, issueId).subscribe(
+      (average: number) => {
+        this.averageVote = average;
+      },
+      (error) => {
+        console.error('Error fetching average vote:', error);
+      },
+    );
+  }
+  // ******************VoteNormal+voteImported *****************
+  toggleVote(issue: IssuesModel) {
+    if (this.selectedIssue && this.selectedIssue.id === issue.id) {
+      this.selectedCard = null;
+      this.revealedCard = null;
+      this.selectedIssue.isVoting = !this.selectedIssue.isVoting;
+    } else {
+      this.issues.forEach(i => i.isVoting = false);
+      this.selectedCard = null;
+      this.revealedCard = null;
+      this.selectedIssue = issue;
+      this.selectedIssueId = issue.id.toString();
+      issue.isVoting = true;
+    }
+  }
+  toggleVote2(issues: IssuesRequest) {
+    if (this.selectedIssueImported && this.selectedIssueImported.id === issues.id) {
+      this.selectedCard = null;
+      this.revealedCard = null;
+      this.selectedIssueImported.isVoting = !this.selectedIssueImported.isVoting;
+    } else {
+      this.issuesRequests.forEach((i) => (i.isVoting = false));
+      this.selectedCard = null;
+      this.revealedCard = null;
+
+      this.selectedIssueImported = issues;
+      this.selectedIssueId = issues.id; // Update selectedIssueId here
+      issues.isVoting = true;
+    }
+  }
+  selectCard(card: string) {
+    this.selectedCard = card;
+  }
+  revealCard(): void {
+    if (this.selectedCard !== null) {
+      this.revealedCard = this.selectedCard;
+      if (this.selectedIssue !== null) {
+        this.submitVote();
+      } else if (this.selectedIssueImported !== null) {
+        this.submitVoteForIssuesRequest();
+      }
+
+      this.triggerConfetti();
+    } else {
+      console.error('No card selected.');
+    }
+  }
+  submitVote() {
+    if (this.selectedCard !== null && this.selectedIssueId !== null) {
+      const vote: VoteModel = {
+        sessionId: this.session.id,
+        issueId: this.selectedIssueId,
+        vote: this.selectedCard,
+      };
+      this.apiService.addVote(vote).subscribe((response) => {
+        const issue = this.issues.find(i => i.id === this.selectedIssueId);
+        if (issue) {
+          issue.hasVoted = true;
+          issue.isVoting = false;
+          issue.lastVoteValue = this.selectedCard; // Store the last vote value
+        }
+        this.revealedCard = this.selectedCard;
+        this.selectedCard = null;
+        this.selectedIssue = null;
+        this.selectedIssueId = null;
+        this.loadVotes(this.session.id, this.selectedIssueId);
+        this.loadAverageVote(this.session.id, issue.id);
+        this.triggerConfetti();
+      });
+    } else {
+      console.error('No card selected or no issue selected.');
+    }
+  }
+  submitVoteForIssuesRequest() {
+    if (this.selectedCard !== null && this.selectedIssueId !== null) {
+      const vote: VoteModel = {
+        sessionId: this.session.id,
+        issueId: this.selectedIssueId,
+        vote: this.selectedCard,
+      };
+      this.apiService.addVote(vote).subscribe((response) => {
+        const issue = this.issuesRequests.find(i => i.id === this.selectedIssueId);
+        if (issue) {
+          issue.hasVoted = true;
+          issue.isVoting = false;
+          issue.lastVoteValue = this.selectedCard;
+        }
+        this.revealedCard = this.selectedCard;
+        this.selectedCard = null;
+        this.selectedIssueImported = null;
+        this.selectedIssueId = null;
+        this.loadVotes(this.session.id, this.selectedIssueId);
+        this.loadAverageVote(this.session.id, issue.id);
+        this.triggerConfetti(); // Fonction pour célébrer le vote
+      });
+    } else {
+      console.error('No card selected or no issue selected.');
+    }
+  }
+// ***********************************************************
   loadIssues() {
     this.apiService.getIssuesBySessionId(this.sessionId).subscribe((issues: IssuesModel[]) => {
       this.issues = issues;
@@ -136,25 +262,22 @@ export class RoomComponent implements OnInit {
       this.session = session;
     });
   }
-
+  canVote(): boolean {
+    return this.currentUserTurn === this.userId;
+  }
   getSessionDetails(sessionId: string) {
     this.apiService.getSession(sessionId).subscribe(
       (session: SessionModel) => {
         this.session = session;
         this.cards = this.getCardsForSystem(session.votingSystem);
-        // this.openUserPseudo(session.id);
+        if (!this.dialogOpened) {
+          this.dialogOpened = true;
+        }
       },
       (error) => {
         console.error('Error fetching session details:', error);
       },
     );
-  }
-  openUserPseudo(sessionId: string) {
-    this.dialogService.open(UserPseudoComponent, {
-      context: {
-        sessionId: sessionId,
-      },
-    });
   }
   getCardsForSystem(system: string): string[] {
     switch (system) {
@@ -183,25 +306,7 @@ export class RoomComponent implements OnInit {
     this.showForm = false;
     this.issueTitle = '';
   }
-  /*openInvitePlayers() {
-    const currentUrl = this.location.path();
-    this.dialogService.open(InvitePlayersComponent, {
-      context: {
-        title: 'Invite players',
-        url: currentUrl,
-      },
-    });
-  }*/
-  openInvitePlayers() {
-    const currentUrl = this.location.path();
-    this.dialogService.open(InvitePlayersComponent, {
-      context: {
-        title: 'Invite players',
-        url: currentUrl,
-        sessionId: this.sessionId,
-      },
-    });
-  }
+
   confirmIssueAdd() {
     if (this.addIssuesForm.valid) {
       if (confirm('Are you sure you want to add this issue?')) {
@@ -395,10 +500,9 @@ export class RoomComponent implements OnInit {
     this.apiService.insertUserStory(this.issuesRequests, this.sessionId).subscribe(rep => null);
     console.error(this.issuesRequests);
   }
-  addIssueToLocalListAzure(issueDescription: string) {
+  addIssueToLocalListAzure(issueDescription: string ) {
     this.issuesRequests.push({
       description: issueDescription,
-      platformId: 'AZURE',
     } as IssuesRequest);
     this.apiService.insertUserStory(this.issuesRequests, this.sessionId).subscribe(rep => null);
     console.error(this.issuesRequests);
@@ -465,82 +569,7 @@ export class RoomComponent implements OnInit {
       });
   }
 
-  private initializeRoom(sessionId: string | null): void {
-    if (sessionId) {
-      // Initialiser la salle avec l'ID de session
-      // console.log('Initializing room with session ID:', sessionId);
-    } else {
-      console.error('Session ID not found.');
-    }
-  }
-
   ///////////// vote/////////////
-  selectCard(card: string) {
-    this.selectedCard = card;
-  }
-  revealCard(): void {
-    if (this.selectedCard !== null) {
-      this.revealedCard = this.selectedCard;
-      this.submitVote();
-    }
-    this.triggerConfetti();
-  }
-
- /* showAverageVote() {
-    console.error('Session ID:', this.session?.id);
-    console.error('Selected Issue ID:', this.selectedIssueId);
-    const issue = this.issues.find(i => i.id === this.selectedIssueId);
-    if (this.selectedIssue.id && this.session?.id) {
-      this.loadAverageVote(this.session.id, this.selectedIssue.id);
-    } else {
-      console.error('Session ID or Issue ID is missing');
-    }
-  }*/
-  toggleVote(issue: IssuesModel) {
-    if (this.selectedIssue && this.selectedIssue.id === issue.id) {
-      this.selectedCard = null;
-      this.revealedCard = null;
-      this.selectedIssue.isVoting = !this.selectedIssue.isVoting;
-    } else {
-      this.issues.forEach(i => i.isVoting = false);
-      this.selectedCard = null;
-      this.revealedCard = null;
-
-      // Set the new issue for voting
-      this.selectedIssue = issue;
-      this.selectedIssueId = issue.id.toString();
-      issue.isVoting = true;
-    }
-  }
-submitVote() {
-    if (this.selectedCard !== null && this.selectedIssueId !== null) {
-      const vote: VoteModel = {
-        sessionId: this.session.id,
-        issueId: this.selectedIssueId,
-        vote: this.selectedCard,
-      };
-
-      this.apiService.addVote(vote).subscribe((response) => {
-        const issue = this.issues.find(i => i.id === this.selectedIssueId);
-        if (issue) {
-          issue.hasVoted = true;
-          issue.isVoting = false;
-          issue.lastVoteValue = this.selectedCard; // Store the last vote value
-        }
-
-        this.revealedCard = this.selectedCard;
-        this.selectedCard = null;
-        this.selectedIssue = null;
-        this.selectedIssueId = null;
-        this.loadVotes(this.session.id, this.selectedIssueId);
-        this.loadAverageVote(this.session.id, issue.id);
-        this.triggerConfetti();
-      });
-    } else {
-      console.error('No card selected or no issue selected.');
-    }
-  }
-
 
   loadVotes(sessionId: string, issueId: string) {
     this.apiService.getVotes(sessionId, issueId).subscribe(
@@ -552,57 +581,8 @@ submitVote() {
       },
     );
   }
-  toggleVote2(issues: IssuesRequest) {
-    if (this.selectedIssue && this.selectedIssue.id === issues.id) {
-      this.selectedCard = null;
-      this.revealedCard = null;
-      this.selectedIssueImported.isVoting = !this.selectedIssue.isVoting;
-    } else {
-      this.issuesRequests.forEach(i => i.isVoting = false);
-      this.selectedCard = null;
-      this.revealedCard = null;
 
-      // Set the new issue for voting
-      this.selectedIssueImported = issues;
-      this.selectedIssueId = issues.platformId.toString();
-      issues.isVoting = true;
-    }
-    this.submitVote();
-  }
   triggerConfetti() {
     confetti();
   }
-  loadAverageVote(sessionId: string, issueId: string) {
-    this.apiService.getAverageVote(sessionId, issueId).subscribe(
-      (average: number) => {
-        this.averageVote = average;
-      },
-      (error) => {
-        console.error('Error fetching average vote:', error);
-      },
-    );
-  }
-
-  sendEmail() {
-    if (this.selectedUser) {
-      const emailContent = `
-                Bonjour ${this.selectedUser.name},
-
-                Vous avez été sélectionné. Voici l'URL de l'interface active :
-                ${this.currentUrl}
-
-                Cordialement,
-                Votre Équipe
-            `;
-
-      // Utilisez votre service pour envoyer l'email ici
-      this.apiService.sendEmail(this.selectedUser.email, 'URL de l\'interface active', emailContent)
-        .subscribe(response => {
-          console.error('Email envoyé avec succès');
-        }, error => {
-          console.error('Erreur lors de l\'envoi de l\'email', error);
-        });
-    }
-  }
-
 }

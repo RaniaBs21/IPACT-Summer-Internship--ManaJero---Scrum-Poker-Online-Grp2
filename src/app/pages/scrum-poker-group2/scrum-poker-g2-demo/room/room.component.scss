@@ -801,8 +801,12 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
   font-weight: bold;
   color: #333;
   align-items: center;
-  display: flex; /* Ensures the text is centered */
-  justify-content: center; /* Center text horizontally */
+  display: flex; /* Assure que le texte est centré */
+  justify-content: center; /* Centre le texte horizontalement */
+  text-align: center; /* Centre le texte dans le paragraphe */
+  word-wrap: break-word; /* Permet au texte de se diviser en plusieurs lignes */
+  word-break: break-word; /* Divise les mots longs si nécessaire */
+  max-width: 80px; /* Limite la largeur du texte pour forcer les retours à la ligne */
 }
 .flip-card {
   background-color: transparent;

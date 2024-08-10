@@ -4,6 +4,7 @@ export class SessionModel {
   name: string;
   votingSystem: VotingSystem;
   cards: string[];
+  userId: string ;
 
 }
 export enum VotingSystem {
@@ -12,5 +13,3 @@ export enum VotingSystem {
   TSHIRTS = 'T-shirts (XS, S, M, L, XL, ?, ☕)',
   POWERS_OF_2 = 'Powers of 2 (0, 1, 2, 4, 8, 16, 32, 64, ?, ☕)',
 }
-
-

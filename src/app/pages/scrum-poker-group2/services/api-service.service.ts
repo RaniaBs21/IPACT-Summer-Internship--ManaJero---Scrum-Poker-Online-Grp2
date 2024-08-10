@@ -264,4 +264,14 @@ export class ApiService {
     };
     return this.httpClient.post(`${this.API_URL}/send`, null, { params: params });
   }
+
+  // user Invitation
+  inviteUserToSession(sessionId: string, email: string): Observable<string> {
+    if (!sessionId) {
+      throw new Error('Session ID is required');
+    }
+    const url = `${this.API_URL}/${sessionId}/invite`;
+    const params = new HttpParams().set('email', email);
+    return this.httpClient.post<string>(url, null, { params });
+  }
 }
