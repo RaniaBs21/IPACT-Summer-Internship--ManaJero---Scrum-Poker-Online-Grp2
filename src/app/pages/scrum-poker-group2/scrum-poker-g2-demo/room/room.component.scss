@@ -18,27 +18,50 @@ body {
   padding: 10px;
   margin-top: 10px; /* to prevent the content from being hidden under the navbar */
 }
-
+/* Conteneur de bouton */
 .button-container {
   margin-bottom: 20px;
   padding: 20px;
 }
 
+/* Wrapper de bouton */
 .button-wrapper {
   display: inline-block;
-  padding: 20px;
-  width: 400px;
-  height: 200px;
+  padding: 2%; /* Utiliser un pourcentage pour le padding pour plus de flexibilité */
+  width: 50vw; /* Utiliser une largeur relative à la largeur de la fenêtre */
+  max-width: 500px; /* Limiter la largeur maximale pour les grands écrans */
+  height: auto; /* Autoriser la hauteur à s'adapter au contenu */
   border-radius: 20px;
-  background:beige;
-  overflow:hidden;
+  background: beige;
+  overflow: hidden;
   box-shadow: 0 4px 8px rgb(119, 112, 111);
   transition: box-shadow 0.3s;
 }
 
+/* Media query pour les écrans plus petits */
+@media (max-width: 600px) {
+  .button-wrapper {
+    width: 90vw; /* Augmenter la largeur relative pour les petits écrans */
+    padding: 8%; /* Ajuster le padding pour les petits écrans */
+    max-width: 100%; /* Enlever la limite de largeur maximale pour les petits écrans */
+    border-radius: 15px; /* Ajuster le radius pour les petits écrans */
+  }
+}
+
+/* Media query pour les écrans très petits */
+@media (max-width: 400px) {
+  .button-wrapper {
+    padding: 5%; /* Réduire le padding pour les très petits écrans */
+    border-radius: 10px; /* Ajuster encore plus le radius */
+  }
+}
+
+/* Bouton de révélation */
 .reveal-button {
-  padding: 10px 20px;
-  font-size: 20px;
+  display: block; /* Assure que le bouton est un élément de bloc pour utiliser les marges auto */
+  margin: 10px auto; /* Centre le bouton horizontalement avec une marge automatique des deux côtés */
+  font-size: 3vw; /* Utiliser des unités de largeur de fenêtre pour la taille de police */
+  max-font-size: 16px; /* Limiter la taille maximale de la police */
   color: white;
   background-color: #007bff;
   border: none;
@@ -47,6 +70,7 @@ body {
   transition: background-color 0.3s;
 }
 
+/* Hover pour le bouton de révélation */
 .reveal-button:hover {
   background-color: #e75413;
 }
@@ -230,9 +254,26 @@ h1 span:nth-child(14) {
   justify-content: space-between;
   align-items: center;
   background-color: #ffffff;
-  padding: 10px;
+  padding: 1% 2%; /* Utiliser des pourcentages pour plus de flexibilité */
   width: 100%;
+  box-sizing: border-box; /* Inclure le padding dans la largeur totale */
 }
+
+/* Media query pour les écrans plus petits */
+@media (max-width: 768px) {
+  .topnav {
+    flex-direction: column; /* Passer à une disposition en colonne pour les petits écrans */
+    padding: 2% 5%; /* Ajuster le padding pour les petits écrans */
+  }
+}
+
+/* Media query pour les très petits écrans */
+/*@media (max-width: 480px) {
+  .topnav {
+    padding:  '5px 5px'  ;
+  }
+}*/
+
 .session-name {
   font-size: 24px;
   color: black !important;
@@ -376,18 +417,27 @@ h1 span:nth-child(14) {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  min-width: 200px; /* Dropdown width */
-  font-size: 18px;  /* Font size */
+  min-width: 200px;
+  font-size: 18px;
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
 }
-
+.dropdown-container:hover .dropdown-content {
+  display: block;
+}
 .dropdown-content li {
-  padding: 16px 24px; /* Larger padding */
+  /* padding: 16px 24px; !* Larger padding *!
+   cursor: pointer;
+   transition: background-color 0.3s;*/
+  padding: 8px 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .dropdown-content li:hover {
-  background-color: #ddd;
+  //background-color: #ddd;
+  background-color: #f1f1f1;
 }
 
 .select-wrapper {
@@ -494,7 +544,6 @@ h1 span:nth-child(14) {
   background: linear-gradient(to right, #ff8a00, #e52e71);
   border: none;
   color: white;
-  padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -502,6 +551,7 @@ h1 span:nth-child(14) {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   transition: background 0.3s ease, box-shadow 0.3s ease;
   font-family: 'Courier New', Courier, monospace;
+  margin-top: 3px;
 }
 .reveal-button:hover {
   background: linear-gradient(to right, #e52e71, #ff8a00);
@@ -622,8 +672,8 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
   display: flex;
   flex-direction: column; /* Empile les enfants verticalement */
 }
-.scrollable {
-  height: 100%;
+.scrollable-issues {
+  height: 600px;
   overflow-y: auto; /* Ajoute un défilement vertical si le contenu dépasse */
   margin-bottom: 10px;
   padding: 10px;
@@ -633,11 +683,27 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
   margin-left: 8px;
 }
 .row {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between; /* Distribue les éléments avec de l'espace entre eux */
 }
+
+.last-vote {
+  position: relative;
+  display: inline-block;
+  margin-right: 25px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 0.75rem 1.25rem;
+}
+.card-header:first-child {
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+
+.card-header + .list-group .list-group-item:first-child {
+  border-top: 0;
+}
+
 .btn-vote {
   padding: 5px 10px;
   margin-left: 8px;
@@ -693,4 +759,48 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
 .voting-subtitle {
   color: dimgrey;
   margin-top: 10px;
+}
+// user Invitation
+.user-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.user-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100px; /* Adjust as needed */
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden; /* Ensure content doesn't overflow */
+  display: flex;
+  flex-direction: column; /* Align items in a column */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+}
+
+.user-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.user-card p {
+  margin: 1px;
+  font-weight: bold;
+  color: #333;
+  align-items: center;
+  display: flex; /* Ensures the text is centered */
+  justify-content: center; /* Center text horizontally */
 }

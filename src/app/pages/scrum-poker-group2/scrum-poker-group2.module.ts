@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+
+
+import { NgModule} from '@angular/core';
 import {
   NbButtonModule,
   NbCardModule,
@@ -16,11 +17,11 @@ import {
 // modules
 import { ThemeModule } from '../../@theme/theme.module';
 import { ScrumPokerGroup2RoutingModule } from './scrum-poker-group2-routing.module';
-import {ScrumPokerG2DemoComponent} from './scrum-poker-g2-demo/scrum-poker-g2-demo.component';
-import {MsalModule} from '@azure/msal-angular';
+import {FormsModule} from '../forms/forms.module';
 import {OAuthModule, OAuthStorage} from 'angular-oauth2-oidc';
-import {CommonModule} from '@angular/common';
+import {MsalModule} from '@azure/msal-angular';
 import {CoreModule} from '../../@core/core.module';
+import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 
 
@@ -46,18 +47,17 @@ const SERVICES = [
 @NgModule({
     imports: [
         ...MODULES,
-        OAuthModule.forRoot(),
-        MsalModule,
-        CoreModule,
-        CommonModule,
-        BrowserModule,
+      OAuthModule.forRoot(),
+      MsalModule,
+      CoreModule,
+      CommonModule,
+      BrowserModule,
     ],
     declarations: [
-    ],
+  ],
     providers: [
         ...SERVICES,
-        {provide: OAuthStorage, useValue: localStorage},
-
+      {provide: OAuthStorage, useValue: localStorage},
     ],
 })
 export class ScrumPokerGroup2Module {

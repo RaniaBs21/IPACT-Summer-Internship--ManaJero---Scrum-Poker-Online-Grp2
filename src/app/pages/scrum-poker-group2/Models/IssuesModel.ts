@@ -1,9 +1,13 @@
+import {SessionModel} from './SessionModel';
 export class IssuesModel {
-    description: string;
-    file: string;
-    platformId: string;
-    id: string;
-    issueDescription: string;
-    issueNumber: string;
-    isVoting: boolean;
+  id: string;
+  description: string;
+  file: string;
+  platformId: string;
+  issueDescription: string;
+  issueNumber: string;
+  hasVoted: boolean = false;
+  isVoting: boolean = false;
+  lastVoteValue?: string;
+
 }

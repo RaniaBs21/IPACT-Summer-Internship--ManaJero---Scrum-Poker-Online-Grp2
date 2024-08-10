@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef, NbToastrService } from '@nebular/theme';
-import { BenefitsModel } from '../../Models/BenefitsModel';
+import { BenefitsModel } from '../../models/BenefitsModel';
 import {ApiService} from '../../services/api-service.service';
 
 @Component({

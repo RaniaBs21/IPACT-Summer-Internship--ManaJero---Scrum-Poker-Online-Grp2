@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import {
-  NbActionsModule,
-  NbButtonModule,
-  NbCardModule,
-  NbTabsetModule,
-  NbUserModule,
-  NbRadioModule,
-  NbSelectModule,
-  NbListModule,
-  NbIconModule, NbStepperModule, NbInputModule,
+    NbActionsModule,
+    NbButtonModule,
+    NbCardModule,
+    NbTabsetModule,
+    NbUserModule,
+    NbRadioModule,
+    NbSelectModule,
+    NbListModule,
+    NbIconModule, NbStepperModule, NbInputModule, NbFormFieldModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -33,31 +33,44 @@ import {DiagramAddComponent} from './diagram-add/diagram-add.component';
 import {DiagramUpdateComponent} from './diagram-update/diagram-update.component';
 import { SessionComponent } from './session/session.component';
 import { RoomComponent } from './room/room.component';
-// import { BenefitsUpdateComponent } from './benefits-update/benefits-update.component';
+import { InvitePlayersComponent } from './room/invite-players/invite-players.component';
+import { ResultComponent } from './room/result/result.component';
+import {ChartModule} from 'angular2-chartjs';
+import {EchartsBarComponent} from './room/result/echarts-bar.component';
+import {EchartsPieComponent} from './room/result/echarts-pie.component';
+import {Ng2SmartTableModule} from 'ng2-smart-table';
+import { IssuesUpdateComponent } from './room/issues-update/issues-update.component';
+import { SessionUpdateComponent } from './room/session-update/session-update.component';
+import { VotingHistoryComponent } from './room/voting-history/voting-history.component';
+import {OAuthStorage} from 'angular-oauth2-oidc';
+import { UserPseudoComponent } from './room/user-pseudo/user-pseudo.component';
 
-// import { LimitssAddComponent } from './limitss-add/limitss-add.component';
+
 
 
 @NgModule({
-  imports: [
-    FormsModule,
-    ThemeModule,
-    NbCardModule,
-    NbUserModule,
-    NbButtonModule,
-    NbTabsetModule,
-    NbActionsModule,
-    NbRadioModule,
-    NbSelectModule,
-    NbListModule,
-    NbIconModule,
-    NbButtonModule,
-    NgxEchartsModule,
-    NbStepperModule,
-    ReactiveFormsModule,
-    RouterLink,
-    NbInputModule,
-  ],
+    imports: [
+        FormsModule,
+        ThemeModule,
+        NbCardModule,
+        NbUserModule,
+        NbButtonModule,
+        NbTabsetModule,
+        NbActionsModule,
+        NbRadioModule,
+        NbSelectModule,
+        NbListModule,
+        NbIconModule,
+        NbButtonModule,
+        NgxEchartsModule,
+        NbStepperModule,
+        ReactiveFormsModule,
+        RouterLink,
+        NbInputModule,
+        ChartModule,
+        Ng2SmartTableModule,
+        NbFormFieldModule,
+    ],
   declarations: [
     ScrumPokerG2DemoComponent,
     DemoFormComponent,
@@ -75,6 +88,14 @@ import { RoomComponent } from './room/room.component';
     DiagramUpdateComponent,
     SessionComponent,
     RoomComponent,
+    InvitePlayersComponent,
+    ResultComponent,
+    EchartsBarComponent,
+    EchartsPieComponent,
+    IssuesUpdateComponent,
+    SessionUpdateComponent,
+    VotingHistoryComponent,
+    UserPseudoComponent,
   ],
   exports: [
   ],

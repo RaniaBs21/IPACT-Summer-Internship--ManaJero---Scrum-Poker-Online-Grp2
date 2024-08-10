@@ -1,6 +1,5 @@
-
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpEventType} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
@@ -8,39 +7,28 @@ import {LimitsModel} from '../Models/LimitsModel';
 import {StepsModel} from '../Models/stepsModel';
 import {NewsModel} from '../Models/NewsModel';
 import {DiagramModel} from '../Models/DiagramModel';
-import {SessionModel} from '../models/SessionModel';
+import {SessionModel} from '../Models/SessionModel';
+import {IssuesModel} from '../Models/IssuesModel';
 import {Project, SearchResults} from 'jira.js/out/version3/models';
+import {JiraAuthService} from './jira-auth.service';
 import {SearchForIssuesUsingJql} from 'jira.js/out/version3/parameters';
 import {IssuesRequest} from '../Models/ImportRepresentation/IssuesRequest';
-import {IssuesModel} from '../Models/IssuesModel';
 import {ProjectInfo} from 'azure-devops-node-api/interfaces/CoreInterfaces';
 import {environment} from '../../../../environments/environment';
 import {map, mergeMap} from 'rxjs/operators';
-import {JiraAuthService} from './jira-auth.service';
+import {VoteModel} from '../Models/VoteModel';
+import {UserModel} from '../Models/UserModel';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
 
   readonly API_URL = 'http://localhost:8082';
-  // readonly ENDPOINT_DEMO = '/getDemo' ;
-  // readonly ENDPOINT_Benefits = '/getBenefits' ;
-  // readonly ENDPOINT_Limits = '/getLimits' ;
-  // readonly ENDPOINT_Demo_update = '/updateDemo/' ;
-  // readonly ENDPOINT_Benefits_update = '/updateBenefits/' ;
-  // readonly ENDPOINT_Limits_update = '/updateLimits/' ;
-  // readonly ENDPOINT_Demo_Create = '/adddemo' ;
-  // readonly ENDPOINT_Steps = '/getSteps' ;
-  // readonly ENDPOINT_Steps_by_Id = '/getSteps' ;
-  // readonly ENDPOINT_delete_step = '/deleteStep/' ;
-  // readonly ENDPOINT_Steps_update = '/updateStep/' ;
-  // readonly ENDPOINT_Step_Create = '/addSteps' ;
-  // readonly ENDPOINT_News_Create = '/addNews' ;
-  // readonly ENDPOINT_News = '/getNews' ;
-  // readonly ENDPOINT_News_update = '/updateNew/' ;
 
 
 
-  constructor(private httpClient: HttpClient, private jiraAuthService: JiraAuthService ) { }
+  constructor(private httpClient: HttpClient,
+              private jiraAuthService: JiraAuthService,
+  ) { }
 
   // ********************* Demo services ************************
   addDemo(demo: DemoModel): Observable<DemoModel[]> {
@@ -162,9 +150,6 @@ export class ApiService {
   addIssue(sessionId: string, issue: IssuesModel): Observable<IssuesModel> {
     return this.httpClient.post<IssuesModel>(`${this.API_URL}/session/${sessionId}`, issue);
   }
-  save(issue: IssuesModel): Observable<IssuesModel> {
-    return this.httpClient.post<IssuesModel>(`${this.API_URL}/save}`, issue);
-  }
   getIssuesBySessionId(sessionId: string): Observable<IssuesModel[]> {
     return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
   }
@@ -175,16 +160,11 @@ export class ApiService {
   deleteIssue(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.API_URL}/deleteIssue/${id}`);
   }
-
-  // ***********************Issues Service **************************+
-  addIssues(issues: IssuesModel): Observable<IssuesModel> {
-    return this.httpClient.post<IssuesModel>(`${this.API_URL}/addIssues`, issues);
-  }
   getIssues(): Observable<IssuesModel[]> {
     return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/getIssues`);
   }
-  deleteIssues(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.API_URL}/deleteIssue/${id}`);
+  save(issue: IssuesModel): Observable<IssuesModel> {
+    return this.httpClient.post<IssuesModel>(`${this.API_URL}/save}`, issue);
   }
   getProjects(): Observable<Project[]> {
     const accessToken = this.jiraAuthService.getAccessToken();
@@ -247,7 +227,40 @@ export class ApiService {
     return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
   }
   addIssuesBySessionId(issues: IssuesModel, sessionId: string ) {
-    return this.httpClient.post<IssuesModel[]>(`${this.API_URL}/ajoutIssues//${sessionId}`, issues);
+    return this.httpClient.post<IssuesModel[]>(`${this.API_URL}/ajoutIssues/${sessionId}`, issues);
 
   }
+
+  // ******************** Vote services *********************
+
+  addVote(vote: VoteModel): Observable<VoteModel> {
+    return this.httpClient.post<VoteModel>(`${this.API_URL}/votes`, vote);
+  }
+
+  getVotes(sessionId: string, issueId: string): Observable<VoteModel[]> {
+    return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/session/${sessionId}/issue/${issueId}`);
+  }
+  // ******************** User services *********************
+  addUser(sessionId: string, user: UserModel): Observable<UserModel> {
+    return this.httpClient.post<UserModel>(`${this.API_URL}/session/addUser/${sessionId}`, user);
+  }
+  getUsersBySession(sessionId: string): Observable<UserModel[]> {
+    return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
+  }
+  getAverageVote(sessionId: string, issueId: string): Observable<number> {
+    const params = new HttpParams()
+        .set('sessionId', sessionId)
+        .set('issueId', issueId);
+    return this.httpClient.get<number>(`${this.API_URL}/votes/getaverage`, { params });
+  }
+  // user Invitation
+  inviteUserToSession(sessionId: string, email: string): Observable<string> {
+    if (!sessionId) {
+      throw new Error('Session ID is required');
+    }
+    const url = `${this.API_URL}/${sessionId}/invite`;
+    const params = new HttpParams().set('email', email);
+    return this.httpClient.post<string>(url, null, { params });
+  }
+
 }

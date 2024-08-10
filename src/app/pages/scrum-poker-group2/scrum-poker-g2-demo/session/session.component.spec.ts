@@ -8,7 +8,7 @@ describe('SessionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SessionComponent ]
+      declarations: [ SessionComponent ],
     })
     .compileComponents();
 

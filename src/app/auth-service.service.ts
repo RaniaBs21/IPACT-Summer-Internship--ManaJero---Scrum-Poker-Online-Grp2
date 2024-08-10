@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {OAuthErrorEvent, OAuthService} from 'angular-oauth2-oidc';
-import {authConfig} from './oauth.config';
+import { OAuthErrorEvent, OAuthService } from 'angular-oauth2-oidc';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,7 @@ import {authConfig} from './oauth.config';
 export class AuthServiceService {
 
   private configureOAuth() {
-    this.oauthService.configure(authConfig);
+    this.oauthService.configure(environment.jiraConfig);
     this.oauthService.setupAutomaticSilentRefresh();
     this.oauthService.setStorage(localStorage);
   }
@@ -20,13 +20,8 @@ export class AuthServiceService {
         console.error('OAuthErrorEvent Object:', event);
       } else {
         console.warn('OAuthEvent Object:', event);
-
       }
     });
-  }
-  getAccessToken() {
-    return this.oauthService.getAccessToken();
-
   }
 
   login() {
@@ -38,7 +33,4 @@ export class AuthServiceService {
     });
   }
 
-  logout() {
-    this.oauthService.logOut();
-  }
 }

@@ -78,6 +78,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   };
 }
 @NgModule({
+  bootstrap: [AppComponent],
   declarations: [AppComponent],
   imports: [
     BrowserModule,
@@ -90,6 +91,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
     NbToastrModule.forRoot(),
+
     NbChatModule.forRoot({
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
@@ -99,7 +101,6 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MsalModule,
     OAuthModule.forRoot(),
   ],
-  bootstrap: [AppComponent],
   providers: [
     {provide: OAuthStorage, useValue: localStorage},
     {

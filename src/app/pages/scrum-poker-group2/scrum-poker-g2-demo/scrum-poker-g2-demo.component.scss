@@ -1,3 +1,4 @@
+
 @import '../../../@theme/styles/themes';
 @import 'bootstrap/scss/mixins/breakpoints';
 @import '@nebular/theme/styles/global/breakpoints';
@@ -7,6 +8,8 @@
     border: none;
     padding-bottom: 0;
   }
+
+
   @include media-breakpoint-down(sm) {
     ngx-traffic {
       display: none;
@@ -28,6 +31,7 @@
       background-color: #fff;
       overflow: hidden;
     }
+
     .nb-card-header {
       background-color: #f4f4f4;
       padding: 16px;
@@ -43,6 +47,7 @@
     .container {
       align-items: center;
       font-family: Arial, Helvetica, sans-serif;
+
     }
     .container h1 {
       font-size: 2em;
@@ -51,10 +56,12 @@
 
     .interface-container {
       flex: 1;
+
       padding: 15px;
       color: darkblue;
       background-color: lightgrey;
     }
+
     .image img {
       border: 1px #ccc; /* Add solid border */
       border-radius: 8px;
