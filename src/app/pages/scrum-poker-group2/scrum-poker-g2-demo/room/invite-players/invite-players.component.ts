@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../../services/api-service.service';
 import {FormGroup} from '@angular/forms';
+import {UserModel} from '../../../Models/UserModel';
 
 @Component({
   selector: 'ngx-invite-players',
@@ -12,6 +13,9 @@ export class InvitePlayersComponent {
   @Input() url: string;
   @Input() sessionId: string; // Automatically set from parent component
   email: string;
+  invitedUserId: string; // New property to store the invited user's ID
+  userId: string;
+  user: UserModel ;
   constructor(protected ref: NbDialogRef<InvitePlayersComponent>, private apiService: ApiService,
               private toastrService: NbToastrService) {}
   confirmInvite() {
@@ -33,6 +37,25 @@ export class InvitePlayersComponent {
       );
     }
   }
+
+ /* sendInvitation() {
+    if (this.email && this.sessionId) {
+      this.apiService.inviteUserToSession(this.sessionId, this.email).subscribe(
+        (userId: string) => {
+          localStorage.setItem('invitedUserId', userId); // Store the user ID in local storage
+          this.toastrService.success('Invitation sent successfully', 'Success');
+          this.ref.close();
+        },
+        (error) => {
+          this.toastrService.danger('Failed to send invitation', 'Error');
+        },
+      );
+    }
+  }*/
+  storeUserId(userId: string) {
+    localStorage.setItem('userId', userId); // Stocke le userId dans le localStorage
+  }
+
   cancel() {
     this.ref.close();
   }

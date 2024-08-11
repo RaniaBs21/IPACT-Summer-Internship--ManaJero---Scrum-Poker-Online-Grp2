@@ -103,6 +103,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     ScrumPokerG2DemodModule,
     MsalModule,
     OAuthModule.forRoot(),
+    SocketIoModule.forRoot(config),
   ],
   bootstrap: [AppComponent],
   providers: [

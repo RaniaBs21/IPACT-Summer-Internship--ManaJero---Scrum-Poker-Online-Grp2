@@ -8,7 +8,7 @@ describe('InvitePlayersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InvitePlayersComponent ]
+      declarations: [ InvitePlayersComponent ],
     })
     .compileComponents();
 

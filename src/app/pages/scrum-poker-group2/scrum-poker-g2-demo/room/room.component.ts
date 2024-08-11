@@ -86,7 +86,6 @@ export class RoomComponent implements OnInit {
   averageVote: number | null = null;
   currentUserTurn: string;
   private socketSubscription: any; // Stocke l'abonnement au WebSocket
-
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -103,6 +102,7 @@ export class RoomComponent implements OnInit {
               private oauthService: OAuthService,
   ) {}
   ngOnInit() {
+
     this.route.params.subscribe(params => {
       this.sessionId = params['id'];
       this.getSessionDetails(this.sessionId);
@@ -199,12 +199,14 @@ export class RoomComponent implements OnInit {
       console.error('No card selected.');
     }
   }
+
   submitVote() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
         sessionId: this.session.id,
         issueId: this.selectedIssueId,
         vote: this.selectedCard,
+        userId: this.userId,
       };
       this.apiService.addVote(vote).subscribe((response) => {
         const issue = this.issues.find(i => i.id === this.selectedIssueId);
@@ -225,12 +227,48 @@ export class RoomComponent implements OnInit {
       console.error('No card selected or no issue selected.');
     }
   }
+
+ /* submitVote() {
+    if (this.selectedCard !== null && this.selectedIssueId !== null) {
+      const invitedUserId = localStorage.getItem('invitedUserId'); // Retrieve the invited user's ID
+      if (!invitedUserId) {
+        console.error('No invited user ID found in local storage.');
+        return;
+      }
+
+      const vote: VoteModel = {
+        sessionId: this.session.id,
+        issueId: this.selectedIssueId,
+        vote: this.selectedCard,
+        userId: invitedUserId, // Use the invited user's ID
+      };
+      this.apiService.addVote(vote).subscribe((response) => {
+        const issue = this.issues.find(i => i.id === this.selectedIssueId);
+        if (issue) {
+          issue.hasVoted = true;
+          issue.isVoting = false;
+          issue.lastVoteValue = this.selectedCard; // Store the last vote value
+        }
+        this.revealedCard = this.selectedCard;
+        this.selectedCard = null;
+        this.selectedIssue = null;
+        this.selectedIssueId = null;
+        this.loadVotes(this.session.id, this.selectedIssueId);
+        this.loadAverageVote(this.session.id, issue.id);
+        this.triggerConfetti();
+      });
+    } else {
+      console.error('No card selected or no issue selected.');
+    }
+  }
+*/
   submitVoteForIssuesRequest() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
         sessionId: this.session.id,
         issueId: this.selectedIssueId,
         vote: this.selectedCard,
+        userId: this.userId,
       };
       this.apiService.addVote(vote).subscribe((response) => {
         const issue = this.issuesRequests.find(i => i.id === this.selectedIssueId);
