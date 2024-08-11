@@ -12,6 +12,8 @@ export class InvitePlayersComponent {
   @Input() url: string;
   @Input() sessionId: string; // Automatically set from parent component
   email: string;
+  userId: string; // Store the userId here
+
   constructor(protected ref: NbDialogRef<InvitePlayersComponent>, private apiService: ApiService,
               private toastrService: NbToastrService) {}
   confirmInvite() {
@@ -23,8 +25,9 @@ export class InvitePlayersComponent {
   sendInvitation() {
     if (this.email && this.sessionId) {
       this.apiService.inviteUserToSession(this.sessionId, this.email).subscribe(
-          () => {
-            this.toastrService.danger('Invitation sent successfully', 'Success');
+          (userId: string) => { // Handle the returned userId
+            this.userId = userId; // Store the userId in the component
+            this.toastrService.success('Invitation sent successfully', 'Success');
             this.ref.close();
           },
           (error) => {
@@ -33,6 +36,7 @@ export class InvitePlayersComponent {
       );
     }
   }
+
   cancel() {
     this.ref.close();
   }
