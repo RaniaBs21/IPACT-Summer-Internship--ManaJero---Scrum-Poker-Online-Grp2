@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NbDialogRef, NbToastrService} from '@nebular/theme';
 import {ApiService} from '../../../services/api-service.service';
-import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'ngx-invite-players',
@@ -27,7 +26,7 @@ export class InvitePlayersComponent {
           this.toastrService.danger('Invitation sent successfully', 'Success');
           this.ref.close();
         },
-        (error) => {
+        error => {
           this.toastrService.success('Invitation sent successfully', 'Success');
         },
       );

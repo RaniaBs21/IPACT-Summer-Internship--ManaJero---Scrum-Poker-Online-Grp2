@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {SessionModel} from '../../Models/SessionModel';
 import {ApiService} from '../../services/api-service.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -7,11 +7,8 @@ import {InvitePlayersComponent} from './invite-players/invite-players.component'
 import { Location } from '@angular/common';
 // @ts-ignore
 import confetti from 'canvas-confetti';
-import {LimitsModel} from '../../Models/LimitsModel';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IssuesModel} from '../../Models/IssuesModel';
-import {DemoModel} from '../../Models/DemoModel';
-import {LimitsUpdateComponent} from '../limits-update/limits-update.component';
 import {IssuesUpdateComponent} from './issues-update/issues-update.component';
 import {SessionUpdateComponent} from './session-update/session-update.component';
 import {SearchResults, Project} from 'jira.js/out/version3/models';
@@ -26,7 +23,6 @@ import {AuthServiceService} from '../../../../auth-service.service';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {VoteModel} from '../../Models/VoteModel';
 import {UserModel} from '../../Models/UserModel';
-import {UserPseudoComponent} from './user-pseudo/user-pseudo.component';
 @Component({
   selector: 'ngx-room',
   templateUrl: './room.component.html',
