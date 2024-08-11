@@ -253,4 +253,25 @@ export class ApiService {
   getUsersBySession(sessionId: string): Observable<UserModel[]> {
     return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
   }
+  getUserById(userId: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.API_URL}/getUserById/${userId}`);
+  }
+  sendEmail(to: string, subject: string, body: string): Observable<any> {
+    const params = {
+      to: to,
+      subject: subject,
+      body: body,
+    };
+    return this.httpClient.post(`${this.API_URL}/send`, null, { params: params });
+  }
+
+  // user Invitation
+  inviteUserToSession(sessionId: string, email: string): Observable<string> {
+    if (!sessionId) {
+      throw new Error('Session ID is required');
+    }
+    const url = `${this.API_URL}/${sessionId}/invite`;
+    const params = new HttpParams().set('email', email);
+    return this.httpClient.post<string>(url, null, { params });
+  }
 }

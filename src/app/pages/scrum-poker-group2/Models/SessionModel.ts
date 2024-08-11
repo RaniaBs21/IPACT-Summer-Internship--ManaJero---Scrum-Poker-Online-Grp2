@@ -7,5 +7,7 @@ export enum VotingSystem {
 export class SessionModel {
   id?: string;
   name: string;
-  votingSystem: VotingSystem; // Ensure this matches the backend
+  votingSystem: VotingSystem;
+  cards: string[];
+  userId: string ;
 }
