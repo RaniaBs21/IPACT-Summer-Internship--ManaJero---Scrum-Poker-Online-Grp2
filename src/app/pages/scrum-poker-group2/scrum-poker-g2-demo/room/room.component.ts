@@ -86,6 +86,7 @@ export class RoomComponent implements OnInit {
   averageVote: number | null = null;
   currentUserTurn: string;
   private socketSubscription: any; // Stocke l'abonnement au WebSocket
+  userName: string | null = null;
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -189,7 +190,8 @@ export class RoomComponent implements OnInit {
     if (this.selectedCard !== null) {
       this.revealedCard = this.selectedCard;
       if (this.selectedIssue !== null) {
-        this.submitVote();
+       // this.submitVote();
+        this.submitVote(this.issueId);
       } else if (this.selectedIssueImported !== null) {
         this.submitVoteForIssuesRequest();
       }
@@ -200,13 +202,14 @@ export class RoomComponent implements OnInit {
     }
   }
 
-  submitVote() {
+/*  submitVote() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
         sessionId: this.session.id,
         issueId: this.selectedIssueId,
         vote: this.selectedCard,
         userId: this.userId,
+        userName: this.userName,
       };
       this.apiService.addVote(vote).subscribe((response) => {
         const issue = this.issues.find(i => i.id === this.selectedIssueId);
@@ -226,42 +229,62 @@ export class RoomComponent implements OnInit {
     } else {
       console.error('No card selected or no issue selected.');
     }
-  }
+  }*/
+  submitVote(issueId: string) {
+    this.apiService.getUsersBySession(this.sessionId).subscribe({
+      next: (users) => {
+        console.info('Users:', users); // Log the array of users
+        if (users && users.length > 0) {
+          const user = users[users.length - 1]; // Use the last user in the array
+          if (user && user.id) {
+            this.apiService.getSessionById(this.sessionId).subscribe({
+              next: (session) => {
+                console.info('Session:', session); // Debugging line
+                if (session) {
+                  const sessionId = session.id;
+                  const userId = user.id; // Use the userId from the user object
 
- /* submitVote() {
-    if (this.selectedCard !== null && this.selectedIssueId !== null) {
-      const invitedUserId = localStorage.getItem('invitedUserId'); // Retrieve the invited user's ID
-      if (!invitedUserId) {
-        console.error('No invited user ID found in local storage.');
-        return;
-      }
+                  const vote: VoteModel = {
+                    sessionId: sessionId,
+                    issueId: this.selectedIssueId, // Use the ID from selectedIssueId
+                    userName: this.userName,
+                    userId: userId, // Use the userId from the user object
+                    vote: this.selectedCard,
+                  };
 
-      const vote: VoteModel = {
-        sessionId: this.session.id,
-        issueId: this.selectedIssueId,
-        vote: this.selectedCard,
-        userId: invitedUserId, // Use the invited user's ID
-      };
-      this.apiService.addVote(vote).subscribe((response) => {
-        const issue = this.issues.find(i => i.id === this.selectedIssueId);
-        if (issue) {
-          issue.hasVoted = true;
-          issue.isVoting = false;
-          issue.lastVoteValue = this.selectedCard; // Store the last vote value
+                  this.apiService.addVote(vote).subscribe({
+                    next: (response) => {
+                      console.info('Vote submitted successfully', response);
+
+                      // Call additional methods after the vote is successfully submitted
+                      this.loadVotes(sessionId, this.selectedIssueId);
+                      this.loadAverageVote(sessionId, this.selectedIssueId); // Corrected issue parameter
+                      this.triggerConfetti();
+                    },
+                    error: (error) => {
+                      console.error('Failed to submit vote', error);
+                    },
+                  });
+                } else {
+                  console.error('Session is undefined or not found');
+                }
+              },
+              error: (error) => {
+                console.error('Failed to get session', error);
+              },
+            });
+          } else {
+            console.error('User ID is not available');
+          }
+        } else {
+          console.error('No users found for the given session');
         }
-        this.revealedCard = this.selectedCard;
-        this.selectedCard = null;
-        this.selectedIssue = null;
-        this.selectedIssueId = null;
-        this.loadVotes(this.session.id, this.selectedIssueId);
-        this.loadAverageVote(this.session.id, issue.id);
-        this.triggerConfetti();
-      });
-    } else {
-      console.error('No card selected or no issue selected.');
-    }
+      },
+      error: (error) => {
+        console.error('Failed to get users by session', error);
+      },
+    });
   }
-*/
   submitVoteForIssuesRequest() {
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
@@ -269,6 +292,7 @@ export class RoomComponent implements OnInit {
         issueId: this.selectedIssueId,
         vote: this.selectedCard,
         userId: this.userId,
+        userName: this.userName,
       };
       this.apiService.addVote(vote).subscribe((response) => {
         const issue = this.issuesRequests.find(i => i.id === this.selectedIssueId);

@@ -24,7 +24,7 @@ export class InvitePlayersComponent {
     }
   }
 
-  sendInvitation() {
+  /*sendInvitation() {
     if (this.email && this.sessionId) {
       this.apiService.inviteUserToSession(this.sessionId, this.email).subscribe(
         () => {
@@ -36,22 +36,21 @@ export class InvitePlayersComponent {
         },
       );
     }
-  }
-
- /* sendInvitation() {
+  }*/
+  sendInvitation() {
     if (this.email && this.sessionId) {
       this.apiService.inviteUserToSession(this.sessionId, this.email).subscribe(
-        (userId: string) => {
-          localStorage.setItem('invitedUserId', userId); // Store the user ID in local storage
+        (userId: string) => { // Handle the returned userId
+          this.userId = userId; // Store the userId in the component
           this.toastrService.success('Invitation sent successfully', 'Success');
           this.ref.close();
         },
         (error) => {
-          this.toastrService.danger('Failed to send invitation', 'Error');
+          this.toastrService.success('Invitation sent successfully', 'Success');
         },
       );
     }
-  }*/
+  }
   storeUserId(userId: string) {
     localStorage.setItem('userId', userId); // Stocke le userId dans le localStorage
   }

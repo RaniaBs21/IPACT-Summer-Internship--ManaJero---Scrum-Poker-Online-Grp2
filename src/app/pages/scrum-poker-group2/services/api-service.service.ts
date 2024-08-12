@@ -232,9 +232,12 @@ export class ApiService {
   }
 
   // ******************** Vote services *********************
-
-  addVote(vote: VoteModel): Observable<VoteModel> {
+ /* addVote(vote: VoteModel): Observable<VoteModel> {
     return this.httpClient.post<VoteModel>(`${this.API_URL}/votes`, vote);
+  }*/
+
+ addVote(vote: VoteModel): Observable<VoteModel> {
+    return this.httpClient.post<VoteModel>(`${this.API_URL}/votes/session/submitVote`, vote);
   }
 
   getVotes(sessionId: string, issueId: string): Observable<VoteModel[]> {

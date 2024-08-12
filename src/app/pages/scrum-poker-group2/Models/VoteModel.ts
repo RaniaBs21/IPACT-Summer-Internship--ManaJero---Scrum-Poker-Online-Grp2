@@ -4,4 +4,5 @@ export interface VoteModel {
   issueId: string;
   vote: string;
   userId: string;
+  userName: string;
 }
