@@ -1,64 +1,88 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LocalDataSource} from 'ng2-smart-table';
 import {SmartTableData} from '../../../../../@core/data/smart-table';
 import html2canvas from 'html2canvas';
 // @ts-ignore
 import * as jspdf from 'jspdf';
+import {ApiService} from '../../../services/api-service.service';
+import {ActivatedRoute} from '@angular/router';
+import {UserModel} from '../../../Models/UserModel';
+import {IssuesModel} from '../../../Models/IssuesModel';
+import {VoteModel} from '../../../Models/VoteModel';
 @Component({
   selector: 'ngx-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss']})
-export class ResultComponent {
+export class ResultComponent implements OnInit {
+  sessionId: string ; // Remplacez par le sessionId réel ou récupérez-le dynamiquement
+  userCount: number;
+  issueCount: number;
+  users: UserModel[] = [];
+  issues: IssuesModel[] = [];
+  votes: VoteModel[] = [];
+  issueId: string;
+  constructor(
+    private route: ActivatedRoute,
+    private apiService: ApiService,
+  ) { }
 
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-      },
-      firstName: {
-        title: 'First Name',
-        type: 'string',
-      },
-      lastName: {
-        title: 'Last Name',
-        type: 'string',
-      },
-      username: {
-        title: 'Username',
-        type: 'string',
-      },
-      email: {
-        title: 'E-mail',
-        type: 'string',
-      },
-      age: {
-        title: 'Age',
-        type: 'number',
-      },
-    },
-  };
+  ngOnInit(): void {
+    this.sessionId = this.route.snapshot.paramMap.get('id'); // Récupérer l'ID de la session depuis l'URL
+    this.getUserCount();
+    this.getIssuesCount();
 
-  source: LocalDataSource = new LocalDataSource();
+    this.apiService.getUsersBySession(this.sessionId).subscribe(
+      (data: UserModel[]) => {
+        this.users = data;
+      },
+      error => {
+        console.error('Error fetching users', error);
+      },
+    );
+    this.apiService.getIssuesBySessionId(this.sessionId).subscribe(
+      (data: IssuesModel[]) => {
+        this.issues = data;
+      },
+      error => {
+        console.error('Error fetching users', error);
+      },
+    );
+    this.apiService.getVotes(this.sessionId, this.issueId).subscribe(
+      (data: VoteModel[]) => {
+        this.votes = data;
+      },
+      error => {
+        console.error('Error fetching users', error);
+      },
+    );
 
-  constructor(private service: SmartTableData) {
+  }
+
+  getUserCount(): void {
+    this.apiService.countUsersInSession(this.sessionId).subscribe(
+      (count: number) => {
+        this.userCount = count;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération du nombre des utilisateurs:', error);
+      },
+    );
+  }
+  getIssuesCount(): void {
+    this.apiService.countIssuesInSession(this.sessionId).subscribe(
+      (count: number) => {
+        this.issueCount = count;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération du nombre des issues:', error);
+      },
+    );
+  }
+  /*constructor(private service: SmartTableData) {
     const data = this.service.getData();
     this.source.load(data);
-  }
+
+  }*/
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {

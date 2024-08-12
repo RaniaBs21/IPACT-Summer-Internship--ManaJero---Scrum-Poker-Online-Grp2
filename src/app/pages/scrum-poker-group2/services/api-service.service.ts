@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpEventType, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
 import {LimitsModel} from '../Models/LimitsModel';
@@ -15,7 +15,7 @@ import {SearchForIssuesUsingJql} from 'jira.js/out/version3/parameters';
 import {IssuesRequest} from '../Models/ImportRepresentation/IssuesRequest';
 import {ProjectInfo} from 'azure-devops-node-api/interfaces/CoreInterfaces';
 import {environment} from '../../../../environments/environment';
-import {map, mergeMap} from 'rxjs/operators';
+import {catchError, map, mergeMap} from 'rxjs/operators';
 import {VoteModel} from '../Models/VoteModel';
 import {UserModel} from '../Models/UserModel';
 
@@ -145,6 +145,14 @@ export class ApiService {
     const url = `${this.API_URL}/getSession/${id}`;
     return this.httpClient.get<SessionModel>(url);
   }
+  // Méthode pour fermer une session
+  closeSession(sessionId: string): Observable<any> {
+    return this.httpClient.post(`${this.API_URL}/close/${sessionId}`, {});
+  }
+  // Méthode pour obtenir le statut de la session
+  getSessionStatus(sessionId: string): Observable<any> {
+    return this.httpClient.get(`${this.API_URL}/status/${sessionId}`);
+  }
 
   // ********************** Issues services ***********************
   addIssue(sessionId: string, issue: IssuesModel): Observable<IssuesModel> {
@@ -232,9 +240,6 @@ export class ApiService {
   }
 
   // ******************** Vote services *********************
- /* addVote(vote: VoteModel): Observable<VoteModel> {
-    return this.httpClient.post<VoteModel>(`${this.API_URL}/votes`, vote);
-  }*/
 
  addVote(vote: VoteModel): Observable<VoteModel> {
     return this.httpClient.post<VoteModel>(`${this.API_URL}/votes/session/submitVote`, vote);
@@ -277,4 +282,12 @@ export class ApiService {
     const params = new HttpParams().set('email', email);
     return this.httpClient.post<string>(url, null, { params });
   }
+  /************************************ Result services *******************************/
+  countUsersInSession(sessionId: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.API_URL}/${sessionId}/users/total`);
+  }
+  countIssuesInSession(sessionId: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.API_URL}/${sessionId}/issues/total`);
+  }
+
 }

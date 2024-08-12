@@ -40,6 +40,7 @@ import {
 import {OAuthModule, OAuthStorage} from 'angular-oauth2-oidc';
 import {CookieService} from 'ngx-cookie-service';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import {ApiService} from './pages/scrum-poker-group2/services/api-service.service';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 export function loggerCallback(logLevel: LogLevel, message: string) {
@@ -107,6 +108,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   ],
   bootstrap: [AppComponent],
   providers: [
+    ApiService,
     CookieService,
     {provide: OAuthStorage, useValue: localStorage},
     {

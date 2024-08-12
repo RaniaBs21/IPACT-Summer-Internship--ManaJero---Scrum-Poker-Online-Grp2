@@ -1,13 +1,48 @@
-<div id="pdfContent" class="row">
-  <div class="col-lg-6">
+<div id="pdfContent">
+
+<!----------------------------------------- header ------------------------------------>
+<div class="header-container">
+  <div class="header">
+    <span class="lightning">⚡</span>
+    <span class="title">Session Result</span>
+    <span class="lightning">⚡</span>
+  </div>
+</div>
+  &nbsp;
+  <!----------------------------------------- user Count ------------------------------------>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-text"><i class="fas fa-user user-icon"></i> &nbsp;Users Total :</p>
+        <h1 class="user-count">{{ userCount }}</h1>
+      </div>
+    </div>
+    <!----------------------------------------- Issue Count ------------------------------------>
+
+    <div class="card">
+      <div class="card-body">
+        <p class="card-text"><i class="fas fa-tasks user-icon"></i> &nbsp;Issues Total :</p>
+        <h1 class="user-count">{{ issueCount }}</h1>
+      </div>
+    </div>
+  </div>
+
+
+  <!----------------------------------------- Player performance ------------------------------------>
+
+
+  <!--<div class="col-lg-6">
     <nb-card>
       <nb-card-header>Players Performance</nb-card-header>
       <nb-card-body>
         <ngx-echarts-pie></ngx-echarts-pie>
       </nb-card-body>
     </nb-card>
-  </div>
-  <div class="col-lg-6">
+  </div>-->
+  <!----------------------------------------- estimations  ------------------------------------>
+
+  <div class="col-lg-8">
     <nb-card>
       <nb-card-header>Estimations</nb-card-header>
       <nb-card-body>
@@ -15,6 +50,8 @@
       </nb-card-body>
     </nb-card>
   </div>
+</div>
+  <!----------------------------------------- Players List ------------------------------------>
 
 <nb-card>
   <nb-card-header>
@@ -22,10 +59,52 @@
   </nb-card-header>
 
   <nb-card-body>
-    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
-    </ng2-smart-table>
+    <table>
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+      </tbody>
+    </table>
   </nb-card-body>
 </nb-card>
+
+  &nbsp;&nbsp;
+  <!----------------------------------------- Voting history ------------------------------------>
+
+  <nb-card>
+    <nb-card-header>
+      Voting history
+    </nb-card-header>
+
+    <nb-card-body>
+      <table>
+        <thead>
+        <tr>
+          <th>Issue number</th>
+          <th>Issue description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let issue of issues">
+          <td data-label="Issue number">{{ issue.issueNumber }}</td>
+          <td data-label="Issue description">{{ issue.issueDescription }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+
+
+
+  <br>
 </div>
 <button class="close-button" style="background-color: orange" (click)="downloadAsPDF()">
   <i class="fa fa-download"></i>  Download Result

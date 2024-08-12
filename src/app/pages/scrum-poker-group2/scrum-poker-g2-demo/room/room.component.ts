@@ -83,10 +83,11 @@ export class RoomComponent implements OnInit {
   votes: VoteModel[] = [];
   users: UserModel[] = [];
   dialogOpened: boolean = false; // Flag to track dialog state
-  averageVote: number | null = null;
+  averageVote: any;
   currentUserTurn: string;
   private socketSubscription: any; // Stocke l'abonnement au WebSocket
   userName: string | null = null;
+  isSessionClosed: boolean = false;
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -132,6 +133,58 @@ export class RoomComponent implements OnInit {
         console.error('Failed to load users:', error);
       },
     );
+    // Vérifiez le statut de la session lors de l'initialisation
+    this.checkSessionStatus(this.sessionId);
+  }
+/*  closeSession(sessionId: string) {
+    this.apiService.closeSession(sessionId).subscribe(
+      response => {
+        console.error('Session closed successfully');
+        this.isSessionClosed = true; // Mettre à jour l'état de la session
+      },
+      error => {
+        console.error('Error closing session', error);
+      },
+    );
+  }*/
+  confirmSessionClose(sessionId: string) {
+    // Vérifiez que la session peut être fermée, par exemple en validant un formulaire
+    if (this.isValidToClose()) {
+      // Affichez une boîte de dialogue de confirmation
+      if (confirm('Are you sure you want to close this session?')) {
+        this.closeSession(sessionId);
+        this.loadIssues(); // Si nécessaire, rechargez les issues ou d'autres données
+      }
+    } else {
+      this.toastrService.danger('Please complete all necessary fields or actions', 'Error');
+    }
+  }
+
+// Exemple de méthode pour vérifier si la session peut être fermée
+  isValidToClose(): boolean {
+    // Implémentez la logique de validation nécessaire
+    return true; // Modifier en fonction des conditions réelles
+  }
+  closeSession(sessionId: string) {
+    this.apiService.closeSession(sessionId).subscribe(
+      response => {
+        console.error('Session closed successfully');
+        this.isSessionClosed = true;
+      },
+      error => {
+        console.error('Error closing session', error);
+      },
+    );
+  }
+  checkSessionStatus(sessionId: string) {
+    this.apiService.getSessionStatus(sessionId).subscribe(
+      response => {
+        this.isSessionClosed = response.message === 'Session is closed';
+      },
+      error => {
+        console.error('Error fetching session status', error);
+      },
+    );
   }
   openInviteDialog() {
     // Open the dialog with the current session ID
@@ -143,9 +196,19 @@ export class RoomComponent implements OnInit {
     });
   }
   // ***********  MOYENNE *********************
+ /* loadAverageVote(sessionId: string, issueId: string) {
+   this.apiService.getAverageVote(sessionId, issueId).subscribe(
+      (average: any) => {
+        this.averageVote = average;
+      },
+      (error) => {
+        console.error('Error fetching average vote:', error);
+      },
+    );
+  }*/
   loadAverageVote(sessionId: string, issueId: string) {
     this.apiService.getAverageVote(sessionId, issueId).subscribe(
-      (average: number) => {
+      (average: any) => {
         this.averageVote = average;
       },
       (error) => {
@@ -201,35 +264,6 @@ export class RoomComponent implements OnInit {
       console.error('No card selected.');
     }
   }
-
-/*  submitVote() {
-    if (this.selectedCard !== null && this.selectedIssueId !== null) {
-      const vote: VoteModel = {
-        sessionId: this.session.id,
-        issueId: this.selectedIssueId,
-        vote: this.selectedCard,
-        userId: this.userId,
-        userName: this.userName,
-      };
-      this.apiService.addVote(vote).subscribe((response) => {
-        const issue = this.issues.find(i => i.id === this.selectedIssueId);
-        if (issue) {
-          issue.hasVoted = true;
-          issue.isVoting = false;
-          issue.lastVoteValue = this.selectedCard; // Store the last vote value
-        }
-        this.revealedCard = this.selectedCard;
-        this.selectedCard = null;
-        this.selectedIssue = null;
-        this.selectedIssueId = null;
-        this.loadVotes(this.session.id, this.selectedIssueId);
-        this.loadAverageVote(this.session.id, issue.id);
-        this.triggerConfetti();
-      });
-    } else {
-      console.error('No card selected or no issue selected.');
-    }
-  }*/
   submitVote(issueId: string) {
     this.apiService.getUsersBySession(this.sessionId).subscribe({
       next: (users) => {
@@ -258,7 +292,7 @@ export class RoomComponent implements OnInit {
 
                       // Call additional methods after the vote is successfully submitted
                       this.loadVotes(sessionId, this.selectedIssueId);
-                      this.loadAverageVote(sessionId, this.selectedIssueId); // Corrected issue parameter
+                       this.loadAverageVote(sessionId, this.selectedIssueId); // Corrected issue parameter
                       this.triggerConfetti();
                     },
                     error: (error) => {
@@ -306,7 +340,7 @@ export class RoomComponent implements OnInit {
         this.selectedIssueImported = null;
         this.selectedIssueId = null;
         this.loadVotes(this.session.id, this.selectedIssueId);
-        this.loadAverageVote(this.session.id, issue.id);
+         this.loadAverageVote(this.session.id, issue.id);
         this.triggerConfetti(); // Fonction pour célébrer le vote
       });
     } else {
