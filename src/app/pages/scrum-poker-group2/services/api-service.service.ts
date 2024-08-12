@@ -150,6 +150,9 @@ export class ApiService {
   addIssue(sessionId: string, issue: IssuesModel): Observable<IssuesModel> {
     return this.httpClient.post<IssuesModel>(`${this.API_URL}/session/${sessionId}`, issue);
   }
+  getIssueById(id: string): Observable<IssuesModel> {
+    return this.httpClient.get<IssuesModel>(`${this.API_URL}/${id}`);
+  }
   getIssuesBySessionId(sessionId: string): Observable<IssuesModel[]> {
     return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
   }
@@ -247,10 +250,11 @@ export class ApiService {
   getUsersBySession(sessionId: string): Observable<UserModel[]> {
     return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
   }
-  getAverageVote(sessionId: string, issueId: string): Observable<number> {
+  getAverageVote(sessionId: string, issueId: string , userId: string ): Observable<number> {
     const params = new HttpParams()
         .set('sessionId', sessionId)
-        .set('issueId', issueId);
+        .set('issueId', issueId)
+        .set('userId', userId);
     return this.httpClient.get<number>(`${this.API_URL}/votes/getaverage`, { params });
   }
   // user Invitation

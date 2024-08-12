@@ -40,8 +40,6 @@ export class RoomComponent implements OnInit {
   selectedIssueImported: IssuesRequest | null = null;
   user: UserModel;
   session: SessionModel;
-  vote: VoteModel;
-  issu: IssuesRequest;
   cards: string[] = [];
   selectedCard: string | null = null;
   id:  string | null = null;
@@ -53,15 +51,9 @@ export class RoomComponent implements OnInit {
   revealedCard: number | string | null = null;
   addIssuesForm: FormGroup;
   issues: IssuesModel[] = [];
-  sessions: SessionModel[] = [];
   loading: boolean = false;
-  page: number = 1; // Page de départ
-  pageSize: number = 20; // Nombre d'éléments par page
-  private isLoading: boolean = false;
-  dropdownVisible = false;
+  page: number = 1; // Page de départdropdownVisible = false;
   selectedIssue: IssuesModel | null = null;
-  selectedIssueAzure: IssuesRequest | null = null;
-
   isDropdownSessionOpen = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
   // issues in session
@@ -72,13 +64,10 @@ export class RoomComponent implements OnInit {
   azureLoginSuccessful: boolean = false;
   jiraProjects: Project[] = [];
   issuesRequests: IssuesRequest[] = [];
-  isss: IssuesRequest;
   iss: IssuesModel = new IssuesModel();
   issue: IssuesModel[] = [];
-  lastAddedIssues: any;
   selectedJiraProjectName: string;
   modalRef?: BsModalRef;
-  submittedDescription: string = '';
   hidden: boolean;
   state: string | null = null;
   code: string | null = null;
@@ -149,8 +138,8 @@ export class RoomComponent implements OnInit {
     });
   }
   // ***********  MOYENNE *********************
-  loadAverageVote(sessionId: string, issueId: string) {
-    this.apiService.getAverageVote(sessionId, issueId).subscribe(
+  loadAverageVote(sessionId: string, issueId: string, userId: string) {
+    this.apiService.getAverageVote(sessionId, issueId, userId).subscribe(
         (average: number) => {
           this.averageVote = average;
         },
@@ -223,7 +212,7 @@ export class RoomComponent implements OnInit {
 
                   const vote: VoteModel = {
                     sessionId: sessionId,
-                    issueId: issueId,
+                    issueId: this.selectedIssueId,
                     userName: this.userName,
                     userId: userId, // Use the userId from the user object
                     vote: this.selectedCard,
@@ -260,6 +249,7 @@ export class RoomComponent implements OnInit {
 
 
 
+
   submitVoteForIssuesRequest() {
     const userId = this.currentUserId;  // Ensure this is set correctly from your existing logic
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
@@ -283,7 +273,7 @@ export class RoomComponent implements OnInit {
         this.selectedIssueImported = null;
         this.selectedIssueId = null;
         this.loadVotes(this.session.id, this.selectedIssueId);
-        this.loadAverageVote(this.session.id, issue.id);
+        this.loadAverageVote(this.session.id, issue.id, this.user.id);
         this.triggerConfetti();
       });
     } else {
