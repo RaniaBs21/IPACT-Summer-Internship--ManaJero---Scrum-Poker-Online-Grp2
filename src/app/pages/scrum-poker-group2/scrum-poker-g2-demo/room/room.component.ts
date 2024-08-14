@@ -138,8 +138,8 @@ export class RoomComponent implements OnInit {
     });
   }
   // ***********  MOYENNE *********************
-  loadAverageVote(sessionId: string, issueId: string, userId: string) {
-    this.apiService.getAverageVote(sessionId, issueId, userId).subscribe(
+  loadAverageVote(sessionId: string, issueId: string) {
+    this.apiService.getAverageVote(sessionId, issueId).subscribe(
         (average: number) => {
           this.averageVote = average;
         },
@@ -212,7 +212,7 @@ export class RoomComponent implements OnInit {
 
                   const vote: VoteModel = {
                     sessionId: sessionId,
-                    issueId: this.selectedIssueId,
+                    issueId: this.selectedIssueId, // Use the ID from selectedIssueId
                     userName: this.userName,
                     userId: userId, // Use the userId from the user object
                     vote: this.selectedCard,
@@ -221,6 +221,11 @@ export class RoomComponent implements OnInit {
                   this.apiService.addVote(vote).subscribe({
                     next: (response) => {
                       console.info('Vote submitted successfully', response);
+
+                      // Call additional methods after the vote is successfully submitted
+                      this.loadVotes(sessionId, this.selectedIssueId);
+                      this.loadAverageVote(sessionId, this.selectedIssueId); // Corrected issue parameter
+                      this.triggerConfetti();
                     },
                     error: (error) => {
                       console.error('Failed to submit vote', error);
@@ -247,9 +252,6 @@ export class RoomComponent implements OnInit {
     });
   }
 
-
-
-
   submitVoteForIssuesRequest() {
     const userId = this.currentUserId;  // Ensure this is set correctly from your existing logic
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
@@ -273,7 +275,7 @@ export class RoomComponent implements OnInit {
         this.selectedIssueImported = null;
         this.selectedIssueId = null;
         this.loadVotes(this.session.id, this.selectedIssueId);
-        this.loadAverageVote(this.session.id, issue.id, this.user.id);
+        this.loadAverageVote(this.session.id, issue.id);
         this.triggerConfetti();
       });
     } else {

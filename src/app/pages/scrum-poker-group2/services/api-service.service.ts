@@ -250,11 +250,10 @@ export class ApiService {
   getUsersBySession(sessionId: string): Observable<UserModel[]> {
     return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
   }
-  getAverageVote(sessionId: string, issueId: string , userId: string ): Observable<number> {
+  getAverageVote(sessionId: string, issueId: string ): Observable<number> {
     const params = new HttpParams()
         .set('sessionId', sessionId)
-        .set('issueId', issueId)
-        .set('userId', userId);
+        .set('issueId', issueId);
     return this.httpClient.get<number>(`${this.API_URL}/votes/getaverage`, { params });
   }
   // user Invitation
