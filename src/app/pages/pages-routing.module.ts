@@ -10,6 +10,7 @@ import {DemoFormComponent} from './scrum-poker-group2/scrum-poker-g2-demo/demo-f
 import * as path from 'path';
 import {RoomComponent} from './scrum-poker-group2/scrum-poker-g2-demo/room/room.component';
 import {SessionComponent} from './scrum-poker-group2/scrum-poker-g2-demo/session/session.component';
+import {ResultComponent} from './scrum-poker-group2/scrum-poker-g2-demo/room/result/result.component';
 
 const routes: Routes = [{
   path: '',
@@ -30,6 +31,10 @@ const routes: Routes = [{
     {
       path: 'agile/scrum-poker-group2/session/room/:id',
       component: RoomComponent,
+    },
+    {
+      path: 'agile/scrum-poker-group2/session/room/:id/result',
+      component: ResultComponent,
     },
     {
       path: 'dashboard',

@@ -78,7 +78,7 @@ export class RoomComponent implements OnInit {
   votes: VoteModel[] = [];
   users: UserModel[] = [];
   dialogOpened: boolean = false; // Flag to track dialog state
-  averageVote: number | null = null;
+  averageVote: string | null = null;
   currentUserTurn: string;
   private socketSubscription: any; // Stocke l'abonnement au WebSocket
 
@@ -139,14 +139,39 @@ export class RoomComponent implements OnInit {
   // ***********  MOYENNE *********************
   loadAverageVote(sessionId: string, issueId: string) {
     this.apiService.getAverageVote(sessionId, issueId).subscribe(
-      (average: number) => {
-        this.averageVote = average;
+      (average: any) => {
+        if (typeof average === 'number') {
+          this.averageVote = this.convertNumericToAlphaVote(average);
+        } else if (typeof average === 'string') {
+          this.averageVote = average;
+        } else {
+          this.averageVote = null;
+          console.error('Unexpected average vote format:', average);
+        }
       },
       (error) => {
         console.error('Error fetching average vote:', error);
+        this.averageVote = null;
       },
     );
   }
+
+  private convertNumericToAlphaVote(average: number): string {
+    if (average < 1.5) {
+      return 'XS';
+    } else if (average < 2.5) {
+      return 'S';
+    } else if (average < 3.5) {
+      return 'M';
+    } else if (average < 4.5) {
+      return 'L';
+    } else {
+      return 'XL';
+    }
+  }
+
+
+
   // ******************VoteNormal+voteImported *****************
   toggleVote(issue: IssuesModel) {
     if (this.selectedIssue && this.selectedIssue.id === issue.id) {

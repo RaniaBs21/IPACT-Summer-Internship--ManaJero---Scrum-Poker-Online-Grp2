@@ -60,16 +60,15 @@
           <h5 style="color: #3A3A3A">Average:</h5>
           <h3>{{ averageVote }}</h3>
         </div>-->
-        <div *ngIf="averageVote !== null">
-          <h5>Average:</h5>
-          <h3>{{ averageVote }}</h3>
-        </div>
-        <div *ngIf="averageVote === null">
-          <h5>Average.....</h5>
+          <div *ngIf="averageVote !== null">
+            <h5>Average:</h5>
+            <h3>{{ averageVote }}</h3>
+          </div>
+          <div *ngIf="averageVote === null">
+            <h5>Average.....</h5>
 
+      </div>
 
-
-        </div>
         <div class="vote">
           <h5 style="color: #3A3A3A">Vote:</h5>
           <h3>{{ revealedCard }}</h3>
