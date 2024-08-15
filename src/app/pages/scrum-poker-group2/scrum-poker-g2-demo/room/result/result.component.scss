@@ -192,4 +192,27 @@ td {
     top: 0;
   }
 }
+.echart {
+  height: 400px;
+}
 
+
+
+/* Exemple de CSS pour le composant */
+.chart-container {
+  width: 100%;
+  height: 400px; /* Ajustez la hauteur en fonction de vos besoins */
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #f5f5f5; /* Couleur de fond légère pour le conteneur */
+}
+
+.chart {
+  width: 100%;
+  height: 100%; /* Prend toute la hauteur du conteneur */
+}
+
+canvas {
+  max-width: 100%;
+  height: auto;
+}

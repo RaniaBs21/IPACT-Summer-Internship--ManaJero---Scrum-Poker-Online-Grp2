@@ -44,32 +44,34 @@ import { SessionUpdateComponent } from './room/session-update/session-update.com
 import { VotingHistoryComponent } from './room/voting-history/voting-history.component';
 import {OAuthStorage} from 'angular-oauth2-oidc';
 import { UserPseudoComponent } from './room/user-pseudo/user-pseudo.component';
+import {BarChartModule} from '@swimlane/ngx-charts';
 
 
 
 
 @NgModule({
-  imports: [
-    FormsModule,
-    ThemeModule,
-    NbCardModule,
-    NbUserModule,
-    NbButtonModule,
-    NbTabsetModule,
-    NbActionsModule,
-    NbRadioModule,
-    NbSelectModule,
-    NbListModule,
-    NbIconModule,
-    NbButtonModule,
-    NgxEchartsModule,
-    NbStepperModule,
-    ReactiveFormsModule,
-    RouterLink,
-    NbInputModule,
-    ChartModule,
-    Ng2SmartTableModule,
-  ],
+    imports: [
+        FormsModule,
+        ThemeModule,
+        NbCardModule,
+        NbUserModule,
+        NbButtonModule,
+        NbTabsetModule,
+        NbActionsModule,
+        NbRadioModule,
+        NbSelectModule,
+        NbListModule,
+        NbIconModule,
+        NbButtonModule,
+        NgxEchartsModule,
+        NbStepperModule,
+        ReactiveFormsModule,
+        RouterLink,
+        NbInputModule,
+        ChartModule,
+        Ng2SmartTableModule,
+        BarChartModule,
+    ],
   declarations: [
     ScrumPokerG2DemoComponent,
     DemoFormComponent,

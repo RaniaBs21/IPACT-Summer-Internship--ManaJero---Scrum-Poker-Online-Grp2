@@ -9,18 +9,25 @@ import {ActivatedRoute} from '@angular/router';
 import {UserModel} from '../../../Models/UserModel';
 import {IssuesModel} from '../../../Models/IssuesModel';
 import {VoteModel} from '../../../Models/VoteModel';
+import {forkJoin, Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import { ChartOptions, ChartType } from 'chart.js';
+
 @Component({
   selector: 'ngx-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss']})
 export class ResultComponent implements OnInit {
-  sessionId: string ; // Remplacez par le sessionId réel ou récupérez-le dynamiquement
+  sessionId: string ;
   userCount: number;
   issueCount: number;
   users: UserModel[] = [];
   issues: IssuesModel[] = [];
   votes: VoteModel[] = [];
   issueId: string;
+  voteCounts: { [issueId: string]: number } = {};
+  votesByIssueId: { [issueId: string]: VoteModel[] } = {}; // Store votes by issue ID
+
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -44,7 +51,7 @@ export class ResultComponent implements OnInit {
         this.issues = data;
       },
       error => {
-        console.error('Error fetching users', error);
+        console.error('Error fetching issues', error);
       },
     );
     this.apiService.getVotes(this.sessionId, this.issueId).subscribe(
@@ -55,8 +62,52 @@ export class ResultComponent implements OnInit {
         console.error('Error fetching users', error);
       },
     );
-
+    this.apiService.getIssuesBySessionId(this.sessionId).subscribe(
+      (data: IssuesModel[]) => {
+        this.issues = data;
+        this.issues.forEach(issue => {
+          this.apiService.getVotes(this.sessionId, issue.id).subscribe(
+            (votes: VoteModel[]) => {
+             // this.processVotes(issue.id, votes);
+            },
+            error => {
+              console.error(`Error fetching votes for issue ${issue.id}`, error);
+            },
+          );
+        });
+      },
+      error => {
+        console.error('Error fetching issues', error);
+      },
+    );
+    this.loadData();
   }
+  loadData(): void {
+    this.apiService.getIssuesBySessionId(this.sessionId).subscribe(issues => {
+      this.issues = issues;
+      this.loadVoteCounts();
+      this.loadVotesByIssues();
+    });
+  }
+
+  loadVoteCounts(): void {
+    const voteCountObservables: Observable<any>[] = this.issues.map(issue =>
+      this.apiService.getVoteCountByIssueId(issue.id).pipe(
+        tap(count => this.voteCounts[issue.id] = count),
+      ),
+    );
+    forkJoin(voteCountObservables).subscribe();
+  }
+
+  loadVotesByIssues(): void {
+    const voteObservables: Observable<any>[] = this.issues.map(issue =>
+      this.apiService.getVotesByIssueId(issue.id).pipe(
+        tap(votes => this.votesByIssueId[issue.id] = votes),
+      ),
+    );
+    forkJoin(voteObservables).subscribe();
+  }
+
 
   getUserCount(): void {
     this.apiService.countUsersInSession(this.sessionId).subscribe(

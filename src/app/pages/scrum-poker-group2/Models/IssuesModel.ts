@@ -10,6 +10,5 @@ export class IssuesModel {
   hasVoted: boolean = false;
   isVoting: boolean = false;
   lastVoteValue?: string;
-  votes: VoteModel[] = []; // Add this line to include votes
 }
 

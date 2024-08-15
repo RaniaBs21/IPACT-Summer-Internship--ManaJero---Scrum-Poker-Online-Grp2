@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {forkJoin, Observable, throwError} from 'rxjs';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
 import {LimitsModel} from '../Models/LimitsModel';
@@ -288,6 +288,16 @@ export class ApiService {
   }
   countIssuesInSession(sessionId: string): Observable<number> {
     return this.httpClient.get<number>(`${this.API_URL}/${sessionId}/issues/total`);
+  }
+  // Méthode pour obtenir le nombre de votes par issueId
+  getVoteCountByIssueId(issueId: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.API_URL}/votes/count/${issueId}`);
+  }
+  getVotesByIssueId(issueId: string): Observable<VoteModel[]> {
+    return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/issue/${issueId}`);
+  }
+  getCardUsageStatistics(sessionId: string): Observable<{ [key: string]: number }> {
+    return this.httpClient.get<{ [key: string]: number }>(`${this.API_URL}/votes/statistics?sessionId=${sessionId}`);
   }
 
 }

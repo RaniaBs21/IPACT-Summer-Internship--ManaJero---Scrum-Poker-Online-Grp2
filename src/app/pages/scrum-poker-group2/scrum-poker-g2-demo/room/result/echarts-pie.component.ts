@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
+import {VotingSystem} from '../../../Models/SessionModel';
+import {ApiService} from '../../../services/api-service.service';
 
 @Component({
   selector: 'ngx-echarts-pie',
@@ -7,10 +9,16 @@ import { NbThemeService } from '@nebular/theme';
     <div echarts [options]="options" class="echart"></div>
   `,
 })
-export class EchartsPieComponent implements AfterViewInit, OnDestroy {
+export class EchartsPieComponent  {
   options: any = {};
   themeSubscription: any;
+  sessionId: string ; // Replace with actual session ID
+  private chart: any;
 
+  constructor(private apiService: ApiService) {}
+
+
+/*
   constructor(private theme: NbThemeService) {
   }
 
@@ -78,5 +86,5 @@ export class EchartsPieComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.themeSubscription.unsubscribe();
-  }
+  }*/
 }
