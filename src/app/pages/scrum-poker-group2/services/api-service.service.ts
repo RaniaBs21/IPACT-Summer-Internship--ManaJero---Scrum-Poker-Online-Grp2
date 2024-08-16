@@ -299,5 +299,11 @@ export class ApiService {
   getCardUsageStatistics(sessionId: string): Observable<{ [key: string]: number }> {
     return this.httpClient.get<{ [key: string]: number }>(`${this.API_URL}/votes/statistics?sessionId=${sessionId}`);
   }
+  getVoteFrequencyForSession(sessionId: string): Observable<Map<string, number>> {
+    return this.httpClient.get<Map<string, number>>(`${this.API_URL}/votes/sessions/${sessionId}/vote-frequency`);
+  }
+  getVoteDistribution(sessionId: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.API_URL}/votes/sessions/${sessionId}/vote-distribution`);
+  }
 
 }

@@ -10,58 +10,52 @@
 </div>
   &nbsp;
   <!----------------------------------------- user Count ------------------------------------>
-<div >
-  <div >
-    <div class="card">
-      <div class="card-body">
-        <p class="card-text"><i class="fas fa-user user-icon"></i> &nbsp;Users Total :</p>
-        <h1 class="user-count">{{ userCount }}</h1>
-      </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-body class="d-flex justify-content-between align-items-center">
+            <p class="card-text "><i class="fas fa-user user-icon"></i> &nbsp;Users Total : </p>
+            <h1 class="user-count ">{{ userCount }}</h1>
+        </nb-card-body>
+      </nb-card>
     </div>
     <!----------------------------------------- Issue Count ------------------------------------>
-
-    <div class="card">
-      <div class="card-body">
-        <p class="card-text"><i class="fas fa-tasks user-icon"></i> &nbsp;Issues Total :</p>
-        <h1 class="user-count">{{ issueCount }}</h1>
-      </div>
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-body class="d-flex justify-content-between align-items-center">
+          <p class="card-text "><i class="fas fa-user user-icon"></i> Issues Total : </p>
+          <h1 class="user-count ">{{ issueCount }}</h1>
+        </nb-card-body>
+      </nb-card>
     </div>
+
   </div>
 
 
-  <!----------------------------------------- Player performance ------------------------------------>
+  <!----------------------------------------- Vote Distribution in Percentage ------------------------------------>
 
-
+<div class="row">
   <div class="col-lg-6">
     <nb-card>
-      <nb-card-header>Players Performance</nb-card-header>
+      <nb-card-header>Vote Distribution in Percentage</nb-card-header>
       <nb-card-body>
         <ngx-echarts-pie></ngx-echarts-pie>
       </nb-card-body>
     </nb-card>
   </div>
+  <!----------------------------------------- Vote Frequency per Card ------------------------------------>
 
-
-  <!----------------------------------------- estimations  ------------------------------------>
-
- <!-- <div class="col-lg-8">
+  <div class="col-lg-6">
     <nb-card>
-      <nb-card-header>Estimations</nb-card-header>
+      <nb-card-header>Vote Frequency per Card</nb-card-header>
       <nb-card-body>
         <ngx-echarts-bar></ngx-echarts-bar>
       </nb-card-body>
     </nb-card>
   </div>
-</div>-->
 
-  <!--<div class="col-lg-8">
-    <nb-card>
-      <nb-card-header>Estimations</nb-card-header>
-      <nb-card-body>
-        <div echarts [options]="chartOption" class="echart"></div>
-      </nb-card-body>
-    </nb-card>
-  </div>-->
+</div>
+
 
   <!----------------------------------------- Players List ------------------------------------>
 
@@ -124,7 +118,7 @@
 
 
   <br>
-</div>
+
 </div>
 <button class="close-button" style="background-color: orange" (click)="downloadAsPDF()">
   <i class="fa fa-download"></i>  Download Result

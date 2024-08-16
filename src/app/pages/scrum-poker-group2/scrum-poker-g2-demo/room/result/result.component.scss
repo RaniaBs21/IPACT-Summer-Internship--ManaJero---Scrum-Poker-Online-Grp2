@@ -42,7 +42,6 @@
 .card {
   max-width: 300px; /* Réduction de la taille de la card */
   margin: 20px;
- // padding: 10px; /* Réduction du padding pour une taille plus compacte */
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #f8f9fa;
@@ -64,12 +63,11 @@
 }
 
 .user-count {
-  font-size: 24px; /* Réduction de la taille de la police pour correspondre à la card */
+  font-size: 24px;
   font-weight: bold;
   color: orangered;
-  margin: 0; /* Suppression de la marge pour un alignement parfait */
-  text-align: right; /* Aligne le texte à droite */
-//  background: #e5e5e5;
+  margin: 0;
+  text-align: right;
   padding: 5px;
 }
 .user-icon {
