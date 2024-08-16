@@ -298,6 +298,28 @@ h1 span:nth-child(14) {
   font-size: 17px;
   text-decoration: none;
 }
+.close-button-session {
+  align-items: center;
+  float: right;
+  border: 2px solid #faedcd;
+  color: #ffffff;
+  padding: 1rem; /* Augmenté le padding */
+  margin-left: 20px;
+  border-radius: 40px; /* Augmenté le radius */
+  cursor: pointer;
+  font-size: 1.2rem;
+  text-decoration: none;
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  font-weight: bold;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.close-button-session:hover {
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
+}
 
 .close-button {
   align-items: center;

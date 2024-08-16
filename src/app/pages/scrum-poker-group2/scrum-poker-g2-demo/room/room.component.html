@@ -319,8 +319,8 @@
 </body>
 
 <!----------------------------------- Close buton ------------------------------------>
-<button class="close-button" style="background-color: orange"   (click)="confirmSessionClose(sessionId)" [disabled]="isSessionClosed" routerLink="result">
+<button class="close-button-session"    (click)="confirmSessionClose(sessionId)" [disabled]="isSessionClosed" routerLink="result">
   <i class="fas fa-times"></i>
   Close Session
 </button>
-<p *ngIf="isSessionClosed">The session has been closed.</p>
+
