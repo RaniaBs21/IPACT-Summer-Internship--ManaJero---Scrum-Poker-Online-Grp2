@@ -68,7 +68,7 @@ export class ResultComponent implements OnInit {
         this.issues.forEach(issue => {
           this.apiService.getVotes(this.sessionId, issue.id).subscribe(
             (votes: VoteModel[]) => {
-             // this.processVotes(issue.id, votes);
+              // this.processVotes(issue.id, votes);
             },
             error => {
               console.error(`Error fetching votes for issue ${issue.id}`, error);

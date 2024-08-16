@@ -28,7 +28,7 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient,
               private jiraAuthService: JiraAuthService,
-              ) { }
+  ) { }
 
   // ********************* Demo services ************************
   addDemo(demo: DemoModel): Observable<DemoModel[]> {
@@ -241,7 +241,7 @@ export class ApiService {
 
   // ******************** Vote services *********************
 
- addVote(vote: VoteModel): Observable<VoteModel> {
+  addVote(vote: VoteModel): Observable<VoteModel> {
     return this.httpClient.post<VoteModel>(`${this.API_URL}/votes/session/submitVote`, vote);
   }
 
