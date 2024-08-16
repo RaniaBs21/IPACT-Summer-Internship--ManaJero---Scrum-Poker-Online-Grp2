@@ -2,15 +2,24 @@
   align-items: center;
   float: right;
   border: 2px solid #faedcd;
-  color: #032669;
-  padding: 10px 20px;
+  color: #ffffff;
+  padding: 1rem; /* Augmenté le padding */
   margin-left: 20px;
-  border-radius: 5px;
+  border-radius: 40px; /* Augmenté le radius */
   cursor: pointer;
-  font-size: 17px;
+  font-size: 1.2rem;
   text-decoration: none;
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  font-weight: bold;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
 }
 
+.close-button:hover {
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
+}
 
 /* Centrage de la carte au milieu de la page */
 .header-container {
@@ -115,7 +124,7 @@ table {
 
 /* En-tête du tableau */
 thead th {
-  background-color: #f2f2f2; /* Couleur de fond de l'en-tête */
+  background-color: aliceblue; /* Couleur de fond de l'en-tête */
  // position: sticky; /* Fixe l'en-tête lors du défilement */
   top: 0; /* Place l'en-tête en haut de la table */
   z-index: 1; /* Assure que l'en-tête reste au-dessus du reste du tableau */
