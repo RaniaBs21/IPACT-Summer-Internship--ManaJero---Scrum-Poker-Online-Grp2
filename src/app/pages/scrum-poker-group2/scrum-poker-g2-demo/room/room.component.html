@@ -56,19 +56,20 @@
       </h1>
 
       <div class="average-agreement" *ngIf="revealedCard">
-        <!--<div class="average" *ngIf="averageVote !== null">
-          <h5 style="color: #3A3A3A">Average:</h5>
-          <h3>{{ averageVote }}</h3>
-        </div>-->
+
+        <!-- <div *ngIf="averageVote !== null">
+           <h5>Average:</h5>
+           <h3>{{ averageVote }}</h3>
+         </div>
+         <div *ngIf="averageVote === null">
+           <h5>Average.....</h5>
+         </div>-->
         <div *ngIf="averageVote !== null">
           <h5>Average:</h5>
           <h3>{{ averageVote }}</h3>
         </div>
         <div *ngIf="averageVote === null">
-          <h5>Average.....</h5>
-
-
-
+          <h5>Average...</h5>
         </div>
         <div class="vote">
           <h5 style="color: #3A3A3A">Vote:</h5>
@@ -81,7 +82,7 @@
 
   <div class="user-cards">
     <div *ngFor="let user of users" class="user-card">
-      <img src="assets/images/utilisateur.png" alt="User Avatar" class="user-avatar">
+      <img src="assets/images/utilisateur.jpg" alt="User Avatar" class="user-avatar">
       <p>{{ user.name }}</p>
     </div>
   </div>
@@ -220,22 +221,27 @@
     <!-- Partie vote -->
     <div *ngFor="let issue of issuesRequests" class="issue-item">
       <div class="issue-card">
+
         <div class="row">
           <div class="card-body">
             <p style=" line-height: 1.75;">{{ issue.description }}</p>
-            <div class="btn-vote">
-              <button (click)="toggleVote2(issue)">
-                {{ issue.isVoting ? 'Voting now...' : issue.hasVoted ? 'Vote again' : 'Vote' }}
-              </button>
+            <div class="row">
+              <div class="btn-vote">
+                <button (click)="toggleVote2(issue)">
+                  {{ issue.isVoting ? 'Voting now...' : issue.hasVoted ? 'Vote again' : 'Vote' }}
+                </button>
+              </div>
+              <!-- Affichage du dernier vote -->
+              <p *ngIf="issue.lastVoteValue" class="last-vote" id="vote_{{issue.id}}" style="font-weight: bold;">
+                {{ issue.lastVoteValue }}
+              </p>
             </div>
-            <!-- Affichage du dernier vote -->
-            <p *ngIf="issue.lastVoteValue" class="last-vote" id="vote_{{issue.id}}" style="font-weight: bold;">
-              {{ issue.lastVoteValue }}
-            </p>
+
           </div>
         </div>
       </div>
     </div>
+
 
 
 
@@ -313,7 +319,7 @@
 </body>
 
 <!----------------------------------- Close buton ------------------------------------>
-<button class="close-button" style="background-color: orange" routerLink="result">
+<button class="close-button-session"    (click)="confirmSessionClose(sessionId)" [disabled]="isSessionClosed" routerLink="result">
   <i class="fas fa-times"></i>
   Close Session
 </button>

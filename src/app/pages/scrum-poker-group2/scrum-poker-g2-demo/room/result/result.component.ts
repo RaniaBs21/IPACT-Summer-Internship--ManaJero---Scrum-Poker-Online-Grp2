@@ -1,112 +1,157 @@
-import { Component, OnInit } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
-import { ApiService } from '../../../services/api-service.service';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {LocalDataSource} from 'ng2-smart-table';
+import {SmartTableData} from '../../../../../@core/data/smart-table';
+import html2canvas from 'html2canvas';
+// @ts-ignore
+import * as jspdf from 'jspdf';
+import {ApiService} from '../../../services/api-service.service';
+import {ActivatedRoute} from '@angular/router';
+import {UserModel} from '../../../Models/UserModel';
+import {IssuesModel} from '../../../Models/IssuesModel';
+import {VoteModel} from '../../../Models/VoteModel';
+import {forkJoin, Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import { ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'ngx-result',
   templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss'],
-})
+  styleUrls: ['./result.component.scss']})
 export class ResultComponent implements OnInit {
-  settings = {
-    add: { addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>' },
-    edit: { editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>', cancelButtonContent: '<i class="nb-close"></i>' },
-    delete: { deleteButtonContent: '<i class="nb-trash"></i>', confirmDelete: true },
-    columns: {
-      id: { title: 'ID', type: 'number' },
-      username: { title: 'Username', type: 'string' },
-      email: { title: 'E-mail', type: 'string' },
-    },
-  };
-
-  source: LocalDataSource = new LocalDataSource();
+  sessionId: string ;
   userCount: number;
   issueCount: number;
-  option: any;
-  playerPerformance: { [key: string]: number };
-  sessionId: string;
-  barChartOptions: any = {};
-  pieChartOptions: any = {};
+  users: UserModel[] = [];
+  issues: IssuesModel[] = [];
+  votes: VoteModel[] = [];
+  issueId: string;
+  voteCounts: { [issueId: string]: number } = {};
+  votesByIssueId: { [issueId: string]: VoteModel[] } = {}; // Store votes by issue ID
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  constructor(
+      private route: ActivatedRoute,
+      private apiService: ApiService,
+  ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.sessionId = params.get('sessionId');
-      if (this.sessionId) {
-        this.loadStatistics(this.sessionId);
-      }
-    });
-  }
-  loadStatistics(sessionId: string): void {
-    this.apiService.getUserCount(sessionId).subscribe(count => {
-      this.userCount = count;
-      console.error('User Count:', this.userCount); // Vérification
-      this.initUserCountChart(this.userCount);
-      this.pieChartOptions();
-      this.barChartOptions();
-      this.initIssueCountChart(this.issueCount);
-    });
-    this.apiService.getStatistics(sessionId).subscribe(data => {
-      this.issueCount = data.issueCount;
-      console.error('Issue Count:', this.issueCount); // Vérification
-      this.playerPerformance = data.playerPerformance;
-      console.error('Player Performance:', this.playerPerformance); // Vérification
-      this.source.load(data.estimations);
+    this.sessionId = this.route.snapshot.paramMap.get('id'); // Récupérer l'ID de la session depuis l'URL
+    this.getUserCount();
+    this.getIssuesCount();
 
-      // Vérification des données des graphiques
-      console.error('Data for Bar Chart:', this.barChartOptions);
-      console.error('Data for Pie Chart:', this.pieChartOptions);
+    this.apiService.getUsersBySession(this.sessionId).subscribe(
+        (data: UserModel[]) => {
+          this.users = data;
+        },
+        error => {
+          console.error('Error fetching users', error);
+        },
+    );
+    this.apiService.getIssuesBySessionId(this.sessionId).subscribe(
+        (data: IssuesModel[]) => {
+          this.issues = data;
+        },
+        error => {
+          console.error('Error fetching issues', error);
+        },
+    );
+    this.apiService.getVotes(this.sessionId, this.issueId).subscribe(
+        (data: VoteModel[]) => {
+          this.votes = data;
+        },
+        error => {
+          console.error('Error fetching users', error);
+        },
+    );
+    this.apiService.getIssuesBySessionId(this.sessionId).subscribe(
+        (data: IssuesModel[]) => {
+          this.issues = data;
+          this.issues.forEach(issue => {
+            this.apiService.getVotes(this.sessionId, issue.id).subscribe(
+                (votes: VoteModel[]) => {
+                  // this.processVotes(issue.id, votes);
+                },
+                error => {
+                  console.error(`Error fetching votes for issue ${issue.id}`, error);
+                },
+            );
+          });
+        },
+        error => {
+          console.error('Error fetching issues', error);
+        },
+    );
+    this.loadData();
+  }
+  loadData(): void {
+    this.apiService.getIssuesBySessionId(this.sessionId).subscribe(issues => {
+      this.issues = issues;
+      this.loadVoteCounts();
+      this.loadVotesByIssues();
     });
   }
-  initIssueCountChart(issueCount: number): void {
-    this.barChartOptions = {
-      backgroundColor: '#f5f5f5',
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }},
-      grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-      xAxis: { type: 'category', data: ['Issues'], axisTick: { alignWithLabel: true },
-        axisLine: { lineStyle: { color: '#ccc' }}, axisLabel: { textStyle: { color: '#333' }}},
-      yAxis: { type: 'value', axisLine: { lineStyle: { color: '#ccc' }},
-        splitLine: { lineStyle: { color: '#e0e0e0' }}, axisLabel: { textStyle: { color: '#333' }}},
-      series: [{ name: 'Issues', type: 'bar', barWidth: '60%', data: [issueCount] }],
-    };
+
+  loadVoteCounts(): void {
+    const voteCountObservables: Observable<any>[] = this.issues.map(issue =>
+        this.apiService.getVoteCountByIssueId(issue.id).pipe(
+            tap(count => this.voteCounts[issue.id] = count),
+        ),
+    );
+    forkJoin(voteCountObservables).subscribe();
   }
 
-  initUserCountChart(userCount: number): void {
-    this.pieChartOptions = {
-      // Vérification des options
-      backgroundColor: '#f5f5f5',
-      tooltip: { trigger: 'item', formatter: '{a} <br/>{b} : {c} ({d}%)' },
-      legend: { orient: 'vertical', left: 'left', data: ['Users'] },
-      series: [{ name: 'Users', type: 'pie', radius: '55%', center: ['50%', '50%'],
-        data: [{ name: 'Users', value: userCount }],
-        itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' }},
-        label: { normal: { textStyle: { color: '#333' }}},
-        labelLine: { normal: { lineStyle: { color: '#ccc' }}}}],
-    };
-    console.error('Pie Chart Options:', this.pieChartOptions); // Vérification
+  loadVotesByIssues(): void {
+    const voteObservables: Observable<any>[] = this.issues.map(issue =>
+        this.apiService.getVotesByIssueId(issue.id).pipe(
+            tap(votes => this.votesByIssueId[issue.id] = votes),
+        ),
+    );
+    forkJoin(voteObservables).subscribe();
   }
-  initParticipationRateChart(playerPerformance: { [key: string]: number }): void {
-    this.barChartOptions = {
-      backgroundColor: '#f5f5f5',
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }},
-      grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-      xAxis: { type: 'category', data: Object.keys(playerPerformance), axisTick: { alignWithLabel: true },
-        axisLine: { lineStyle: { color: '#ccc' }}, axisLabel: { textStyle: { color: '#333' }}},
-      yAxis: { type: 'value', axisLine: { lineStyle: { color: '#ccc' }},
-        splitLine: { lineStyle: { color: '#e0e0e0' }}, axisLabel: { textStyle: { color: '#333' }}},
-      series: [{ name: 'Participation', type: 'bar', barWidth: '60%', data: Object.values(playerPerformance) }],
-    };
+
+
+  getUserCount(): void {
+    this.apiService.countUsersInSession(this.sessionId).subscribe(
+        (count: number) => {
+          this.userCount = count;
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération du nombre des utilisateurs:', error);
+        },
+    );
   }
+  getIssuesCount(): void {
+    this.apiService.countIssuesInSession(this.sessionId).subscribe(
+        (count: number) => {
+          this.issueCount = count;
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération du nombre des issues:', error);
+        },
+    );
+  }
+  /*constructor(private service: SmartTableData) {
+    const data = this.service.getData();
+    this.source.load(data);
+
+  }*/
+
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
     } else {
       event.confirm.reject();
     }
+  }
+
+  downloadAsPDF(): void {
+    const element = document.getElementById('pdfContent');
+
+    html2canvas(element).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jspdf.jsPDF('p', 'px', [canvas.width, canvas.height]);
+
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      pdf.save('download.pdf');
+    });
   }
 }
