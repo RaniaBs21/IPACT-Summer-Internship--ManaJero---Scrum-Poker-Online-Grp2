@@ -35,11 +35,10 @@ import {UserPseudoComponent} from './user-pseudo/user-pseudo.component';
 export class RoomComponent implements OnInit {
   sessionId: string | null = null;
   issueId: string | null = null;
-  userId: string;
-  userName: string | null = null;
+  userId: string | null = null;
   selectedIssueImported: IssuesRequest | null = null;
-  user: UserModel;
   session: SessionModel;
+  issu: IssuesRequest;
   cards: string[] = [];
   selectedCard: string | null = null;
   id:  string | null = null;
@@ -51,9 +50,15 @@ export class RoomComponent implements OnInit {
   revealedCard: number | string | null = null;
   addIssuesForm: FormGroup;
   issues: IssuesModel[] = [];
+  sessions: SessionModel[] = [];
   loading: boolean = false;
-  page: number = 1; // Page de départdropdownVisible = false;
+  page: number = 1; // Page de départ
+  pageSize: number = 20; // Nombre d'éléments par page
+  private isLoading: boolean = false;
+  dropdownVisible = false;
   selectedIssue: IssuesModel | null = null;
+  selectedIssueAzure: IssuesRequest | null = null;
+
   isDropdownSessionOpen = false;
   dropdownOpen: { [key: number]: boolean } = {}; ////// dropdown ///////////
   // issues in session
@@ -64,10 +69,13 @@ export class RoomComponent implements OnInit {
   azureLoginSuccessful: boolean = false;
   jiraProjects: Project[] = [];
   issuesRequests: IssuesRequest[] = [];
+  isss: IssuesRequest;
   iss: IssuesModel = new IssuesModel();
   issue: IssuesModel[] = [];
+  lastAddedIssues: any;
   selectedJiraProjectName: string;
   modalRef?: BsModalRef;
+  submittedDescription: string = '';
   hidden: boolean;
   state: string | null = null;
   code: string | null = null;
@@ -75,12 +83,11 @@ export class RoomComponent implements OnInit {
   votes: VoteModel[] = [];
   users: UserModel[] = [];
   dialogOpened: boolean = false; // Flag to track dialog state
-  averageVote: number | null = null;
+  averageVote: any;
   currentUserTurn: string;
-  currentUserId: string;
-  @Input() UserId: string; // Automatically set from parent component
-
   private socketSubscription: any; // Stocke l'abonnement au WebSocket
+  userName: string | null = null;
+  isSessionClosed: boolean = false;
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private dialogService: NbDialogService,
@@ -126,7 +133,56 @@ export class RoomComponent implements OnInit {
           console.error('Failed to load users:', error);
         },
     );
+    // Vérifiez le statut de la session lors de l'initialisation
+    this.checkSessionStatus(this.sessionId);
+  }
+  /*  closeSession(sessionId: string) {
+      this.apiService.closeSession(sessionId).subscribe(
+        response => {
+          console.error('Session closed successfully');
+          this.isSessionClosed = true; // Mettre à jour l'état de la session
+        },
+        error => {
+          console.error('Error closing session', error);
+        },
+      );
+    }*/
+  confirmSessionClose(sessionId: string) {
+    if (this.isValidToClose()) {
+      if (confirm('Are you sure you want to close this session?')) {
+        this.closeSession(sessionId);
+        this.loadIssues(); // Si nécessaire, rechargez les issues ou d'autres données
+      }
+    } else {
+      this.toastrService.danger('Please complete all necessary fields or actions', 'Error');
+    }
+  }
 
+// Exemple de méthode pour vérifier si la session peut être fermée
+  isValidToClose(): boolean {
+    // Implémentez la logique de validation nécessaire
+    return true; // Modifier en fonction des conditions réelles
+  }
+  closeSession(sessionId: string) {
+    this.apiService.closeSession(sessionId).subscribe(
+        response => {
+          console.error('Session closed successfully');
+          this.isSessionClosed = true;
+        },
+        error => {
+          console.error('Error closing session', error);
+        },
+    );
+  }
+  checkSessionStatus(sessionId: string) {
+    this.apiService.getSessionStatus(sessionId).subscribe(
+        response => {
+          this.isSessionClosed = response.message === 'Session is closed';
+        },
+        error => {
+          console.error('Error fetching session status', error);
+        },
+    );
   }
   openInviteDialog() {
     // Open the dialog with the current session ID
@@ -138,9 +194,19 @@ export class RoomComponent implements OnInit {
     });
   }
   // ***********  MOYENNE *********************
+  /* loadAverageVote(sessionId: string, issueId: string) {
+    this.apiService.getAverageVote(sessionId, issueId).subscribe(
+       (average: any) => {
+         this.averageVote = average;
+       },
+       (error) => {
+         console.error('Error fetching average vote:', error);
+       },
+     );
+   }*/
   loadAverageVote(sessionId: string, issueId: string) {
     this.apiService.getAverageVote(sessionId, issueId).subscribe(
-        (average: number) => {
+        (average: any) => {
           this.averageVote = average;
         },
         (error) => {
@@ -185,6 +251,7 @@ export class RoomComponent implements OnInit {
     if (this.selectedCard !== null) {
       this.revealedCard = this.selectedCard;
       if (this.selectedIssue !== null) {
+        // this.submitVote();
         this.submitVote(this.issueId);
       } else if (this.selectedIssueImported !== null) {
         this.submitVoteForIssuesRequest();
@@ -195,7 +262,6 @@ export class RoomComponent implements OnInit {
       console.error('No card selected.');
     }
   }
-
   submitVote(issueId: string) {
     this.apiService.getUsersBySession(this.sessionId).subscribe({
       next: (users) => {
@@ -251,17 +317,14 @@ export class RoomComponent implements OnInit {
       },
     });
   }
-
   submitVoteForIssuesRequest() {
-    const userId = this.currentUserId;  // Ensure this is set correctly from your existing logic
     if (this.selectedCard !== null && this.selectedIssueId !== null) {
       const vote: VoteModel = {
-        sessionId: this.sessionId,
-        issueId: this.issueId,
-        userName: this.userName,
-        userId: this.user.id, // Make sure to pass the user ID here
+        sessionId: this.session.id,
+        issueId: this.selectedIssueId,
         vote: this.selectedCard,
-
+        userId: this.userId,
+        userName: this.userName,
       };
       this.apiService.addVote(vote).subscribe((response) => {
         const issue = this.issuesRequests.find(i => i.id === this.selectedIssueId);
@@ -276,7 +339,7 @@ export class RoomComponent implements OnInit {
         this.selectedIssueId = null;
         this.loadVotes(this.session.id, this.selectedIssueId);
         this.loadAverageVote(this.session.id, issue.id);
-        this.triggerConfetti();
+        this.triggerConfetti(); // Fonction pour célébrer le vote
       });
     } else {
       console.error('No card selected or no issue selected.');

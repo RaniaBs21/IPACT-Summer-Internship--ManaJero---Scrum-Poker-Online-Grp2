@@ -298,6 +298,28 @@ h1 span:nth-child(14) {
   font-size: 17px;
   text-decoration: none;
 }
+.close-button-session {
+  align-items: center;
+  float: right;
+  border: 2px solid #faedcd;
+  color: #ffffff;
+  padding: 1rem; /* Augmenté le padding */
+  margin-left: 20px;
+  border-radius: 40px; /* Augmenté le radius */
+  cursor: pointer;
+  font-size: 1.2rem;
+  text-decoration: none;
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  font-weight: bold;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.close-button-session:hover {
+  background: linear-gradient(to right, #e52e71, #ff8a00);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
+}
 
 .close-button {
   align-items: center;
@@ -801,6 +823,72 @@ $confetti-colors: (#f00, #ff0, #0f0, #00f); // Couleurs des confettis
   font-weight: bold;
   color: #333;
   align-items: center;
-  display: flex; /* Ensures the text is centered */
-  justify-content: center; /* Center text horizontally */
+  display: flex; /* Assure que le texte est centré */
+  justify-content: center; /* Centre le texte horizontalement */
+  text-align: center; /* Centre le texte dans le paragraphe */
+  word-wrap: break-word; /* Permet au texte de se diviser en plusieurs lignes */
+  word-break: break-word; /* Divise les mots longs si nécessaire */
+  max-width: 80px; /* Limite la largeur du texte pour forcer les retours à la ligne */
+}
+.flip-card {
+  background-color: transparent;
+  width: 180px;
+  height: 200px;
+  perspective: 1000px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(227, 222, 222, 0.1);
+  overflow: hidden;
+}
+.flip-card-inner {
+  position: relative;
+  width:80%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0.2, 0.2, 0.2, 0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.flip-card-front1,
+.flip-card-back1 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+}
+
+.flip-card-front {
+  background-color: #f8f8f8;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #f8f8f8;
+  color: white;
+  transform: rotateY(180deg);
+}
+.flip-card-front1 {
+  background-color: #f8f8f8;
+  color: black;
+  border-radius: 10px;
+
+}
+
+.flip-card-back1 {
+  background-color: #f8f8f8;
+  transform: rotateY(180deg);
 }
