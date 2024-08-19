@@ -4,79 +4,56 @@ import { NbThemeService } from '@nebular/theme';
 @Component({
   selector: 'ngx-echarts-pie',
   template: `
-    <div echarts [options]="options" class="echart"></div>
+    <div></div>
   `,
 })
-export class EchartsPieComponent implements AfterViewInit, OnDestroy {
-  options: any = {};
-  themeSubscription: any;
-
-  constructor(private theme: NbThemeService) {
-  }
-
-  ngAfterViewInit() {
-    this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
-
-      const colors = config.variables;
-      const echarts: any = config.variables.echarts;
-
-      this.options = {
-        backgroundColor: echarts.bg,
-        color: [colors.warningLight, colors.infoLight, colors.dangerLight, colors.successLight, colors.primaryLight],
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)',
-        },
-        legend: {
-          orient: 'vertical',
-          left: 'left',
-          data: ['PRESENCE', 'DELAY', 'ACTIVE', 'ABSENT', 'ON BREAK'],
-          textStyle: {
-            color: echarts.textColor,
-
-          },
-        },
-        series: [
-          {
-            name: 'Countries',
-            type: 'pie',
-            radius: '80%',
-            center: ['50%', '50%'],
-            data: [
-              { value: 335, name: 'DELAY' },
-              { value: 310, name: 'ACTIVE' },
-              { value: 234, name: 'ABSENT' },
-              { value: 135, name: 'ON BREAK' },
-              { value: 1548, name: 'PRESENCE' },
-            ],
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: echarts.itemHoverShadowColor,
-              },
-            },
-            label: {
-              normal: {
-                textStyle: {
-                  color: echarts.textColor,
-                },
-              },
-            },
-            labelLine: {
-              normal: {
-                lineStyle: {
-                  color: echarts.axisLineColor,
-                },
-              },
-            },
-          },
-        ],
-      };
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.themeSubscription.unsubscribe();
-  }
+export class EchartsPieComponent  {
+  // options: any = {};
+  // themeSubscription: any;
+  // playerPerformance: { [key: string]: number };
+  //
+  //
+  // constructor(private theme: NbThemeService) {
+  // }
+  //
+  // ngAfterViewInit() {
+  //   this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
+  //     const colors = config.variables;
+  //     const echarts: any = config.variables.echarts;
+  //
+  //     this.options = {
+  //       backgroundColor: echarts.bg,
+  //       color: [config.variables.warningLight, config.variables.infoLight, config.variables.dangerLight],
+  //       tooltip: {
+  //         trigger: 'item',
+  //         formatter: '{a} <br/>{b} : {c} ({d}%)',
+  //       },
+  //       legend: {
+  //         orient: 'vertical',
+  //         left: 'left',
+  //         data: Object.keys(this.playerPerformance),
+  //         textStyle: { color: echarts.textColor },
+  //       },
+  //       series: [
+  //         {
+  //           name: 'Participation Rate',
+  //           type: 'pie',
+  //           radius: '55%',
+  //           center: ['50%', '50%'],
+  //           data: Object.entries(this.playerPerformance).map(([key, value]) => ({ name: key, value })),
+  //           label: {
+  //             normal: { textStyle: { color: echarts.textColor } },
+  //           },
+  //           labelLine: {
+  //             normal: { lineStyle: { color: echarts.axisLineColor } },
+  //           },
+  //         },
+  //       ],
+  //     };
+  //   });
+  // }
+  //
+  // ngOnDestroy(): void {
+  //   this.themeSubscription.unsubscribe();
+  // }
 }

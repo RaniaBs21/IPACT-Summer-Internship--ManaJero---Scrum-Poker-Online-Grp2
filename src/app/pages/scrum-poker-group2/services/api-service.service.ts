@@ -265,5 +265,26 @@ export class ApiService {
     const params = new HttpParams().set('email', email);
     return this.httpClient.post<string>(url, null, { params });
   }
+  getNumberOfUsersInSession(sessionId: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.API_URL}/votes/users-in-session/${sessionId}`);
+  }
+
+  getPlayerPerformance(sessionId: string): Observable<{ [key: string]: number }> {
+    return this.httpClient.get<{ [key: string]: number }>(`${this.API_URL}/votes/player-performance/${sessionId}`);
+  }
+
+  getEstimationClassification(sessionId: string): Observable<{ [key: string]: number }> {
+    return this.httpClient.get<{
+      [key: string]: number,
+    }>(`${this.API_URL}/votes/estimation-classification/${sessionId}`);
+  }
+  getUserCount(sessionId: string): Observable<number> {
+    return this.httpClient.get<number>(`/votes/api/session/${sessionId}/userCount`);
+  }
+
+  getStatistics(sessionId: string): Observable<any> {
+    return this.httpClient.get(`${this.API_URL}/votes/api/statistics/${sessionId}`);
+  }
 
 }
+

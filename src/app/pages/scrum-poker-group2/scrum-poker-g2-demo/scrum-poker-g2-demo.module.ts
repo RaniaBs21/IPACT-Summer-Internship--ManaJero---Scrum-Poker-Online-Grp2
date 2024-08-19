@@ -44,6 +44,7 @@ import { SessionUpdateComponent } from './room/session-update/session-update.com
 import { VotingHistoryComponent } from './room/voting-history/voting-history.component';
 import {OAuthStorage} from 'angular-oauth2-oidc';
 import { UserPseudoComponent } from './room/user-pseudo/user-pseudo.component';
+import {ChartsModule} from "../../charts/charts.module";
 
 
 
@@ -70,6 +71,7 @@ import { UserPseudoComponent } from './room/user-pseudo/user-pseudo.component';
         ChartModule,
         Ng2SmartTableModule,
         NbFormFieldModule,
+        ChartsModule,
     ],
   declarations: [
     ScrumPokerG2DemoComponent,
