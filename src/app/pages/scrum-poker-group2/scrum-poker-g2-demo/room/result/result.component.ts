@@ -11,7 +11,6 @@ import {IssuesModel} from '../../../Models/IssuesModel';
 import {VoteModel} from '../../../Models/VoteModel';
 import {forkJoin, Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import { ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'ngx-result',
@@ -128,19 +127,6 @@ export class ResultComponent implements OnInit {
           console.error('Erreur lors de la récupération du nombre des issues:', error);
         },
     );
-  }
-  /*constructor(private service: SmartTableData) {
-    const data = this.service.getData();
-    this.source.load(data);
-
-  }*/
-
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
   }
 
   downloadAsPDF(): void {
