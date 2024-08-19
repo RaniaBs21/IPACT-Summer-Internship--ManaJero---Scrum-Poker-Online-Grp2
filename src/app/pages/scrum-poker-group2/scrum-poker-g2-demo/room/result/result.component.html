@@ -1,57 +1,125 @@
-<div id="pdfContent" class="row">
-  <!-- Players Performance Pie Chart -->
-  <div class="col-lg-6">
-    <nb-card>
-      <nb-card-header>Players Performance</nb-card-header>
-      <nb-card-body>
-        <div echarts [options]="pieChartOptions" class="echart" style="height: 400px;"></div>
-      </nb-card-body>
-    </nb-card>
+<div id="pdfContent">
+
+  <!----------------------------------------- header ------------------------------------>
+  <div class="header-container">
+    <div class="header">
+      <span class="lightning">⚡</span>
+      <span class="title">Session Result</span>
+      <span class="lightning">⚡</span>
+    </div>
+  </div>
+  &nbsp;
+  <!----------------------------------------- user Count ------------------------------------>
+  <div class="row">
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-body class="d-flex justify-content-between align-items-center">
+          <p class="card-text " style="color: darkblue ; "><i class="fas fa-user user-icon"></i> &nbsp;Users Total : </p>
+          <h1 class="user-count ">{{ userCount }}</h1>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <!----------------------------------------- Issue Count ------------------------------------>
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-body class="d-flex justify-content-between align-items-center">
+          <p class="card-text " style="color: darkblue ; "><i class="fas fa-user user-icon"></i> Issues Total : </p>
+          <h1 class="user-count ">{{ issueCount }}</h1>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
   </div>
 
-  <!-- Estimations Bar Chart -->
-  <div class="col-lg-6">
-    <nb-card>
-      <nb-card-header>Estimations</nb-card-header>
-      <nb-card-body>
-        <div echarts [options]="barChartOptions" class="echart" style="height: 400px;"></div>
-      </nb-card-body>
-    </nb-card>
+
+  <!----------------------------------------- Vote Distribution in Percentage ------------------------------------>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header style="color: darkblue ; font-size: 20px;">Vote Distribution in Percentage</nb-card-header>
+        <nb-card-body>
+          <ngx-echarts-pie></ngx-echarts-pie>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <!----------------------------------------- Vote Frequency per Card ------------------------------------>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header style="color: darkblue ; font-size: 20px;">Vote Frequency per Card</nb-card-header>
+        <nb-card-body>
+          <ngx-echarts-bar></ngx-echarts-bar>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
   </div>
 
-  <!-- Area Stack Chart 1 -->
-  <div class="col-lg-6">
-    <nb-card>
-      <nb-card-header>Area Stack Chart 1</nb-card-header>
-      <nb-card-body>
-        <div echarts [options]="barChartOptions" class="echart" style="height: 400px;"></div>
-      </nb-card-body>
-    </nb-card>
-  </div>
 
-  <!-- Area Stack Chart 2 -->
-  <div class="col-lg-6">
-    <nb-card>
-      <nb-card-header>Area Stack Chart 2</nb-card-header>
-      <nb-card-body>
-        <div echarts [options]="pieChartOptions" class="echart" style="height: 400px;"></div>
-      </nb-card-body>
-    </nb-card>
-  </div>
+  <!----------------------------------------- Players List ------------------------------------>
 
-  <!-- Players List Table -->
-  <div class="col-lg-12">
-    <nb-card>
-      <nb-card-header>Players List</nb-card-header>
-      <nb-card-body>
-        <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
-        </ng2-smart-table>
-      </nb-card-body>
-    </nb-card>
-  </div>
+  <nb-card>
+    <nb-card-header style="color: darkblue ; font-size: 20px; ">
+      Players List
+    </nb-card-header>
+
+    <nb-card-body>
+      <table>
+        <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+
+  &nbsp;&nbsp;
+  <!----------------------------------------- Voting history ------------------------------------>
+
+  <nb-card>
+    <nb-card-header style="color: darkblue ; font-size: 20px;">
+      Voting history
+    </nb-card-header>
+
+    <nb-card-body>
+      <table>
+        <thead>
+        <tr>
+          <th>Issue number</th>
+          <th>Issue description</th>
+          <th>Vote count</th>
+          <th>Players</th> <!-- New column header -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let issue of issues">
+          <td data-label="Issue number">{{ issue.issueNumber }}</td>
+          <td data-label="Issue description">{{ issue.issueDescription }}</td>
+          <td data-label="Vote count">{{ voteCounts[issue.id] || 0 }}</td>
+          <td data-label="Voters">
+            <ul>
+              <li *ngFor="let vote of votesByIssueId[issue.id]">{{ vote.userName }}({{vote.vote}})</li>
+            </ul>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+
+
+  <br>
+
 </div>
-
-<!-- Download Button -->
-<button class="close-button" style="background-color: orange; margin-top: 20px;">
-  <i class="fa fa-download"></i> Download Result
+<button class="close-button"  (click)="downloadAsPDF()">
+  <i class="fa fa-download"></i>  Download Result
 </button>

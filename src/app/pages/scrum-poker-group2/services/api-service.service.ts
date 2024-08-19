@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpEventType, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpParams} from '@angular/common/http';
+import {forkJoin, Observable, throwError} from 'rxjs';
 import {DemoModel} from '../Models/DemoModel';
 import {BenefitsModel} from '../Models/BenefitsModel';
 import {LimitsModel} from '../Models/LimitsModel';
@@ -15,7 +15,7 @@ import {SearchForIssuesUsingJql} from 'jira.js/out/version3/parameters';
 import {IssuesRequest} from '../Models/ImportRepresentation/IssuesRequest';
 import {ProjectInfo} from 'azure-devops-node-api/interfaces/CoreInterfaces';
 import {environment} from '../../../../environments/environment';
-import {map, mergeMap} from 'rxjs/operators';
+import {catchError, map, mergeMap} from 'rxjs/operators';
 import {VoteModel} from '../Models/VoteModel';
 import {UserModel} from '../Models/UserModel';
 
@@ -145,13 +145,18 @@ export class ApiService {
     const url = `${this.API_URL}/getSession/${id}`;
     return this.httpClient.get<SessionModel>(url);
   }
+  // Méthode pour fermer une session
+  closeSession(sessionId: string): Observable<any> {
+    return this.httpClient.post(`${this.API_URL}/close/${sessionId}`, {});
+  }
+  // Méthode pour obtenir le statut de la session
+  getSessionStatus(sessionId: string): Observable<any> {
+    return this.httpClient.get(`${this.API_URL}/status/${sessionId}`);
+  }
 
   // ********************** Issues services ***********************
   addIssue(sessionId: string, issue: IssuesModel): Observable<IssuesModel> {
     return this.httpClient.post<IssuesModel>(`${this.API_URL}/session/${sessionId}`, issue);
-  }
-  getIssueById(id: string): Observable<IssuesModel> {
-    return this.httpClient.get<IssuesModel>(`${this.API_URL}/${id}`);
   }
   getIssuesBySessionId(sessionId: string): Observable<IssuesModel[]> {
     return this.httpClient.get<IssuesModel[]>(`${this.API_URL}/session/${sessionId}`);
@@ -243,6 +248,12 @@ export class ApiService {
   getVotes(sessionId: string, issueId: string): Observable<VoteModel[]> {
     return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/session/${sessionId}/issue/${issueId}`);
   }
+  getAverageVote(sessionId: string, issueId: string): Observable<number> {
+    const params = new HttpParams()
+        .set('sessionId', sessionId)
+        .set('issueId', issueId);
+    return this.httpClient.get<number>(`${this.API_URL}/votes/getaverage`, { params });
+  }
   // ******************** User services *********************
   addUser(sessionId: string, user: UserModel): Observable<UserModel> {
     return this.httpClient.post<UserModel>(`${this.API_URL}/session/addUser/${sessionId}`, user);
@@ -250,12 +261,18 @@ export class ApiService {
   getUsersBySession(sessionId: string): Observable<UserModel[]> {
     return this.httpClient.get<UserModel[]>(`${this.API_URL}/session/user/${sessionId}`);
   }
-  getAverageVote(sessionId: string, issueId: string ): Observable<number> {
-    const params = new HttpParams()
-        .set('sessionId', sessionId)
-        .set('issueId', issueId);
-    return this.httpClient.get<number>(`${this.API_URL}/votes/getaverage`, { params });
+  getUserById(userId: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.API_URL}/getUserById/${userId}`);
   }
+  sendEmail(to: string, subject: string, body: string): Observable<any> {
+    const params = {
+      to: to,
+      subject: subject,
+      body: body,
+    };
+    return this.httpClient.post(`${this.API_URL}/send`, null, { params: params });
+  }
+
   // user Invitation
   inviteUserToSession(sessionId: string, email: string): Observable<string> {
     if (!sessionId) {
@@ -265,26 +282,28 @@ export class ApiService {
     const params = new HttpParams().set('email', email);
     return this.httpClient.post<string>(url, null, { params });
   }
-  getNumberOfUsersInSession(sessionId: string): Observable<number> {
-    return this.httpClient.get<number>(`${this.API_URL}/votes/users-in-session/${sessionId}`);
+  /************************************ Result services *******************************/
+  countUsersInSession(sessionId: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.API_URL}/${sessionId}/users/total`);
   }
-
-  getPlayerPerformance(sessionId: string): Observable<{ [key: string]: number }> {
-    return this.httpClient.get<{ [key: string]: number }>(`${this.API_URL}/votes/player-performance/${sessionId}`);
+  countIssuesInSession(sessionId: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.API_URL}/${sessionId}/issues/total`);
   }
-
-  getEstimationClassification(sessionId: string): Observable<{ [key: string]: number }> {
-    return this.httpClient.get<{
-      [key: string]: number,
-    }>(`${this.API_URL}/votes/estimation-classification/${sessionId}`);
+  // Méthode pour obtenir le nombre de votes par issueId
+  getVoteCountByIssueId(issueId: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.API_URL}/votes/count/${issueId}`);
   }
-  getUserCount(sessionId: string): Observable<number> {
-    return this.httpClient.get<number>(`/votes/api/session/${sessionId}/userCount`);
+  getVotesByIssueId(issueId: string): Observable<VoteModel[]> {
+    return this.httpClient.get<VoteModel[]>(`${this.API_URL}/votes/issue/${issueId}`);
   }
-
-  getStatistics(sessionId: string): Observable<any> {
-    return this.httpClient.get(`${this.API_URL}/votes/api/statistics/${sessionId}`);
+  getCardUsageStatistics(sessionId: string): Observable<{ [key: string]: number }> {
+    return this.httpClient.get<{ [key: string]: number }>(`${this.API_URL}/votes/statistics?sessionId=${sessionId}`);
+  }
+  getVoteFrequencyForSession(sessionId: string): Observable<Map<string, number>> {
+    return this.httpClient.get<Map<string, number>>(`${this.API_URL}/votes/sessions/${sessionId}/vote-frequency`);
+  }
+  getVoteDistribution(sessionId: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.API_URL}/votes/sessions/${sessionId}/vote-distribution`);
   }
 
 }
-
