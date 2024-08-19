@@ -151,16 +151,14 @@ export class RoomComponent implements OnInit {
     if (this.isValidToClose()) {
       if (confirm('Are you sure you want to close this session?')) {
         this.closeSession(sessionId);
-        this.loadIssues(); // Si nécessaire, rechargez les issues ou d'autres données
+        this.loadIssues();
       }
     } else {
       this.toastrService.danger('Please complete all necessary fields or actions', 'Error');
     }
   }
 
-// Exemple de méthode pour vérifier si la session peut être fermée
   isValidToClose(): boolean {
-    // Implémentez la logique de validation nécessaire
     return true; // Modifier en fonction des conditions réelles
   }
   closeSession(sessionId: string) {
@@ -185,7 +183,6 @@ export class RoomComponent implements OnInit {
     );
   }
   openInviteDialog() {
-    // Open the dialog with the current session ID
     this.dialogService.open(InvitePlayersComponent, {
       context: {
         title: 'Invite Players',
@@ -193,17 +190,6 @@ export class RoomComponent implements OnInit {
       },
     });
   }
-  // ***********  MOYENNE *********************
-  /* loadAverageVote(sessionId: string, issueId: string) {
-    this.apiService.getAverageVote(sessionId, issueId).subscribe(
-       (average: any) => {
-         this.averageVote = average;
-       },
-       (error) => {
-         console.error('Error fetching average vote:', error);
-       },
-     );
-   }*/
   loadAverageVote(sessionId: string, issueId: string) {
     this.apiService.getAverageVote(sessionId, issueId).subscribe(
         (average: any) => {
@@ -547,12 +533,7 @@ export class RoomComponent implements OnInit {
       });
     }
   }
-  selectJiraProject(jiraProjectName: any, template: TemplateRef<void>) {
 
-    this.selectedJiraProjectName = jiraProjectName;
-    this.modalRef.hide();
-    this.getIssues(this.selectedJiraProjectName, template);
-  }
   selectAzureProject(azureProjectName: any, template: TemplateRef<void>) {
 
     this.selectedAzureProjectName = azureProjectName;
@@ -583,16 +564,6 @@ export class RoomComponent implements OnInit {
 
       this.openBootstrapModal(template);
     });
-  }
-
-  addIssueToLocalList(issuesKey: string, issueDescription: string) {
-    this.issuesRequests.push({
-      description: issueDescription,
-      issueKey: issuesKey,
-      platformId: 'JIRA',
-    } as IssuesRequest);
-    this.apiService.insertUserStory(this.issuesRequests, this.sessionId).subscribe(rep => null);
-    console.error(this.issuesRequests);
   }
   addIssueToLocalListAzure(issueDescription: string ) {
     this.issuesRequests.push({
